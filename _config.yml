@@ -3,7 +3,7 @@ title: Moving To The Dark Side
 subtitle: Leaving the Pipette for a Keyboard
 email: amjdomingues@gmail.com
 description: ""
-baseurl: "/adomingues.github.io/" # the subpath of your site, e.g. /blog/
+baseurl: "/" # the subpath of your site, e.g. /blog/
 url: "http://adomingues.github.io/" # the base hostname & protocol for your site
 # twitter_username: jekyllrb
 github_username:  adomingues
