@@ -14,7 +14,8 @@ This blog is a collection of tips, hints, and ramblings that detail my journey f
 
 ### Contact me
 
-Find me on [Google+][google] / [Github][github] or just drop a line at [amjdomingues@gmail.com](amjdomingues@gmail.com).
+Find me on [Google+][google] / [Github][github] or just drop a line at 
+[amjdomingues@gmail.com](amjdomingues@gmail.com).
 
 
 [tf]: http://template-factory.nl
@@ -23,4 +24,4 @@ Find me on [Google+][google] / [Github][github] or just drop a line at [amjdomin
 [pwf]: http://processwire.com/talk
 [jekyll]: http://jekyllrb.com
 [github]: https://github.com/adomingues
-[google]: https://google.com/+AntónioMigueldeJesusDomingues
+[google]: google.com/+AntónioMigueldeJesusDomingues
