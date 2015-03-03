@@ -1,24 +1,65 @@
-# Site settings
-title: Moving To The Dark Side
-subtitle: Leaving the Pipette for a Keyboard
-email: amjdomingues@gmail.com
-description: ""
-baseurl: "/" # the subpath of your site, e.g. /blog/
-url: "http://adomingues.github.io/" # the base hostname & protocol for your site
-# twitter_username: jekyllrb
-github_username:  adomingues
+# Harmony Jekyll theme general configurations
 
-author:
-  login: fridaymeetssunday
-  email: amjdomingues@gmail.com
-  display_name: fridaymeetssunday
-  first_name: 'Antonio'
-  last_name: 'Domingues'
+# Base URL
+baseurl: http://adomingues.github.io/
 
-# Build settings
-markdown: redcarpet
+# Site live URL
+url: http://adomingues.github.io/
+
+# Localhost
+# url: http://127.0.0.1:4000
+
+# Harmony theme configuration. Please change accordingly.
+harmony:
+  name: Moving to the Dark Side
+  # Little description about your site
+  description: Leaving the Pipette for a Keyboard.
+  # 'meta_description:' Write an awesome description for your new site here.
+  # It will appear in your document head meta (for Google search results) and
+  # in your feed.xml site description.
+  meta_description: > #
+   This blog details the journey of a bench biologist interested in RNA biology and gene expression into the Dark Arts of command-line data analysis.
+  basetheme: theme-base-01 # pre defined thmes are darken, blue-water, redish.
+  author: # Author details
+    name: Antonio Domingues
+    email: amjdomingues@gmail.com
+    url: http://adomingues.github.io
+
+  # Google Analytics key, leave blank to ignore
+  google_analytics_key: UA-60277379-1
+
+  # Profile links, leave blank to ignore
+  social:
+    github: adomingues
+    # twitter: gayanvirajith
+    # facebook: gayanvirajith
+    gplus: +AntónioMigueldeJesusDomingues
+    # dribble: gayan
+    # pinterest:
+  # Toggle disclaimer in footer
+  show_disclaimer: true
+
+# Conversion / Build settings
+markdown:    redcarpet
+# This is how you put pygments config in jekyll 2.0 instead of pygments: true
 highlighter: pygments
 
+# Permalinks
+permalink:        pretty
+
+exclude:
+  - CNAME
+  - Gemfile
+  - Rakefile
+  - README.md
+  - .gitignore
+  - .sass-cache
+  - Gemfile.lock
+
+# Sass conversion configs
+sass:
+    sass_dir: assets/css/_sass
+    style: :compressed
 
 # Your disqus shortname, entering this will enable commenting on posts
 disqus: fridaymeetssunday
