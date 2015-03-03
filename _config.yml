@@ -64,6 +64,3 @@ sass:
 # Your disqus shortname, entering this will enable commenting on posts
 disqus: fridaymeetssunday
 
-## added as a test
-paginate: 15
-permalink: /:title
