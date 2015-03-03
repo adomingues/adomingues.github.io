@@ -1,2 +1,2 @@
 # adomingues.github.io
-The journey of a bench biologist to the dark arts of bioinformatics
+A blog documenting the journey of a bench biologist into the dark arts of bioinformatics.

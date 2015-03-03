@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Moving To The Dark Side</title>
+    <description></description>
+    <link>http://localhost:4000/adomingues.github.io//</link>
+    <atom:link href="http://localhost:4000/adomingues.github.io//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 02 Mar 2015 16:47:03 +0100</pubDate>
+    <lastBuildDate>Mon, 02 Mar 2015 16:47:03 +0100</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Install bioconductor packages from SVN</title>
+        <description>&lt;p&gt;Due to some issues with the way DEXseq calculates the &lt;a href=&quot;https://support.bioconductor.org/p/64997/&quot;&gt;log2foldchanges&lt;/a&gt; I decided to re-run an analysis with the issue fixed. Since it is not yet in the development branch, an install from svn was needed  - my first!&lt;/p&gt;
+
+&lt;p&gt;Firstly the source code was downloaded with:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;svn co --username &lt;span class=&quot;nb&quot;&gt;readonly&lt;/span&gt; --password &lt;span class=&quot;nb&quot;&gt;readonly &lt;/span&gt;https://hedgehog.fhcrc.org/bioconductor/branches/RELEASE&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;3&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;0/madman/Rpacks/DEXSeq DEXSeq&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This followed a build to generated a package:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;R CMD build --no-build-vignettes DEXSeq&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I had issues with the build process, which failed during the vignette build. As I don&amp;#39;t care about it, using &lt;code&gt;--no-build-vignettes&lt;/code&gt; bypassed the problem. Then it was a simply matter of starting R and installing the package:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;install.packages&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;DEXSeq\_1.12.2.tar.gz&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; repos&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Simple.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2015/02/25/install-bioconductor-packages-from-svn.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2015/02/25/install-bioconductor-packages-from-svn.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>virtualenvs or: How I Learned to Stop Worrying and Love not having sudo powers in a server</title>
+        <description>&lt;p&gt;Well, you might think, there is always &lt;code&gt;pip install --user&lt;/code&gt;. Aha! Yes, that works most of the time, but not when some package upgrade (distribute for deepTools) conflicts with globally installed packages.&lt;/p&gt;
+
+&lt;h2&gt;The solution (for python packages)&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Python virtualenvs&lt;/em&gt; to the rescue!&lt;/p&gt;
+
+&lt;p&gt;These have been around for sometime, but I never felt inclined to dig into it until now (I can also be a bit of a &lt;em&gt;Luddite&lt;/em&gt;). Put simply, &lt;em&gt;virtualenvs&lt;/em&gt; are reservoirs of custom python and package installations. In practice, one creates a folder where all the packages can be installed, and then simply source it. From that point on, everythying done in python is using whathever is in that folder or &lt;em&gt;virtualenv&lt;/em&gt;. Even a copy of the python binary will be there.&lt;/p&gt;
+
+&lt;p&gt;One of the major appeals, for me at least, is that no &lt;em&gt;sudo&lt;/em&gt; is required for the set-up of the &lt;em&gt;virtualenv&lt;/em&gt; or installation of packages. Also, one can have multiple virtualenvs, say for different projects.&lt;/p&gt;
+
+&lt;p&gt;For a proper (practical tutorial) see this post by &lt;a href=&quot;http://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/&quot;&gt;Jamie Mathews&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the meantime, &lt;em&gt;deepTools&lt;/em&gt; just finished compiling and I can now go to work.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Clone all repositories from a user (bitbucket)</title>
+        <description>&lt;p&gt;Now that I have computer, the next step is to install everything I use on daily basis, and set-up my projects space. This involves cloning all my repositories. I could do this manually one by one, but what is the fun in that?&lt;/p&gt;
+
+&lt;h2&gt;Solution 1&lt;/h2&gt;
+
+&lt;p&gt;My rule is that &amp;quot;if there is a way to make some task more efficient programatically, some one else thought of it before, so google it before starting scripting&amp;quot;. So I did, and of course someone else came up with a &lt;a href=&quot;http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/&quot;&gt;solution&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Script to get all repositories under a user from bitbucket&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Usage: getAllRepos.sh [username]&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;## credit to Harold Soh&lt;/span&gt;
+ 
+curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;  https://api.bitbucket.org/1.0/users/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &amp;gt; repoinfo
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; repo_name in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;grep &lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;name&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt; repoinfo &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f4 -d&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    hg clone ssh://hg@bitbucket.org/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$repo_name&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This however did not work perfectly for me. When downloading the rep info, the json config comes poorly formatted as a single line. This meant that the line &lt;code&gt;grep \&amp;quot;name\&amp;quot; repoinfo | cut -f4 -d\&amp;quot;&lt;/code&gt; was return &lt;code&gt;scm&lt;/code&gt;, which obviously is not what one of my repositories.&lt;/p&gt;
+
+&lt;h2&gt;Fix&lt;/h2&gt;
+
+&lt;p&gt;So I hacked a little and came up with a not-very-elegant-but-working-solution to parse the json:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Script to get all repositories under a user from bitbucket&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Usage: getAllRepos.sh [username]&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#source: http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/&lt;/span&gt;
+ 
+curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; https://api.bitbucket.org/1.0/users/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &amp;gt; repoinfo
+&lt;span class=&quot;c&quot;&gt;# curl -u adomingues https://api.bitbucket.org/1.0/users/adomingues&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# cat repoinfo&lt;/span&gt;
+ 
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; repo_name in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;cat repoinfo &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -r &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/(&amp;quot;name&amp;quot;: )/\n\1/g&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -r &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/&amp;quot;name&amp;quot;: &amp;quot;(.*)&amp;quot;/\1/&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -e &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/{//&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f1 -d&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tr &lt;span class=&quot;s1&quot;&gt;&amp;#39;\n&amp;#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Cloning &amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$repo_name&lt;/span&gt;
+    hg clone https://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;@bitbucket.org/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$repo_name&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;---&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This basically the same script as that of Harold, but with a more complex parsing:&lt;br&gt;
+- &lt;code&gt;sed -r &amp;#39;s/(&amp;quot;name&amp;quot;: )/\n\1/g&amp;#39;&lt;/code&gt; makes sure that the repo name is not at the start of each line;&lt;br&gt;
+- &lt;code&gt;sed -r &amp;#39;s/&amp;quot;name&amp;quot;: &amp;quot;(.*)&amp;quot;/\1/&amp;#39;&lt;/code&gt;, removes the string &amp;quot;name&amp;quot; at the beginning of the line;&lt;br&gt;
+- &lt;code&gt;sed -e &amp;#39;s/{//&amp;#39;&lt;/code&gt; removes a funny curly bracktet ar the start of the file;&lt;br&gt;
+- &lt;code&gt;cut -f1 -d\&amp;quot;&lt;/code&gt;, separates and keeps the actual repository name;&lt;br&gt;
+- &lt;code&gt;tr &amp;#39;\n&amp;#39; &amp;#39; &amp;#39; &amp;#39;&lt;/code&gt; just removes the new line character creating a list of repository names to be looped.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Et voilá&lt;/em&gt;! There is probably some less convoluted away of going about it, probably involving regex, but in someone else&amp;#39;s wise words: &amp;quot;if you need regex to solve a problem, you now have 2 problems&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;The only minor inconvenience is that I need to input my password for each repository. There might be a solution for this, but I have not found it yet.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2015/01/10/clone-all-repositories-from-a-user-bitbucket.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2015/01/10/clone-all-repositories-from-a-user-bitbucket.html</guid>
+        
+        <category>bash</category>
+        
+        <category>bitbucket</category>
+        
+        <category>mercurial</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>New shiny toy</title>
+        <description>&lt;p&gt;&lt;em&gt;Updated on 11.01.2015 to correct spelling mistakes, grammar, and add new information about the speakers.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;My new laptop has arrived, and after testing it for a couple of days, I feel that I can post my own impressions of the Dell XPS13 (9333).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://media.engadget.com/img/products/454/9qbr/9qbr-800.jpg&quot; alt=&quot;Dell XPS13&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Those in the Linux world may have heard of it by the code name &lt;em&gt;sputnik&lt;/em&gt;. Originally this model was developed by Dell, with an eye on developers, and thus it is one of the very few laptops to be offered with Linux Ubuntu pre-installed.  As a bioinformatician, or genomics data analyst as I call myself (not very catchy), working on a *nix machine is a must. Even though I worked in OSX for a while, it never really impressed me, so when deciding on a laptop for my new job, I had three things on my wish-list:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Linux compatibility, to run all the tools I need;&lt;/li&gt;
+&lt;li&gt;
+light, to carry home and show results to colleagues;&lt;/li&gt;
+&lt;li&gt;
+somewhat powerful, to test scripts and be &amp;quot;future-proof&amp;quot;;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Some specs&lt;/h2&gt;
+
+&lt;p&gt;With the above in mind, I got the XP13 with the following specs:&lt;/p&gt;
+
+&lt;p&gt;Intel(r) Core(tm) i7-4510U  (4M Cache, up to 3.1 GHz)&lt;br&gt;
+8 GB Dual-Channel DDR3 with 1.600 MHz&lt;br&gt;
+Solid-State-hardrive (SSD) with 512 GB&lt;br&gt;
+Intel HD Grafics 4400&lt;br&gt;
+1.37 kg&lt;/p&gt;
+
+&lt;p&gt;Unfortunately the model with pre-installed Ubuntu was not available in Germany, apparently they are out of stock, so mine came with Windows 8 pre-installed. Obviously the 1st thing I did to replace Windows with a fresh install of Ubuntu 14.04 from a liveUSB. Everything pretty much worked out of the box, which is the new unremarkable normal for modern Linux distros, specially those based on Ubuntu. Of note, the touchscreen  (which I do not care about) works, at least selecting and scrolling. Connecting the wifi was also a doodle. It took me almost more time to disable the annoying Windows features to allow the Linux installation than it did to make the install itself. In less than 1 hour I had the computer ready to work.&lt;/p&gt;
+
+&lt;h2&gt;Review&lt;/h2&gt;
+
+&lt;h3&gt;Design&lt;/h3&gt;
+
+&lt;p&gt;Oh boy does it look good! Nice aluminium touch, very elegant. I could compare it to a Macbook Air and it is noticeable smaller, both in width and depth, and prettier for my eyes.&lt;/p&gt;
+
+&lt;h3&gt;Screen&lt;/h3&gt;
+
+&lt;p&gt;Excellent resolution, bright colours - amazing.  The less fun part is that at 1920x1080 fonts and icons are rather small, but nothing that can&amp;#39;t be fixed.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;coil whine&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This refers to a wizz sound coming from the keyboard area. In my case it is barely noticeable, and turning of the keyboard back-lighting stops it. I don&amp;#39;t care about this light so it works for me. Most of the time the noise is barely audible though.&lt;/p&gt;
+
+&lt;h3&gt;Temperature&lt;/h3&gt;
+
+&lt;p&gt;This is something of a problem with Linux laptops. I have installed laptop-mode-tools and, as we speak, it is running at 45-55ºc, with Firefox, Thunderbird, Sublime text, and terminal open. So not an issue for me.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Keyboard and mousepad&lt;/strong&gt;&lt;br&gt;
+The keyboard is responsive, without being too edgy. The mouse pad is rather large, and does not have physically separated buttons, so it I am still adjusting and trying to the right-click. Both feel somewhat roughed, at least in comparison to my Toshiba T230, which is neither a good or bad thing, it just offers more resistance and feedback to the touch. It should be noted that the page-up and -down do not have dedicated buttons, nor does the end/start (so useful to navigate lines of code). However, the use of &lt;code&gt;fn + arrows&lt;/code&gt; solves the problem.&lt;/p&gt;
+
+&lt;h3&gt;Sound&lt;/h3&gt;
+
+&lt;p&gt;Good enough. This is a laptop, not a sound system. Scracth that, after some more testing, the sound is loud and clear. Very decent (for a laptop of course).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;battery life&lt;/strong&gt;&lt;br&gt;
+It looks like I can squeeze 5 hours out of it easily, but it is too early to tell.&lt;/p&gt;
+
+&lt;h3&gt;Dock&lt;/h3&gt;
+
+&lt;p&gt;I also got a Dell dock with it, because let&amp;#39;s face it, 2 USB entries is just low, and I am connected to a server most of the time and prefer to do it over an ethernet connection for stability. From what I tested so far, the sound and display entries of the dock do not work. On the other hand, the USB and the ethernet work.&lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;All in all I am very happy with my new shinny Ubuntu ultrabook. And I stress ultra because coming from a 4 year old laptop (still working well) with less than 2 kg, I cannot entertain the thought of not having a light laptop and the XPS13 is the perfect upgrade to my Toshiba T230.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 08 Jan 2015 19:12:38 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2015/01/08/new-shiny-toy.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2015/01/08/new-shiny-toy.html</guid>
+        
+        <category>hardware</category>
+        
+        <category>linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>The &quot;p&quot; problem in R plots, or when a dot is a font in inkscape</title>
+        <description>&lt;p&gt;My graphics/figure workflow generally involves plotting something in R, saving it as a pdf (+png if writing a report with &lt;em&gt;Rmarkdown&lt;/em&gt;), followed by some manual editing with &lt;a href=&quot;https://inkscape.org/&quot;&gt;Inkscape&lt;/a&gt;. Inkscape is a free, as in speech &lt;strong&gt;and&lt;/strong&gt; beer, vector graphics editor - think of a non-commercial Illustrator - and it has very very useful since most of the time I don&amp;#39;t have access to Illustrator, through a combination of working mostly in Linux and the groups not paying for a license. No matter as Inkscape serves me well, including for personal use.&lt;/p&gt;
+
+&lt;h2&gt;Problem&lt;/h2&gt;
+
+&lt;p&gt;Back to the science. There is a quick with R plots: by default plots save symbols as fonts &lt;a href=&quot;http://en.wikipedia.org/wiki/Dingbat&quot;&gt;dingbats font&lt;/a&gt;. This means that when opening a pdf created with R in Inkscape (or Illustrator), points are (correctly) displayed as &amp;quot;p&amp;quot;. Even though this is technically correct, it is a nightmare when editing a figure last minute before a presentation.&lt;/p&gt;
+
+&lt;h2&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Set set the option &lt;code&gt;r useDingbats = FALSE&lt;/code&gt; when saving the plot:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;dat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dat&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+pdf&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;plot.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; useDingbats &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dat&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Or even better, make use of Rprofile for more than &lt;a href=&quot;http://movingtothedarkside.wordpress.com/2015/01/05/nerd-up-your-r/&quot;&gt;witty R quotes&lt;/a&gt;, adding to it the line &lt;code&gt;grDevices::pdf.optionspdf.options(useDingbats = FALSE)&lt;/code&gt;. Like this, you will not have to remember this every time a plot is saved. And if you are like me, this will happen often - both the saving and the forgetting.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.inkscapeforum.com/viewtopic.php?f=5&amp;amp;t=7581&quot;&gt;Source1&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;https://support.rstudio.com/hc/communities/public/questions/200664843-Problem-reading-exported-PDFs-in-other-programs&quot;&gt;Source2&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Jan 2015 10:55:25 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape.html</guid>
+        
+        <category>Inkscape</category>
+        
+        <category>plots</category>
+        
+        <category>R</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Nerd up your R</title>
+        <description>&lt;p&gt;I probably spend most of my working day in an R terminal, or at least I start R often enough. Now I &lt;a href=&quot;http://ygc.name/2015/01/05/learn-r-wisdom-with-fortunes/&quot;&gt;saw in a blog I follow&lt;/a&gt; a way to entertain and instruct in equal measure everytime that little statistical box is opened: &lt;a href=&quot;http://cran.r-project.org/web/packages/fortunes/index.html&quot;&gt;fortunes&lt;/a&gt;. This is a very simple package that collected and now shows citations related to R (and statistics in R). Some examples (and as of v1.5.2 there are 360 citations to choose from):&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Release 1.0.0&lt;br&gt;
+(silence)&lt;br&gt;
+Wow! Thank you! [...] If I am allowed to ask just one question today: How do&lt;br&gt;
+you fit 48 hours of coding in an ordinary day? Any hints will be appreciated&lt;br&gt;
+... :-)&lt;br&gt;
+-- Detlef Steuer (on 2000-02-29)&lt;br&gt;
+R-help (February 2000)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Perhaps one is the real forge and the other is a forgery? Or a forge-R-y? I&amp;#39;ll&lt;br&gt;
+get my coat...&lt;br&gt;
+-- Barry Rowlingson (on the question whether http://www.RForge.net/ or&lt;br&gt;
+http://R-Forge.R-project.org/ is the official forge server)&lt;br&gt;
+R-help (April 2007)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2&gt;Set-up&lt;/h2&gt;
+
+&lt;p&gt;I have the following lines it in my &lt;code&gt;~.Rprofile&lt;/code&gt; (think of .bashrc but for R):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;fortunes&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+fortune&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This ensures each time I start R I am greeted by a nice little message to brighten my day:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/R_fortunes.png&quot; alt=&quot;my R start screen&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;How to install&lt;/h2&gt;
+
+&lt;p&gt;I had some problems installing from &lt;em&gt;cran&lt;/em&gt;, so went with &lt;code&gt;install_url&lt;/code&gt; function of devtools which makes the process of installing from source easier when one does not need to download (and keep a copy of) a package source:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;devtools&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://cran.r-project.org/src/contrib/fortunes\_1.5-2.tar.gz&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#remember to use the link for the latest package version&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And it is done!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 05 Jan 2015 16:07:19 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2015/01/05/nerd-up-your-r.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2015/01/05/nerd-up-your-r.html</guid>
+        
+        <category>fortunes</category>
+        
+        <category>R</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Rcolorbrewer pallete</title>
+        <description>&lt;p&gt;I am always looking for a good quality printout of the available palettes in the &lt;a href=&quot;http://cran.r-project.org/web/packages/RColorBrewer/index.html&quot; title=&quot;RColorBrewer&quot;&gt;RColorBrewer package&lt;/a&gt;. I finally decided to take matters on my own hand and create a pdf for myself. Of course it is very easy:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;RColorBrewer&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+pdf&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/Pictures/RColorBrewerPalette.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+display.brewer.all&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 08 Dec 2014 11:04:14 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2014/12/08/rcolorbrewer-pallete.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2014/12/08/rcolorbrewer-pallete.html</guid>
+        
+        <category>plots</category>
+        
+        <category>R</category>
+        
+        <category>RcolorBrewer</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>ChIP-seq coverage analysis</title>
+        <description>&lt;p&gt;UPDATE&lt;/p&gt;
+
+&lt;p&gt;It has been a long time since I wrote this post, and in between a wonderfull set of tools for coverage calculation and visualization has been published: &lt;a href=&quot;https://github.com/fidelram/deepTools/wiki&quot;&gt;deepTools&lt;/a&gt; does metagene analysis, and much, much more in a better than I could possibly do with my näive scripts.&lt;/p&gt;
+
+&lt;p&gt;Try it. It is worth it.&lt;/p&gt;
+
+&lt;p&gt;There a few analysis tasks for which one would think a solution, or an easy to follow example, is readily available in the web (it has been a long time since the Web became the Internet). One such example is how to do coverage analysis of ChIP-seq, or any other data for that matter. That is, how are the reads distributed around a region of interest, commonly the TSS?&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www-huber.embl.de/users/anders/HTSeq/doc/overview.html&quot; title=&quot;HTSeq overview&quot;&gt;HTSeq&lt;/a&gt;, the python library for NGS data analysis offers &lt;a href=&quot;http://www-huber.embl.de/users/anders/HTSeq/doc/tss.html#tss&quot; title=&quot;HTSeq - TSS analysis&quot;&gt;that&lt;/a&gt;, but I prefer to do my plots in R and ggplot. I also find &lt;a href=&quot;http://www.bioconductor.org/help/course-materials/2009/EMBLJune09/Practicals/TSS/TSS_plot.pdf&quot; title=&quot;TSS - An exercise with coverage vectors&quot;&gt;bioconductor&lt;/a&gt; nice but some of the objects and the packages literature hard to understand for someone looking for imminently practical information.  So I decided to ask around in my institute and create my own script. I like to do scripts that can be easily modified and also that generate plots that can be used with little or now change for presentations.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Create the bed file with TSSs:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Firstly, how to create the BED file with the TSSs using a combination of bioconductor and &lt;a href=&quot;http://code.google.com/p/bedtools/&quot;&gt;bedtools&lt;/a&gt; - it is quite fast and it very-well documented. This only needs to be ran once and there is a myriad of ways to do it. Of course one could also use any bed file with features of interest.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;######################  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;### Load libraries ###  &lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;GenomicRanges&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;GenomicFeatures&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;plyr&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;reshape&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data.table&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;### custom functions ##  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# string concatenation without space gaps  &lt;/span&gt;
+concat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;################################  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## create TSS bed file (UCSC) ##  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# create a database of transcripts  &lt;/span&gt;
+hg19RefGenes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; makeTranscriptDbFromUCSC&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;genome &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;hg19&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; tablename &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;refGene&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# run only once  &lt;/span&gt;
+hg19RefGenes &lt;span class=&quot;c1&quot;&gt;# summary of the object  &lt;/span&gt;
+saveDb&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hg19RefGenes&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;~/Homo\_sapiens/hg19\_RefSeq\_genes.sqlite&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;c1&quot;&gt;# by saving the database one keeps a record of which version of the genome was used for the analysis. Very important for reproducibility.  &lt;/span&gt;
+hg19RefGenes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; loadDb&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/Homo\_sapiens/hg19\_RefSeq\_genes.sqlite&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# not necessary of useful if the the script need to be ran again later&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# create an object with a list of transcripts grouped by gene  &lt;/span&gt;
+transcripts &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; transcriptsBy&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hg19RefGenes&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; by&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;gene&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# convert to data frame:  &lt;/span&gt;
+gene2tx &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;transcripts&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Note that transcription\_start is always smaller than transcription\_end, even when the transcript is on the &amp;quot;−&amp;quot; strand. Hence, we have to use either the start or the end coordinate of the transcript, depending on the strand, to get the actual transcription start sites, i.e., the 5&amp;#39; ends of the transcripts:  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#http://www.bioconductor.org/help/course-materials/2009/EMBLJune09/Practicals/TSS/TSS\_plot.pdf  &lt;/span&gt;
+tss &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;strand &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;start&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;end&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+tss.bed &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seqnames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;seqnames&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; start &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tss&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; end&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tss&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; strand&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;strand&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; transcriptID&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;tx\_name&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; type&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;tss&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## just keep proper chromosomes  &lt;/span&gt;
+tss.bed &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;subset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss.bed&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; str\_detect&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seqnames&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;^[[:alnum:]]\*$&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
+&lt;span class=&quot;kp&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss.bed&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seqnames&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# list the frequency of genes per chromosome&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# save bed file  &lt;/span&gt;
+write.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss.bed&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; file &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;~/Homo\_sapiens/hg19RefSeqTSS.bed&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; row.names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
+col.names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; quote &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\\t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## use bedtools to increase the region around the tss  &lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;  &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;chromInfo=~/Homo\_sapiens/UCSC/hg19/Annotation/Genes/ChromInfo.txt&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;bedtools slop -i ~/Homo\_sapiens/hg19RefSeqTSS.bed -g $chromInfo -b 1000 \&amp;gt; ~/Homo\_sapiens/hg19RefSeqTSS\_1000kb.bed  &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Counting the number of reads per nucleotide&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Because I run over several bam files and I like to keep the file names tidy I&amp;#39;ve wrapped the bedtools function in a shell function so that the several analysis can ran in parallel to save time. Because this step takes a of time, it sends me an email at the end. This way I can do something else without being constantly looking at it. Hint: running it in  a &lt;a href=&quot;http://www.rackaid.com/resources/linux-screen-tutorial-and-how-to/&quot; title=&quot;Intro  to screen sessions&quot;&gt;screen session&lt;/a&gt; also saves a lot of headaches. If you are doing for a single bam file, or are not versed in shell scripting all you need is to run this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;coverageBed -d -abam bamFile -b geneModel &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; name.cov.bed&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;But in all likelihood you will have several bam files:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#################################################################################  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# This little shell script calculates coverage per base at any given annotation #&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# wrapper shell function that does the coverage calculations and returns the files with nice names  &lt;/span&gt;
+coverageAtFeatures&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;  
+&lt;span class=&quot;c&quot;&gt;# the input is a bam file that comes from sdout (see bellow)  &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;bamFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;  
+&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bamFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%%.bam&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# to keep the directory tidy I rename the results files using the original bam file  &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;geneModel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# also from sdout  &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;outDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;results/coverage &lt;span class=&quot;c&quot;&gt;# defines the output directory  &lt;/span&gt;
+coverageBed -d -abam &lt;span class=&quot;nv&quot;&gt;$bamFile&lt;/span&gt; -b &lt;span class=&quot;nv&quot;&gt;$geneModel&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$outDir&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;.cov.bed &lt;span class=&quot;c&quot;&gt;# actually performs the coverage calculation.  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# note the -d, very important!&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;  
+&lt;span class=&quot;nb&quot;&gt;export&lt;/span&gt; -f coverageAtFeatures &lt;span class=&quot;c&quot;&gt;# this add the function to the shell to be used&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Features:  &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;promoters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;~/Homo&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;sapiens/hg19RefSeqTSS&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;1000kb.bed  
+&lt;span class=&quot;c&quot;&gt;# bam folder:  &lt;/span&gt;
+bam&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;folder&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;~/chip&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;seq/data/reads/
+
+&lt;span class=&quot;c&quot;&gt;# now we can run the function defined above:  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ls will list all the bam files in the folder and pass them to parallel.  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Each bam file will the first argument of coverageAtFeatures  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# the second argument will be the bed file with the genomic regions of interest.  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Parallel will run the analysis for 4 bam simultaneously - this # can vary depending on your computer.  &lt;/span&gt;
+parallel  -i -j &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; bash -c &lt;span class=&quot;s2&quot;&gt;&amp;quot;coverageAtFeatures {} $promoters&amp;quot;&lt;/span&gt; --  &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;ls &lt;span class=&quot;nv&quot;&gt;$bam&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;folder/&lt;span class=&quot;se&quot;&gt;\*&lt;/span&gt;bam&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;s2&quot;&gt;# when all is done a message will arrive in your inbox.  &lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;echo &amp;quot;&lt;/span&gt;Subject:Coverage &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;  sendmail -v myname@mymail.com &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; /dev/null&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At the end of this we will have a file that contains something like:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;head chip&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;experiment.cov.bed  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
+chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Col1-6 are the original entries of the bed file containing the TSSs, followed by the position of the base in the feature (remember this is a bp-resolution coverage) and the number of reads that mapped to the base.&lt;/p&gt;
+
+&lt;p&gt;Now we are ready calculate some statistics on own many reads map to each base surrounding the TSSs and plot these. In the next snippet I&amp;#39;ll calculate the sum of reads per base but calculating the average requires a minor change to the script.  Since several of the operations take some time, I use the package doMC save time but this should work without it.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;############################################  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## function to calculate coverage profile ##&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## list coverage files  &lt;/span&gt;
+path&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;./&amp;quot;&lt;/span&gt;  
+cov.files &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;path&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;path&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; pattern&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;.cov.bed&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## for multicore usage:  &lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;doMC&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+registerDoMC&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cores&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# yay for our server&lt;/span&gt;
+
+halfWindow&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# this half the size of the window around the TSSs&lt;/span&gt;
+
+loadCovMat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;  
+&lt;span class=&quot;c1&quot;&gt;# read files  &lt;/span&gt;
+cov.data &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; read.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;concat&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;path&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; header&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\\t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; stringsAsFactors &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;#     http://stackoverflow.com/questions/1727772/quickly-reading-very-large-tables-as-dataframes-in-r  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# cov.data &amp;lt;- fread(file)    # not used because strand not recognized  &lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.data&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;chr&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;start&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;end&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;strand&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ID&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;position&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;count&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# create a new ID to avoid repeated gene names - common issue with UCSC annotations  &lt;/span&gt;
+cov.data.n &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.data&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; newID &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;ID&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; start&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\_&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
+&lt;span class=&quot;c1&quot;&gt;# add base position with reference to the TSS.  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# very important: not the strand operation.  &lt;/span&gt;
+cov.algned &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; mutate&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.data.n&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position\_aligned&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;halfWindow&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
+position\_str\_cor&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;strand&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position\_aligned&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;\&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;position\_aligned&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# for the next operation R needs a lot of memory so I&amp;#39;ll remove objs from memory  &lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;rm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;cov.data&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;cov.data.n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;cov.data.t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# counts the number of reads per position - the final result!  &lt;/span&gt;
+res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; ddply&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.algned&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;position\_str\_cor&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; summarize&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;count&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;parallel&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## get condition name  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# important to have column with the name of the experiment when running multiple analysis  &lt;/span&gt;
+sample &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;strsplit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\\\\.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;  
+res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## Run the function over all coverage files  &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# the output is a list of data frames  &lt;/span&gt;
+cov.l &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.files&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; loadCovMat&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## see the data  &lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.l&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## save the coverage data  &lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.l&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;  
+write.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
+concat&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;.sum.cov&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;  
+row.names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
+quote &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\\t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)})&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# join the data frame in he list in one big data frame for plotting  &lt;/span&gt;
+cov &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;do.call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;rbind&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; cov.l&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;## 2 different plots:  &lt;/span&gt;
+p.cov.all &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;cov&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position\_str\_cor&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; color&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; geom\_line&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  
+ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;./plots/coverage\_tss\_all.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; p.cov.all&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+p.cov.wrap &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; p.cov.all &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; facet\_wrap&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;./plots/coverage\_tss\_wrap.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; p.cov.wrap&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If all went well this is the final result:&lt;br&gt;
+&lt;a href=&quot;http://movingtothedarkside.files.wordpress.com/2013/06/coverage_tss_all_mod.pdf&quot;&gt;Plot 1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://movingtothedarkside.files.wordpress.com/2013/06/coverage_tss_wrap_mod.pdf&quot;&gt;Plot2&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Al there is lacking now is putting all of this in a nice wrapper, which could be easily done, but I preferred to show the different stages of the process separated because it is easier to explain. I hope it helps.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 02 Jun 2013 16:50:39 +0200</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2013/06/02/chip-seq-coverage-analysis.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2013/06/02/chip-seq-coverage-analysis.html</guid>
+        
+        <category>bedtools</category>
+        
+        <category>Chip-seq</category>
+        
+        <category>genomics</category>
+        
+        <category>R</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>BioPython musings</title>
+        <description>&lt;p&gt;On my quest to improve my scripting skils I have just recently taken the Introduction to &lt;a href=&quot;http://www.bits.vib.be/index.php/training/92-python&quot; title=&quot;BioPython course&quot;&gt;BioPython&lt;/a&gt; course at the VIB in Leuven.&lt;/p&gt;
+
+&lt;p&gt;The course&lt;/p&gt;
+
+&lt;p&gt;It was all very well organized and the Instructor, &lt;a href=&quot;http://academis.sites.djangoeurope.com/&quot; title=&quot;Instructor&quot;&gt;Kristian Rother &lt;/a&gt;, was well prepared and engaging. Perhaps he was not expecting so many of wanting to learn more about handing NGS data but when he saw the interest, wrote overnight a custom script to parse and extract information SAM files. Not only it is useful, it also serves a practical example of several Python functions:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# TASK: find out how many sequences there are in the filtered dataset  &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       (the one printed at the bottom)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;example.sam&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;startswith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;$&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;startswith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;@&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;QNAME&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;FLAG&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;RNAME&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;MAPQ&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;CIGAR&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;RNEXT&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;PNEXT&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;TLEN&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;SEQ&amp;#39;&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;QUAL&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
+&lt;span class=&quot;s&quot;&gt;&amp;#39;optional&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;  
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optional&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]:&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;optional&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;:&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# filter all records between position 109200 and 110000  &lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;109200&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;SEQ&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;110000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;SEQ&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Total number of reads is: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%i&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Filtered reads is: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%i&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Although I&amp;#39;ve learned a lot there were a problem that delayed the class progression: despite the organizers warning that the course was only for people that already knew Python basics, most of the class had not worked with python and a few had never programmed or even used command line to create a directory. This is not the organizer&amp;#39;s or the instructor&amp;#39;s fault and only delayed us in the first day. Actually those of us who already knew a bit of programming carried on with the exercises on our own.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;BioPython&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;First let get out of the way that after the course ended, and for my own purposes - mostly analysis of NGS data - I did not see what could be done with BioPython that I could not already do with a combination of R and shell scripting. That said, parsing of files, for instance FASTA and even SAM appears to be faster and more intuitive than using R/Bioconductor packages. Parsing of files in Python appears to be much much simpler than in R. Of course there is a reason for that: R is for statistical analysis and was not developed to deal with strings. On the other hand Python has plenty of neat built-in functions to deal with strings that makes it much more powerful to deal with DNA/RNA/Protein sequences. BioPhyton seems to add even greater power for this.&lt;/p&gt;
+
+&lt;p&gt;Another point in favour of BioPhyton is its documentation which appears to be of a better standard than that of the average Bioconductor package. I&amp;#39;ve also quite liked the possibility of wrapping any variable in help() to check with function can be used with that particular variable - simple and affective.&lt;/p&gt;
+
+&lt;p&gt;Plotting is ok in Python with Matplotlib but its aesthetics are not even close to those of ggplot in R.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NGS data in BioPython&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Before doing the course I did some search on what was available for the analysis of NGS data using Python and got the impression that Python programmers appeared to have disregarded this technology. There were plenty of scripts in Awk, Perl, etc to parse, manipulate and analyse SAM/BAM/FastQ files, but not in Python. I was wrong. During the course I&amp;#39;ve found out that BioPhtyton has &lt;a href=&quot;http://www-huber.embl.de/users/anders/HTSeq/doc/index.html&quot; title=&quot;HTSeq&quot;&gt;HTSeq&lt;/a&gt;. I have yet to explore it completely bu tit looks like it could be a nice tool for quick QC and count reads over features - something I am yet to master in R.&lt;/p&gt;
+
+&lt;p&gt;All in all I think I will be using Python a lot more  in the future but still doing most of analysis with R and shell scripting.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 04 Jan 2013 16:23:34 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2013/01/04/biopython-musings.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2013/01/04/biopython-musings.html</guid>
+        
+        <category>BioPython</category>
+        
+        <category>Course</category>
+        
+        <category>HTSeq</category>
+        
+        <category>NGS</category>
+        
+        <category>Python</category>
+        
+        <category>R</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>One liners, snippets and small scripts</title>
+        <description>&lt;p&gt;Often I use one liners or small scripts for useful task but I keep forgetting about those. So I&amp;#39;ll just put them here for future reference.&lt;/p&gt;
+
+&lt;p&gt;Count number occurrences in a column/field. In this case, how many lines in a GFF3 file exist for each chromosome.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;cut -f1 hg19.GFF3 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq  -c &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This can be further refined and count only genes per chromosome using a simple grep:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;grep &lt;span class=&quot;s2&quot;&gt;&amp;quot;gene&amp;quot;&lt;/span&gt; hg19.GFF3 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f1 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq  -c &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 26 Nov 2012 10:32:22 +0100</pubDate>
+        <link>http://localhost:4000/adomingues.github.io//2012/11/26/one-liners-snippets-and-small-scripts.html</link>
+        <guid isPermaLink="true">http://localhost:4000/adomingues.github.io//2012/11/26/one-liners-snippets-and-small-scripts.html</guid>
+        
+        <category>cut</category>
+        
+        <category>gff3</category>
+        
+        <category>grep</category>
+        
+        <category>snippet</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
