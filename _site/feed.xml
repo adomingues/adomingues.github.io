@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>Leaving the Pipette for a Keyboard.</description>
-    <link>http://127.0.0.1:4000/harmony/</link>
-    <atom:link href="http://127.0.0.1:4000/harmony/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 03 Mar 2015 10:31:49 +0100</pubDate>
-    <lastBuildDate>Tue, 03 Mar 2015 10:31:49 +0100</lastBuildDate>
+    <link>http://adomingues.github.io/</link>
+    <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Wed, 04 Mar 2015 10:28:41 +0100</pubDate>
+    <lastBuildDate>Wed, 04 Mar 2015 10:28:41 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -28,8 +28,8 @@
 &lt;p&gt;Simple.&lt;/p&gt;
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2015/02/25/install-bioconductor-packages-from-svn/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2015/02/25/install-bioconductor-packages-from-svn/</guid>
+        <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
         
         
       </item>
@@ -51,8 +51,8 @@
 &lt;p&gt;In the meantime, &lt;em&gt;deepTools&lt;/em&gt; just finished compiling and I can now go to work.&lt;/p&gt;
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
+        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>
@@ -110,8 +110,8 @@ curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&q
 &lt;p&gt;The only minor inconvenience is that I need to input my password for each repository. There might be a solution for this, but I have not found it yet.&lt;/p&gt;
 </description>
         <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
+        <link>http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
         
         <category>bash</category>
         
@@ -189,8 +189,8 @@ It looks like I can squeeze 5 hours out of it easily, but it is too early to tel
 &lt;p&gt;All in all I am very happy with my new shinny Ubuntu ultrabook. And I stress ultra because coming from a 4 year old laptop (still working well) with less than 2 kg, I cannot entertain the thought of not having a light laptop and the XPS13 is the perfect upgrade to my Toshiba T230.&lt;/p&gt;
 </description>
         <pubDate>Thu, 08 Jan 2015 19:12:38 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2015/01/08/new-shiny-toy/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2015/01/08/new-shiny-toy/</guid>
+        <link>http://adomingues.github.io/2015/01/08/new-shiny-toy/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/08/new-shiny-toy/</guid>
         
         <category>hardware</category>
         
@@ -223,8 +223,8 @@ dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&
 &lt;a href=&quot;https://support.rstudio.com/hc/communities/public/questions/200664843-Problem-reading-exported-PDFs-in-other-programs&quot;&gt;Source2&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 06 Jan 2015 10:55:25 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
+        <link>http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
         
         <category>Inkscape</category>
         
@@ -280,8 +280,8 @@ install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&
 &lt;p&gt;And it is done!&lt;/p&gt;
 </description>
         <pubDate>Mon, 05 Jan 2015 16:07:19 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2015/01/05/nerd-up-your-r/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2015/01/05/nerd-up-your-r/</guid>
+        <link>http://adomingues.github.io/2015/01/05/nerd-up-your-r/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/05/nerd-up-your-r/</guid>
         
         <category>fortunes</category>
         
@@ -302,8 +302,8 @@ display.brewer.all&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </description>
         <pubDate>Mon, 08 Dec 2014 11:04:14 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2014/12/08/rcolorbrewer-pallete/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2014/12/08/rcolorbrewer-pallete/</guid>
+        <link>http://adomingues.github.io/2014/12/08/rcolorbrewer-pallete/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2014/12/08/rcolorbrewer-pallete/</guid>
         
         <category>plots</category>
         
@@ -509,8 +509,8 @@ ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quo
 &lt;p&gt;Al there is lacking now is putting all of this in a nice wrapper, which could be easily done, but I preferred to show the different stages of the process separated because it is easier to explain. I hope it helps.&lt;/p&gt;
 </description>
         <pubDate>Sun, 02 Jun 2013 16:50:39 +0200</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2013/06/02/chip-seq-coverage-analysis/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2013/06/02/chip-seq-coverage-analysis/</guid>
+        <link>http://adomingues.github.io/2013/06/02/chip-seq-coverage-analysis/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2013/06/02/chip-seq-coverage-analysis/</guid>
         
         <category>bedtools</category>
         
@@ -585,8 +585,8 @@ ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quo
 &lt;p&gt;All in all I think I will be using Python a lot more  in the future but still doing most of analysis with R and shell scripting.&lt;/p&gt;
 </description>
         <pubDate>Fri, 04 Jan 2013 16:23:34 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2013/01/04/biopython-musings/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2013/01/04/biopython-musings/</guid>
+        <link>http://adomingues.github.io/2013/01/04/biopython-musings/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2013/01/04/biopython-musings/</guid>
         
         <category>BioPython</category>
         
@@ -616,8 +616,8 @@ ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quo
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;grep &lt;span class=&quot;s2&quot;&gt;&amp;quot;gene&amp;quot;&lt;/span&gt; hg19.GFF3 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f1 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq  -c &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </description>
         <pubDate>Mon, 26 Nov 2012 10:32:22 +0100</pubDate>
-        <link>http://127.0.0.1:4000/harmony/2012/11/26/one-liners-snippets-and-small-scripts/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/harmony/2012/11/26/one-liners-snippets-and-small-scripts/</guid>
+        <link>http://adomingues.github.io/2012/11/26/one-liners-snippets-and-small-scripts/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2012/11/26/one-liners-snippets-and-small-scripts/</guid>
         
         <category>cut</category>
         
