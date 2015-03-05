@@ -5,9 +5,13 @@ baseurl:
 
 # Site live URL
 url: http://adomingues.github.io
+# Stuff for RSS feed alongside with the site url
+name:         Moving to the Dark Side
+description:  Leaving the Pipette for a Keyboard.
 
 # Localhost
 # url: http://127.0.0.1:4000
+
 
 # Harmony theme configuration. Please change accordingly.
 harmony:
@@ -64,7 +68,3 @@ sass:
 # Your disqus shortname, entering this will enable commenting on posts
 disqus: fridaymeetssunday
 
-# Stuff for RSS feed
-name:         Moving to the Dark Side
-description:  Leaving the Pipette for a Keyboard.
-url:          http://adomingues.github.io
