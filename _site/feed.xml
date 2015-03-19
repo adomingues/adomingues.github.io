@@ -5,9 +5,306 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 19 Mar 2015 09:30:51 +0100</pubDate>
-    <lastBuildDate>Thu, 19 Mar 2015 09:30:51 +0100</lastBuildDate>
+    <pubDate>Thu, 19 Mar 2015 09:48:05 +0100</pubDate>
+    <lastBuildDate>Thu, 19 Mar 2015 09:48:05 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Testing for chromosome over-representation</title>
+        <description>&lt;p&gt;Sometimes I am working on some data and notice certain biases, say differentially expressed genes appearing to originate more often from a chromosome. Or a factor binding more often to a class of transcripts. In these situations I tend to turn to Fisher&amp;#39;s exact test. Here I will put an example of what I do.&lt;/p&gt;
+
+&lt;h2&gt;Get some data&lt;/h2&gt;
+
+&lt;p&gt;For the sake of simplicity I will use data from the Pasilla&lt;a href=&quot;http://bioconductor.org/packages/release/data/experiment/html/pasilla.html&quot;&gt;1&lt;/a&gt; dataset and run differential gene expression analysis with DESeq2&lt;a href=&quot;http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html&quot;&gt;2&lt;/a&gt; following the vignette&amp;#39;s instructions. The &lt;code&gt;data.table&lt;/code&gt; package is used because I like it&amp;#39;s speed and syntax, specially for sub-setting. Since I am still learning all the ins and outs of it, I mix &lt;code&gt;data.frame&lt;/code&gt; code with it. Whatever works.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;data.table&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pasilla&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Biobase&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pasillaGenes&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;DESeq2&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;biomaRt&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;While loading the &lt;code&gt;pasillaGenes&lt;/code&gt; R was throwing an error at me:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Warning: namespace ‘DESeq’ is not available and has been replaced&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It turns out that &lt;code&gt;DESeq&lt;/code&gt; needed to be installed to load the data. No idea why. So let&amp;#39;s get us some results:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;countData &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; counts&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pasillaGenes&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+colData &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; pData&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pasillaGenes&lt;span class=&quot;p&quot;&gt;)[,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;condition&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+dds &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; DESeqDataSetFromMatrix&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+   countData &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; countData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   colData &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; colData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   design &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; condition
+   &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+dds&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; relevel&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;untreated&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+dds &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; DESeq&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Add chromosome information&lt;/h2&gt;
+
+&lt;p&gt;Now the fun starts. I created a &lt;code&gt;data.table&lt;/code&gt; with the results plus gene IDs, And will now added some extra information with biomaRt. I have only added chromosome and biotype, but the amount of information one can add is large. I usually also add gene symbol and description. Very useful to have a quick idea of the function of a particular gene. Adding the full gene location might be useful to later on subset data and easily create a bed file.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;results&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;results&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; data.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+ensembl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; useMart&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ensembl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; dataset &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;dmelanogaster_gene_ensembl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+genemap &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; getBM&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; attributes &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ensembl_gene_id&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;chromosome_name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;gene_biotype&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                  filters &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ensembl_gene_id&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                  values &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                  mart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ensembl&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+idx &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; genemap&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; genemap&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;chromosome_name&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; idx &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;gene_biotype &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; genemap&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;gene_biotype&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; idx &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now let&amp;#39;s have a look at down-regulated genes with &lt;code&gt;padj &amp;lt; 0.1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##        baseMean log2FoldChange     lfcSE      stat       pvalue
+##   1:   85.00693     -0.7067901 0.2196386 -3.217969 1.291017e-03
+##   2:  273.13010     -0.3878740 0.1360678 -2.850593 4.363776e-03
+##   3: 1257.88508     -0.3896927 0.1321601 -2.948640 3.191754e-03
+##   4:  280.32056     -0.4471012 0.1417352 -3.154483 1.607826e-03
+##   5:  141.36961     -1.3409377 0.2076951 -6.456280 1.073079e-10
+##  ---                                                           
+## 404:  998.56567     -0.4335869 0.1357833 -3.193228 1.406921e-03
+## 405:   16.42232     -0.6973109 0.2276632 -3.062906 2.191992e-03
+## 406:  373.24468     -0.4988888 0.1441100 -3.461860 5.364557e-04
+## 407: 2891.60114     -1.6134844 0.1706094 -9.457183 3.163516e-21
+## 408:  973.77088     -0.8325356 0.1332384 -6.248464 4.145082e-10
+##              padj ensembl_gene_id chromosome   gene_biotype
+##   1: 2.007727e-02     FBgn0000079         2R protein_coding
+##   2: 5.230444e-02     FBgn0000244         3R protein_coding
+##   3: 4.105429e-02     FBgn0000256         2L protein_coding
+##   4: 2.389391e-02     FBgn0000286         2L protein_coding
+##   5: 1.045641e-08     FBgn0000406         2L protein_coding
+##  ---                                                       
+## 404: 2.158653e-02     FBgn0261545         2R protein_coding
+## 405: 3.079189e-02     FBgn0261546         NA             NA
+## 406: 9.950931e-03     FBgn0261547         3L protein_coding
+## 407: 1.106943e-18     FBgn0261552         3R protein_coding
+## 408: 3.710330e-08     FBgn0261560         2L protein_coding&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Most of these appear to be coding genes. Not a great surprise. But...  Oh! There are a lot of genes located in chromosome 2L. Is this a coincidence? Let us test it.&lt;/p&gt;
+
+&lt;h2&gt;Test for over-representation&lt;/h2&gt;
+
+&lt;h3&gt;Chromosome 3L&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrom&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;3L&amp;quot;&lt;/span&gt;
+all &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
+hits &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
+hits_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chrom &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+genes_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chrom&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+hits_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hits&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+genes_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Expected number of hits in chromosome 3L would be 71.8440912 and we have 61. Is this significant? I will use Fisher&amp;#39;s exact test, as applied &lt;a href=&quot;https://www.biostars.org/p/102946/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt; for very similar problems.&lt;/p&gt;
+
+&lt;p&gt;Firstly I construct a table/matrix with the events and from that calculated Fisher&amp;#39;s Exact test, or the probability of having more genes in chromosome 3L than expected by chance. There are more details &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      genes_in_chr&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      genes_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;genes_in_chr&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;hits_in_chr
+      &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+      nrow&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      ncol&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+mat&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##      [,1]  [,2]
+## [1,]   61   347
+## [2,] 2487 11575&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;fr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fisher.test&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mat&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; alternative&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;greater&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+fr&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## 
+##  Fisher&amp;#39;s Exact Test for Count Data
+## 
+## data:  mat
+## p-value = 0.935
+## alternative hypothesis: true odds ratio is greater than 1
+## 95 percent confidence interval:
+##  0.6400274       Inf
+## sample estimates:
+## odds ratio 
+##  0.8181856&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So there is a p-value of 0.9349979 and we can reject the hypothesis that there is enrichment for or genes in 3L. My eyes were seeing patterns where this is none. Also, since I was testing only for over-representation, or enrichment, the option &lt;code&gt;alternative=&amp;quot;greater&amp;quot;&lt;/code&gt; was used in the test. Other options are available.&lt;/p&gt;
+
+&lt;h3&gt;For all chromosomes&lt;/h3&gt;
+
+&lt;p&gt;Is this this the case for any of the other chromosome? I will construct a function, and then loop over the chromosomes.&lt;/p&gt;
+
+&lt;p&gt;The function &lt;code&gt;chrEnrichment&lt;/code&gt; is minimal and it only tests for down-regulated gens, but could be easily extended to add other arguments. It could also be used to test for biases in gene biotype.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrEnrichment &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; df&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# Test for chromosome overpresentation in DESe2 results&lt;/span&gt;
+   all &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; df&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
+   hits &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; df&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
+
+   hits_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chr &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   genes_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chr&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   hits_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hits&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   genes_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+   mat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+         hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+         genes_in_chr&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+         hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+         genes_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;genes_in_chr&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;hits_in_chr
+         &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+         nrow&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+         ncol&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   fr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fisher.test&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mat&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; alternative&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;greater&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   df &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      chromosome &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; chromosome&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      observed &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      expected &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hits_total &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; genes_in_chr &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; genes_total&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+      odds.ratio&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; fr&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;estimate&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;odds ratio&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt;
+      pvalue &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; fr&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;p.value
+      &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;df&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+chromosomes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;na.omit&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;like&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Zv9&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+l_res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chromosome &lt;span class=&quot;kr&quot;&gt;in&lt;/span&gt; chromosomes&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+   l_res&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; chrEnrichment&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+table_fisher &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; rbindlist&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;l_res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;p.adjust&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pvalue&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; method&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;bonferroni&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),]&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# add FDR&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
+## 1:         2R       91     78.1  1.2197190 0.05874683 0.4112278
+## 2:         3L       61     71.8  0.8181856 0.93499788 1.0000000
+## 3:         2L       86     70.2  1.2958104 0.02276513 0.1593559
+## 4:         3R       95     90.2  1.0719388 0.29753414 1.0000000
+## 5:          X       46     58.6  0.7523146 0.97261113 1.0000000
+## 6:          4        0      2.3  0.0000000 1.00000000 1.0000000
+## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;setkey&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;table_fisher&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; FDR&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# will also sort by pvalue&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Since I am testing for all chromosomes, I have also calculated the adjusted p-value (bonferroni) to be on the safe side.&lt;/p&gt;
+
+&lt;p&gt;And what does Fisher say?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;table_fisher&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
+## 1:         2L       86     70.2  1.2958104 0.02276513 0.1593559
+## 2:         2R       91     78.1  1.2197190 0.05874683 0.4112278
+## 3:         3L       61     71.8  0.8181856 0.93499788 1.0000000
+## 4:         3R       95     90.2  1.0719388 0.29753414 1.0000000
+## 5:          X       46     58.6  0.7523146 0.97261113 1.0000000
+## 6:          4        0      2.3  0.0000000 1.00000000 1.0000000
+## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That we have a pretty much random distribution of down-regulated genes in the fly chromosomes.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;sessionInfo&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## R version 3.1.3 (2015-03-09)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 14.04.2 LTS
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats4    parallel  methods   stats     graphics  grDevices utils    
+## [8] datasets  base     
+## 
+## other attached packages:
+##  [1] biomaRt_2.22.0            DESeq2_1.6.3             
+##  [3] RcppArmadillo_0.4.650.1.1 Rcpp_0.11.5              
+##  [5] GenomicRanges_1.18.4      GenomeInfoDb_1.2.4       
+##  [7] IRanges_2.0.1             S4Vectors_0.4.0          
+##  [9] Biobase_2.26.0            BiocGenerics_0.12.1      
+## [11] pasilla_0.5.1             data.table_1.9.4         
+## [13] knitr_1.9                
+## 
+## loaded via a namespace (and not attached):
+##  [1] acepack_1.3-3.3      annotate_1.44.0      AnnotationDbi_1.28.1
+##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.9          
+##  [7] BiocParallel_1.0.3   bitops_1.0-6         brew_1.0-6          
+## [10] checkmate_1.5.1      chron_2.3-45         cluster_2.0.1       
+## [13] codetools_0.2-11     colorspace_1.2-6     DBI_0.3.1           
+## [16] DESeq_1.18.0         digest_0.6.8         evaluate_0.5.5      
+## [19] fail_1.2             foreach_1.4.2        foreign_0.8-63      
+## [22] formatR_1.0          Formula_1.2-0        genefilter_1.48.1   
+## [25] geneplotter_1.44.0   ggplot2_1.0.1        grid_3.1.3          
+## [28] gtable_0.1.2         Hmisc_3.15-0         iterators_1.0.7     
+## [31] lattice_0.20-30      latticeExtra_0.6-26  locfit_1.5-9.1      
+## [34] MASS_7.3-39          munsell_0.4.2        nnet_7.3-9          
+## [37] plyr_1.8.1           proto_0.3-10         RColorBrewer_1.1-2  
+## [40] RCurl_1.95-4.5       reshape2_1.4.1       rpart_4.1-9         
+## [43] RSQLite_1.0.0        scales_0.2.4         sendmailR_1.2-1     
+## [46] splines_3.1.3        stringr_0.6.2        survival_2.38-1     
+## [49] tools_3.1.3          XML_3.98-1.1         xtable_1.7-4        
+## [52] XVector_0.6.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Sat, 19 Dec 2015 10:32:22 +0100</pubDate>
+        <link>http://adomingues.github.io/2015/12/19/chromosome-over-representation-in-DGE/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/12/19/chromosome-over-representation-in-DGE/</guid>
+        
+        <category>R</category>
+        
+        <category>Bioconductor</category>
+        
+        <category>Fisher</category>
+        
+        <category>biomaRt</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Reminder - building blog locally with Jekyll</title>
+        <description>&lt;p&gt;It took me while from moving my blog from &lt;a href=&quot;https://movingtothedarkside.wordpress.com/&quot;&gt;wordpress&lt;/a&gt; to &lt;a href=&quot;http://adomingues.github.io/&quot;&gt;github pages&lt;/a&gt; and writing a new post. Such a long time that I forgot that to build the site locally I need to use &lt;code&gt;bundle exec jekyll serve --watch&lt;/code&gt; instead of &lt;code&gt;jekyll serve --watch&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;I won&amp;#39;t forget now. &lt;/p&gt;
+</description>
+        <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
+        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
+        
+        <category>Jekyll</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Reminder - building blog locally with Jekyll</title>
+        <description>&lt;p&gt;It took me while from moving my blog from &lt;a href=&quot;https://movingtothedarkside.wordpress.com/&quot;&gt;wordpress&lt;/a&gt; to &lt;a href=&quot;http://adomingues.github.io/&quot;&gt;github pages&lt;/a&gt; and writing a new post. Such a long time that I forgot that to build the site locally I need to use &lt;code&gt;bundle exec jekyll serve --watch&lt;/code&gt; instead of &lt;code&gt;jekyll serve --watch&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;I won&amp;#39;t forget now. &lt;/p&gt;
+</description>
+        <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
+        <link>http://adomingues.github.io/2015/03/18/hello-world/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/hello-world/</guid>
+        
+        <category>Jekyll</category>
+        
+        
+      </item>
     
       <item>
         <title>Install bioconductor packages from SVN</title>
@@ -310,322 +607,6 @@ dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&
         <category>R</category>
         
         <category>RcolorBrewer</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>ChIP-seq coverage analysis</title>
-        <description>&lt;p&gt;UPDATE&lt;/p&gt;
-
-&lt;p&gt;It has been a long time since I wrote this post, and in between a wonderfull set of tools for coverage calculation and visualization has been published: &lt;a href=&quot;https://github.com/fidelram/deepTools/wiki&quot;&gt;deepTools&lt;/a&gt; does metagene analysis, and much, much more in a better than I could possibly do with my näive scripts.&lt;/p&gt;
-
-&lt;p&gt;Try it. It is worth it.&lt;/p&gt;
-
-&lt;p&gt;There a few analysis tasks for which one would think a solution, or an easy to follow example, is readily available in the web (it has been a long time since the Web became the Internet). One such example is how to do coverage analysis of ChIP-seq, or any other data for that matter. That is, how are the reads distributed around a region of interest, commonly the TSS?&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www-huber.embl.de/users/anders/HTSeq/doc/overview.html&quot; title=&quot;HTSeq overview&quot;&gt;HTSeq&lt;/a&gt;, the python library for NGS data analysis offers &lt;a href=&quot;http://www-huber.embl.de/users/anders/HTSeq/doc/tss.html#tss&quot; title=&quot;HTSeq - TSS analysis&quot;&gt;that&lt;/a&gt;, but I prefer to do my plots in R and ggplot. I also find &lt;a href=&quot;http://www.bioconductor.org/help/course-materials/2009/EMBLJune09/Practicals/TSS/TSS_plot.pdf&quot; title=&quot;TSS - An exercise with coverage vectors&quot;&gt;bioconductor&lt;/a&gt; nice but some of the objects and the packages literature hard to understand for someone looking for imminently practical information.  So I decided to ask around in my institute and create my own script. I like to do scripts that can be easily modified and also that generate plots that can be used with little or now change for presentations.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Create the bed file with TSSs:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Firstly, how to create the BED file with the TSSs using a combination of bioconductor and &lt;a href=&quot;http://code.google.com/p/bedtools/&quot;&gt;bedtools&lt;/a&gt; - it is quite fast and it very-well documented. This only needs to be ran once and there is a myriad of ways to do it. Of course one could also use any bed file with features of interest.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;######################  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;### Load libraries ###  &lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;GenomicRanges&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;GenomicFeatures&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;plyr&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;reshape&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data.table&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;### custom functions ##  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# string concatenation without space gaps  &lt;/span&gt;
-concat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;################################  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;## create TSS bed file (UCSC) ##  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# create a database of transcripts  &lt;/span&gt;
-hg19RefGenes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; makeTranscriptDbFromUCSC&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;genome &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;hg19&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; tablename &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;refGene&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# run only once  &lt;/span&gt;
-hg19RefGenes &lt;span class=&quot;c1&quot;&gt;# summary of the object  &lt;/span&gt;
-saveDb&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hg19RefGenes&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;~/Homo\_sapiens/hg19\_RefSeq\_genes.sqlite&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-&lt;span class=&quot;c1&quot;&gt;# by saving the database one keeps a record of which version of the genome was used for the analysis. Very important for reproducibility.  &lt;/span&gt;
-hg19RefGenes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; loadDb&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/Homo\_sapiens/hg19\_RefSeq\_genes.sqlite&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# not necessary of useful if the the script need to be ran again later&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# create an object with a list of transcripts grouped by gene  &lt;/span&gt;
-transcripts &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; transcriptsBy&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hg19RefGenes&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; by&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;gene&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# convert to data frame:  &lt;/span&gt;
-gene2tx &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;transcripts&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Note that transcription\_start is always smaller than transcription\_end, even when the transcript is on the &amp;quot;−&amp;quot; strand. Hence, we have to use either the start or the end coordinate of the transcript, depending on the strand, to get the actual transcription start sites, i.e., the 5&amp;#39; ends of the transcripts:  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#http://www.bioconductor.org/help/course-materials/2009/EMBLJune09/Practicals/TSS/TSS\_plot.pdf  &lt;/span&gt;
-tss &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;strand &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;start&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;end&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-tss.bed &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seqnames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;seqnames&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; start &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tss&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; end&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; tss&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; strand&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;strand&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; transcriptID&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gene2tx&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;tx\_name&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; type&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;tss&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## just keep proper chromosomes  &lt;/span&gt;
-tss.bed &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;subset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss.bed&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; str\_detect&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seqnames&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;^[[:alnum:]]\*$&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
-&lt;span class=&quot;kp&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss.bed&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;seqnames&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# list the frequency of genes per chromosome&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# save bed file  &lt;/span&gt;
-write.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;tss.bed&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; file &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;~/Homo\_sapiens/hg19RefSeqTSS.bed&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; row.names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
-col.names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; quote &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\\t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## use bedtools to increase the region around the tss  &lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;  &lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;chromInfo=~/Homo\_sapiens/UCSC/hg19/Annotation/Genes/ChromInfo.txt&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;bedtools slop -i ~/Homo\_sapiens/hg19RefSeqTSS.bed -g $chromInfo -b 1000 \&amp;gt; ~/Homo\_sapiens/hg19RefSeqTSS\_1000kb.bed  &lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Counting the number of reads per nucleotide&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Because I run over several bam files and I like to keep the file names tidy I&amp;#39;ve wrapped the bedtools function in a shell function so that the several analysis can ran in parallel to save time. Because this step takes a of time, it sends me an email at the end. This way I can do something else without being constantly looking at it. Hint: running it in  a &lt;a href=&quot;http://www.rackaid.com/resources/linux-screen-tutorial-and-how-to/&quot; title=&quot;Intro  to screen sessions&quot;&gt;screen session&lt;/a&gt; also saves a lot of headaches. If you are doing for a single bam file, or are not versed in shell scripting all you need is to run this:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;coverageBed -d -abam bamFile -b geneModel &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; name.cov.bed&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;But in all likelihood you will have several bam files:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#################################################################################  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# This little shell script calculates coverage per base at any given annotation #&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# wrapper shell function that does the coverage calculations and returns the files with nice names  &lt;/span&gt;
-coverageAtFeatures&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;  
-&lt;span class=&quot;c&quot;&gt;# the input is a bam file that comes from sdout (see bellow)  &lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;bamFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;  
-&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bamFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%%.bam&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# to keep the directory tidy I rename the results files using the original bam file  &lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;geneModel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# also from sdout  &lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;outDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;results/coverage &lt;span class=&quot;c&quot;&gt;# defines the output directory  &lt;/span&gt;
-coverageBed -d -abam &lt;span class=&quot;nv&quot;&gt;$bamFile&lt;/span&gt; -b &lt;span class=&quot;nv&quot;&gt;$geneModel&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$outDir&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;.cov.bed &lt;span class=&quot;c&quot;&gt;# actually performs the coverage calculation.  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# note the -d, very important!&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;  
-&lt;span class=&quot;nb&quot;&gt;export&lt;/span&gt; -f coverageAtFeatures &lt;span class=&quot;c&quot;&gt;# this add the function to the shell to be used&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Features:  &lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;promoters&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;~/Homo&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;sapiens/hg19RefSeqTSS&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;1000kb.bed  
-&lt;span class=&quot;c&quot;&gt;# bam folder:  &lt;/span&gt;
-bam&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;folder&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;~/chip&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;seq/data/reads/
-
-&lt;span class=&quot;c&quot;&gt;# now we can run the function defined above:  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# ls will list all the bam files in the folder and pass them to parallel.  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#Each bam file will the first argument of coverageAtFeatures  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# the second argument will be the bed file with the genomic regions of interest.  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Parallel will run the analysis for 4 bam simultaneously - this # can vary depending on your computer.  &lt;/span&gt;
-parallel  -i -j &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; bash -c &lt;span class=&quot;s2&quot;&gt;&amp;quot;coverageAtFeatures {} $promoters&amp;quot;&lt;/span&gt; --  &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;ls &lt;span class=&quot;nv&quot;&gt;$bam&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;folder/&lt;span class=&quot;se&quot;&gt;\*&lt;/span&gt;bam&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
-
-&lt;span class=&quot;s2&quot;&gt;# when all is done a message will arrive in your inbox.  &lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;echo &amp;quot;&lt;/span&gt;Subject:Coverage &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;  sendmail -v myname@mymail.com &lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt; /dev/null&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;At the end of this we will have a file that contains something like:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;head chip&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;experiment.cov.bed  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  
-chr1 &lt;span class=&quot;m&quot;&gt;19922471&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;19924471&lt;/span&gt; + NM&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;001204088&lt;/span&gt; tss &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Col1-6 are the original entries of the bed file containing the TSSs, followed by the position of the base in the feature (remember this is a bp-resolution coverage) and the number of reads that mapped to the base.&lt;/p&gt;
-
-&lt;p&gt;Now we are ready calculate some statistics on own many reads map to each base surrounding the TSSs and plot these. In the next snippet I&amp;#39;ll calculate the sum of reads per base but calculating the average requires a minor change to the script.  Since several of the operations take some time, I use the package doMC save time but this should work without it.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;############################################  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;## function to calculate coverage profile ##&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## list coverage files  &lt;/span&gt;
-path&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;./&amp;quot;&lt;/span&gt;  
-cov.files &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;path&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;path&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; pattern&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;.cov.bed&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## for multicore usage:  &lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;doMC&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-registerDoMC&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cores&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# yay for our server&lt;/span&gt;
-
-halfWindow&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# this half the size of the window around the TSSs&lt;/span&gt;
-
-loadCovMat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;  
-&lt;span class=&quot;c1&quot;&gt;# read files  &lt;/span&gt;
-cov.data &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; read.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;concat&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;path&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; header&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\\t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; stringsAsFactors &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;#     http://stackoverflow.com/questions/1727772/quickly-reading-very-large-tables-as-dataframes-in-r  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# cov.data &amp;lt;- fread(file)    # not used because strand not recognized  &lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.data&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;chr&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;start&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;end&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;strand&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ID&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;position&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;count&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# create a new ID to avoid repeated gene names - common issue with UCSC annotations  &lt;/span&gt;
-cov.data.n &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;transform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.data&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; newID &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;paste&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;ID&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; start&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\_&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
-&lt;span class=&quot;c1&quot;&gt;# add base position with reference to the TSS.  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# very important: not the strand operation.  &lt;/span&gt;
-cov.algned &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; mutate&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.data.n&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position\_aligned&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;halfWindow&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
-position\_str\_cor&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;ifelse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;strand&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;+&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; position\_aligned&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;\&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;position\_aligned&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# for the next operation R needs a lot of memory so I&amp;#39;ll remove objs from memory  &lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;rm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;cov.data&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;cov.data.n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;cov.data.t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# counts the number of reads per position - the final result!  &lt;/span&gt;
-res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; ddply&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.algned&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;position\_str\_cor&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; summarize&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;count&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.&lt;/span&gt;parallel&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## get condition name  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# important to have column with the name of the experiment when running multiple analysis  &lt;/span&gt;
-sample &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;strsplit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\\\\.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]][&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;  
-res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## Run the function over all coverage files  &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# the output is a list of data frames  &lt;/span&gt;
-cov.l &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.files&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; loadCovMat&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## see the data  &lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.l&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## save the coverage data  &lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;lapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;cov.l&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;  
-write.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
-concat&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;.sum.cov&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;  
-row.names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  
-quote &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\\t&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)})&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# join the data frame in he list in one big data frame for plotting  &lt;/span&gt;
-cov &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;do.call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;rbind&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; cov.l&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;## 2 different plots:  &lt;/span&gt;
-p.cov.all &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;cov&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; aes&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;position\_str\_cor&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; y&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; color&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; geom\_line&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  
-ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;./plots/coverage\_tss\_all.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; p.cov.all&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-p.cov.wrap &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; p.cov.all &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; facet\_wrap&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-ggsave&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;filename &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;./plots/coverage\_tss\_wrap.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; p.cov.wrap&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If all went well this is the final result:&lt;br&gt;
-&lt;a href=&quot;http://movingtothedarkside.files.wordpress.com/2013/06/coverage_tss_all_mod.pdf&quot;&gt;Plot 1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://movingtothedarkside.files.wordpress.com/2013/06/coverage_tss_wrap_mod.pdf&quot;&gt;Plot2&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Al there is lacking now is putting all of this in a nice wrapper, which could be easily done, but I preferred to show the different stages of the process separated because it is easier to explain. I hope it helps.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 02 Jun 2013 16:50:39 +0200</pubDate>
-        <link>http://adomingues.github.io/2013/06/02/chip-seq-coverage-analysis/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2013/06/02/chip-seq-coverage-analysis/</guid>
-        
-        <category>bedtools</category>
-        
-        <category>Chip-seq</category>
-        
-        <category>genomics</category>
-        
-        <category>R</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>BioPython musings</title>
-        <description>&lt;p&gt;On my quest to improve my scripting skils I have just recently taken the Introduction to &lt;a href=&quot;http://www.bits.vib.be/index.php/training/92-python&quot; title=&quot;BioPython course&quot;&gt;BioPython&lt;/a&gt; course at the VIB in Leuven.&lt;/p&gt;
-
-&lt;p&gt;The course&lt;/p&gt;
-
-&lt;p&gt;It was all very well organized and the Instructor, &lt;a href=&quot;http://academis.sites.djangoeurope.com/&quot; title=&quot;Instructor&quot;&gt;Kristian Rother &lt;/a&gt;, was well prepared and engaging. Perhaps he was not expecting so many of wanting to learn more about handing NGS data but when he saw the interest, wrote overnight a custom script to parse and extract information SAM files. Not only it is useful, it also serves a practical example of several Python functions:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# TASK: find out how many sequences there are in the filtered dataset  &lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#       (the one printed at the bottom)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;example.sam&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;startswith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;$&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;startswith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;@&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;  
-&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  
-&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;QNAME&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;FLAG&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;RNAME&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;MAPQ&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;CIGAR&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;RNEXT&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;PNEXT&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;TLEN&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;SEQ&amp;#39;&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;QUAL&amp;#39;&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;  
-&lt;span class=&quot;s&quot;&gt;&amp;#39;optional&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;  
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optional&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]:&lt;/span&gt;  
-&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;optional&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;:&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
-&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# filter all records between position 109200 and 110000  &lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;109200&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;SEQ&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;110000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;POS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;SEQ&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;  
-&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Total number of reads is: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%i&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Filtered reads is: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%i&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Although I&amp;#39;ve learned a lot there were a problem that delayed the class progression: despite the organizers warning that the course was only for people that already knew Python basics, most of the class had not worked with python and a few had never programmed or even used command line to create a directory. This is not the organizer&amp;#39;s or the instructor&amp;#39;s fault and only delayed us in the first day. Actually those of us who already knew a bit of programming carried on with the exercises on our own.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;BioPython&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;First let get out of the way that after the course ended, and for my own purposes - mostly analysis of NGS data - I did not see what could be done with BioPython that I could not already do with a combination of R and shell scripting. That said, parsing of files, for instance FASTA and even SAM appears to be faster and more intuitive than using R/Bioconductor packages. Parsing of files in Python appears to be much much simpler than in R. Of course there is a reason for that: R is for statistical analysis and was not developed to deal with strings. On the other hand Python has plenty of neat built-in functions to deal with strings that makes it much more powerful to deal with DNA/RNA/Protein sequences. BioPhyton seems to add even greater power for this.&lt;/p&gt;
-
-&lt;p&gt;Another point in favour of BioPhyton is its documentation which appears to be of a better standard than that of the average Bioconductor package. I&amp;#39;ve also quite liked the possibility of wrapping any variable in help() to check with function can be used with that particular variable - simple and affective.&lt;/p&gt;
-
-&lt;p&gt;Plotting is ok in Python with Matplotlib but its aesthetics are not even close to those of ggplot in R.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;NGS data in BioPython&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Before doing the course I did some search on what was available for the analysis of NGS data using Python and got the impression that Python programmers appeared to have disregarded this technology. There were plenty of scripts in Awk, Perl, etc to parse, manipulate and analyse SAM/BAM/FastQ files, but not in Python. I was wrong. During the course I&amp;#39;ve found out that BioPhtyton has &lt;a href=&quot;http://www-huber.embl.de/users/anders/HTSeq/doc/index.html&quot; title=&quot;HTSeq&quot;&gt;HTSeq&lt;/a&gt;. I have yet to explore it completely bu tit looks like it could be a nice tool for quick QC and count reads over features - something I am yet to master in R.&lt;/p&gt;
-
-&lt;p&gt;All in all I think I will be using Python a lot more  in the future but still doing most of analysis with R and shell scripting.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 04 Jan 2013 16:23:34 +0100</pubDate>
-        <link>http://adomingues.github.io/2013/01/04/biopython-musings/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2013/01/04/biopython-musings/</guid>
-        
-        <category>BioPython</category>
-        
-        <category>Course</category>
-        
-        <category>HTSeq</category>
-        
-        <category>NGS</category>
-        
-        <category>Python</category>
-        
-        <category>R</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>One liners, snippets and small scripts</title>
-        <description>&lt;p&gt;Often I use one liners or small scripts for useful task but I keep forgetting about those. So I&amp;#39;ll just put them here for future reference.&lt;/p&gt;
-
-&lt;p&gt;Count number occurrences in a column/field. In this case, how many lines in a GFF3 file exist for each chromosome.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;cut -f1 hg19.GFF3 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq  -c &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This can be further refined and count only genes per chromosome using a simple grep:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;grep &lt;span class=&quot;s2&quot;&gt;&amp;quot;gene&amp;quot;&lt;/span&gt; hg19.GFF3 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f1 &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; uniq  -c &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sort&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 26 Nov 2012 10:32:22 +0100</pubDate>
-        <link>http://adomingues.github.io/2012/11/26/one-liners-snippets-and-small-scripts/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2012/11/26/one-liners-snippets-and-small-scripts/</guid>
-        
-        <category>cut</category>
-        
-        <category>gff3</category>
-        
-        <category>grep</category>
-        
-        <category>snippet</category>
         
         
       </item>

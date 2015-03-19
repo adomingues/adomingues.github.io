@@ -10,12 +10,11 @@ tags:
 - biomaRt
 status: publish
 type: post
-published: false
+published: true
 ---
 
-# Chromosome over-representation in DGE
 
-Sometimes I am working on some data and notice certain biases, say for differentially expressed genes appearing to originate more often from a chromosome. Or a factor binding more often to a class of transcripts. In these situations I tend to turn to Fisher's exact test. Here I will put an example of what I do.
+Sometimes I am working on some data and notice certain biases, say differentially expressed genes appearing to originate more often from a chromosome. Or a factor binding more often to a class of transcripts. In these situations I tend to turn to Fisher's exact test. Here I will put an example of what I do.
 
 
 ## Get some data
