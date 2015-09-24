@@ -3,11 +3,108 @@
   <channel>
     <title></title>
     <description>Leaving the Pipette for a Keyboard.</description>
-    <link>http://adomingues.github.io/</link>
-    <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 16 Apr 2015 15:48:22 +0200</pubDate>
-    <lastBuildDate>Thu, 16 Apr 2015 15:48:22 +0200</lastBuildDate>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 24 Sep 2015 21:56:09 +0200</pubDate>
+    <lastBuildDate>Thu, 24 Sep 2015 21:56:09 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Finding the closest element to a number in a vector</title>
+        <description>&lt;p&gt;A colleague came to my office the other day with an interesting question:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Is there a way in R to find the closest number to X in a list?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I knowing full well the power the power of R, I naturally said that surely there is such a function, but I have never used it. So I set out to find it because I am curious. It turns out there is not an of the shelf &lt;code&gt;closest&lt;/code&gt; function. There are however a few solution out there which I have collected and are bellow. To top it off there is a comparison of how fast each solution is.&lt;/p&gt;
+
+&lt;h1&gt;solution 1&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stat.ethz.ch/pipermail/r-help/2008-July/167226.html&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+your.number&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;90000.43&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## [1] 90000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h1&gt;solution 2&lt;/h1&gt;
+
+&lt;p&gt;Same source as before.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kp&quot;&gt;which.min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## [1] 90000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h1&gt;solution 3&lt;/h1&gt;
+
+&lt;p&gt;From &lt;a href=&quot;http://stackoverflow.com/questions/20133344/find-closest-value-in-a-vector-with-binary-search&quot;&gt;here&lt;/a&gt;. It requires &lt;code&gt;data.table&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;install.packages&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;data.table&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## Installing package into &amp;#39;/home/adomingu/R/x86_64-pc-linux-gnu-library/3.2&amp;#39;
+## (as &amp;#39;lib&amp;#39; is unspecified)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data.table&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+dt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; data.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; val &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# you&amp;#39;ll see why val is needed in a sec&lt;/span&gt;
+setattr&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dt&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;sorted&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;x&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# let data.table know that w is sorted&lt;/span&gt;
+setkey&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dt&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# sorts the data&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# binary search and &amp;quot;roll&amp;quot; to the nearest neighbour&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# In the final expression the val column will have the you&amp;#39;re looking for.&lt;/span&gt;
+dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; roll &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;nearest&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##        x   val
+## 1: 90000 90000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h1&gt;Speed comparison&lt;/h1&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;## time:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# solution1&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;system.time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;))))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    user  system elapsed 
+##   0.024   0.020   0.043
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# solution2&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;system.time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;which.min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    user  system elapsed 
+##   0.008   0.004   0.012
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# solution3&lt;/span&gt;
+&lt;span class=&quot;kp&quot;&gt;system.time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; roll &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;nearest&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    user  system elapsed 
+##   0.000   0.000   0.001
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To my surprise the base R functions perform pretty well, though in really large datasets &lt;code&gt;data.table&lt;/code&gt; is worth a punt.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 24 Sep 2015 00:00:00 +0200</pubDate>
+        <link>http://0.0.0.0:4000/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</guid>
+        
+        <category>R</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Table of results embed in a PDF</title>
+        <description>&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;: This is a rant.&lt;/p&gt;
+
+&lt;p&gt;I had to run a quick analysis on someone else&amp;#39;s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Great! Assuming the analysis is correct, I can poke around their data and compare/extract results that are relevant to my project.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That is where the fun ends. In this particular paper, they where kind enough to report the processed tables of results in a single PDF.&lt;/p&gt;
+
+&lt;p&gt;Seriously? All 4 tables of results were embedded in a single PDF. The lists of up and down-regulated genes spanned several pages. Is it that hard to have supplement text files with the relevant tables? Or if that is not convenient for data presentation (yes, there were highlighted row in the tables), at the very least make the original excel tables available. Unless all the calculations were painstakingly done by hand and noted down in Word, it seems that it was more difficult to move the table from Excel -&amp;gt; Word -&amp;gt; PDF than just published the excel files in the first place.&lt;/p&gt;
+
+&lt;h2&gt;Extraction of table from PDF to R-friendly format&lt;/h2&gt;
+
+&lt;p&gt;To extract the list of differentially expressed genes embedded in the supp. data pdf, I used okular following this &lt;a href=&quot;http://stackoverflow.com/a/11437638/1274242&quot;&gt;tip&lt;/a&gt;. However, when copying directly to Oo Calc I stumbled upon some encoding problems, so in the end table was copied to a text editor (the column that was relevant to me). It is not ideal but solved the problem. It took me an hour all in all.&lt;/p&gt;
+
+&lt;p&gt;Of course, I could have download the raw reads, QC, map, count, re-do the analysis, compare to the published results to make sure all is kosher, but having the table of DEG saves a lot time that we can focus on extracting biologically relevant insights. That is what science should be about and sharing knowledge, in the format of papers, should be a help in this endeavor and not an hindrance.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 16 Apr 2015 15:52:02 +0200</pubDate>
+        <link>http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</guid>
+        
+        <category>Jekyll</category>
+        
+        
+      </item>
     
       <item>
         <title>Painless installation of R packages from source</title>
@@ -26,8 +123,8 @@ install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&
 &lt;p&gt;As simple as that. It also allows installation from github repos. &lt;/p&gt;
 </description>
         <pubDate>Thu, 16 Apr 2015 11:32:22 +0200</pubDate>
-        <link>http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</guid>
+        <link>http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</guid>
         
         <category>R</category>
         
@@ -289,8 +386,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 ## [52] XVector_0.6.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </description>
         <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</guid>
+        <link>http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</guid>
         
         <category>R</category>
         
@@ -310,8 +407,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;I won&amp;#39;t forget now. &lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
+        <link>http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</guid>
         
         <category>Jekyll</category>
         
@@ -337,8 +434,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;Simple.&lt;/p&gt;
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
+        <link>http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</guid>
         
         
       </item>
@@ -360,8 +457,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;In the meantime, &lt;em&gt;deepTools&lt;/em&gt; just finished compiling and I can now go to work.&lt;/p&gt;
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
+        <link>http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>
@@ -419,8 +516,8 @@ curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&q
 &lt;p&gt;The only minor inconvenience is that I need to input my password for each repository. There might be a solution for this, but I have not found it yet.&lt;/p&gt;
 </description>
         <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
+        <link>http://0.0.0.0:4000/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
         
         <category>bash</category>
         
@@ -498,8 +595,8 @@ It looks like I can squeeze 5 hours out of it easily, but it is too early to tel
 &lt;p&gt;All in all I am very happy with my new shinny Ubuntu ultrabook. And I stress ultra because coming from a 4 year old laptop (still working well) with less than 2 kg, I cannot entertain the thought of not having a light laptop and the XPS13 is the perfect upgrade to my Toshiba T230.&lt;/p&gt;
 </description>
         <pubDate>Thu, 08 Jan 2015 19:12:38 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/08/new-shiny-toy/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/08/new-shiny-toy/</guid>
+        <link>http://0.0.0.0:4000/2015/01/08/new-shiny-toy/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/08/new-shiny-toy/</guid>
         
         <category>hardware</category>
         
@@ -532,93 +629,14 @@ dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&
 &lt;a href=&quot;https://support.rstudio.com/hc/communities/public/questions/200664843-Problem-reading-exported-PDFs-in-other-programs&quot;&gt;Source2&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 06 Jan 2015 10:55:25 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
+        <link>http://0.0.0.0:4000/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
         
         <category>Inkscape</category>
         
         <category>plots</category>
         
         <category>R</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Nerd up your R</title>
-        <description>&lt;p&gt;I probably spend most of my working day in an R terminal, or at least I start R often enough. Now I &lt;a href=&quot;http://ygc.name/2015/01/05/learn-r-wisdom-with-fortunes/&quot;&gt;saw in a blog I follow&lt;/a&gt; a way to entertain and instruct in equal measure everytime that little statistical box is opened: &lt;a href=&quot;http://cran.r-project.org/web/packages/fortunes/index.html&quot;&gt;fortunes&lt;/a&gt;. This is a very simple package that collected and now shows citations related to R (and statistics in R). Some examples (and as of v1.5.2 there are 360 citations to choose from):&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Release 1.0.0&lt;br&gt;
-(silence)&lt;br&gt;
-Wow! Thank you! [...] If I am allowed to ask just one question today: How do&lt;br&gt;
-you fit 48 hours of coding in an ordinary day? Any hints will be appreciated&lt;br&gt;
-... :-)&lt;br&gt;
--- Detlef Steuer (on 2000-02-29)&lt;br&gt;
-R-help (February 2000)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Perhaps one is the real forge and the other is a forgery? Or a forge-R-y? I&amp;#39;ll&lt;br&gt;
-get my coat...&lt;br&gt;
--- Barry Rowlingson (on the question whether http://www.RForge.net/ or&lt;br&gt;
-http://R-Forge.R-project.org/ is the official forge server)&lt;br&gt;
-R-help (April 2007)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2&gt;Set-up&lt;/h2&gt;
-
-&lt;p&gt;I have the following lines it in my &lt;code&gt;~.Rprofile&lt;/code&gt; (think of .bashrc but for R):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;fortunes&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-fortune&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This ensures each time I start R I am greeted by a nice little message to brighten my day:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;assets/R_fortunes.png&quot; alt=&quot;my R start screen&quot;&gt;&lt;/p&gt;
-
-&lt;h2&gt;How to install&lt;/h2&gt;
-
-&lt;p&gt;I had some problems installing from &lt;em&gt;cran&lt;/em&gt;, so went with &lt;code&gt;install_url&lt;/code&gt; function of devtools which makes the process of installing from source easier when one does not need to download (and keep a copy of) a package source:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;devtools&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://cran.r-project.org/src/contrib/fortunes\_1.5-2.tar.gz&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#remember to use the link for the latest package version&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;And it is done!&lt;/p&gt;
-</description>
-        <pubDate>Mon, 05 Jan 2015 16:07:19 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/05/nerd-up-your-r/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/05/nerd-up-your-r/</guid>
-        
-        <category>fortunes</category>
-        
-        <category>R</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rcolorbrewer pallete</title>
-        <description>&lt;p&gt;I am always looking for a good quality printout of the available palettes in the &lt;a href=&quot;http://cran.r-project.org/web/packages/RColorBrewer/index.html&quot; title=&quot;RColorBrewer&quot;&gt;RColorBrewer package&lt;/a&gt;. I finally decided to take matters on my own hand and create a pdf for myself. Of course it is very easy:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;RColorBrewer&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-pdf&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/Pictures/RColorBrewerPalette.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-display.brewer.all&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-</description>
-        <pubDate>Mon, 08 Dec 2014 11:04:14 +0100</pubDate>
-        <link>http://adomingues.github.io/2014/12/08/rcolorbrewer-pallete/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2014/12/08/rcolorbrewer-pallete/</guid>
-        
-        <category>plots</category>
-        
-        <category>R</category>
-        
-        <category>RcolorBrewer</category>
         
         
       </item>
