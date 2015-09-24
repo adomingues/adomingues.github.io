@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>Leaving the Pipette for a Keyboard.</description>
-    <link>http://0.0.0.0:4000/</link>
-    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 24 Sep 2015 21:56:09 +0200</pubDate>
-    <lastBuildDate>Thu, 24 Sep 2015 21:56:09 +0200</lastBuildDate>
+    <link>http://adomingues.github.io/</link>
+    <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 24 Sep 2015 22:00:12 +0200</pubDate>
+    <lastBuildDate>Thu, 24 Sep 2015 22:00:12 +0200</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -69,8 +69,8 @@ dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt
 &lt;p&gt;To my surprise the base R functions perform pretty well, though in really large datasets &lt;code&gt;data.table&lt;/code&gt; is worth a punt.&lt;/p&gt;
 </description>
         <pubDate>Thu, 24 Sep 2015 00:00:00 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</guid>
+        <link>http://adomingues.github.io/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</guid>
         
         <category>R</category>
         
@@ -98,8 +98,8 @@ dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt
 &lt;p&gt;Of course, I could have download the raw reads, QC, map, count, re-do the analysis, compare to the published results to make sure all is kosher, but having the table of DEG saves a lot time that we can focus on extracting biologically relevant insights. That is what science should be about and sharing knowledge, in the format of papers, should be a help in this endeavor and not an hindrance.&lt;/p&gt;
 </description>
         <pubDate>Thu, 16 Apr 2015 15:52:02 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</guid>
+        <link>http://adomingues.github.io/2015/04/16/rant-about-results-tables/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/rant-about-results-tables/</guid>
         
         <category>Jekyll</category>
         
@@ -123,8 +123,8 @@ install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&
 &lt;p&gt;As simple as that. It also allows installation from github repos. &lt;/p&gt;
 </description>
         <pubDate>Thu, 16 Apr 2015 11:32:22 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</guid>
+        <link>http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</guid>
         
         <category>R</category>
         
@@ -386,8 +386,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 ## [52] XVector_0.6.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </description>
         <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</guid>
+        <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</guid>
         
         <category>R</category>
         
@@ -407,8 +407,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;I won&amp;#39;t forget now. &lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</guid>
+        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
         
         <category>Jekyll</category>
         
@@ -434,8 +434,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;Simple.&lt;/p&gt;
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</guid>
+        <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
         
         
       </item>
@@ -457,8 +457,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;In the meantime, &lt;em&gt;deepTools&lt;/em&gt; just finished compiling and I can now go to work.&lt;/p&gt;
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
+        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>
@@ -516,8 +516,8 @@ curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&q
 &lt;p&gt;The only minor inconvenience is that I need to input my password for each repository. There might be a solution for this, but I have not found it yet.&lt;/p&gt;
 </description>
         <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
+        <link>http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
         
         <category>bash</category>
         
@@ -595,8 +595,8 @@ It looks like I can squeeze 5 hours out of it easily, but it is too early to tel
 &lt;p&gt;All in all I am very happy with my new shinny Ubuntu ultrabook. And I stress ultra because coming from a 4 year old laptop (still working well) with less than 2 kg, I cannot entertain the thought of not having a light laptop and the XPS13 is the perfect upgrade to my Toshiba T230.&lt;/p&gt;
 </description>
         <pubDate>Thu, 08 Jan 2015 19:12:38 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/01/08/new-shiny-toy/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/08/new-shiny-toy/</guid>
+        <link>http://adomingues.github.io/2015/01/08/new-shiny-toy/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/08/new-shiny-toy/</guid>
         
         <category>hardware</category>
         
@@ -629,8 +629,8 @@ dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&
 &lt;a href=&quot;https://support.rstudio.com/hc/communities/public/questions/200664843-Problem-reading-exported-PDFs-in-other-programs&quot;&gt;Source2&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 06 Jan 2015 10:55:25 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
+        <link>http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
         
         <category>Inkscape</category>
         
