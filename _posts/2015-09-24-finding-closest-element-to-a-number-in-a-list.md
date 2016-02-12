@@ -10,8 +10,8 @@ type: post
 published: true
 ---
 
-A colleague came to my office the other day with an interesting question:
 
+A colleague came to my office the other day with an interesting question:
 
 > Is there a way in R to find the closest number to X in a list?
 
@@ -21,26 +21,48 @@ I knowing full well the power the power of R, I naturally said that surely there
 [Source](https://stat.ethz.ch/pipermail/r-help/2008-July/167226.html)
 
 
-```{r }
+
+```r
 x=c(1:10^6)
 your.number=90000.43
 which(abs(x-your.number)==min(abs(x-your.number)))
+```
 
+```
+## [1] 90000
 ```
 
 # solution 2
 Same source as before.
 
-```{r }
+
+```r
 which.min(abs(x-your.number))
+```
+
+```
+## [1] 90000
 ```
 
 
 # solution 3
 From [here](http://stackoverflow.com/questions/20133344/find-closest-value-in-a-vector-with-binary-search). It requires `data.table`
 
-```{r }
+
+```r
 install.packages("data.table")
+```
+
+```
+## Installing package into '/home/adomingu/R/x86_64-pc-linux-gnu-library/3.2'
+## (as 'lib' is unspecified)
+```
+
+```
+## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+```
+
+```r
 library(data.table)
 dt = data.table(x, val = x) # you'll see why val is needed in a sec
 setattr(dt, "sorted", "x")  # let data.table know that w is sorted
@@ -51,16 +73,43 @@ setkey(dt, x) # sorts the data
 dt[J(your.number), roll = "nearest"]
 ```
 
+```
+##        x   val
+## 1: 90000 90000
+```
+
 # Speed comparison
 
-```{r }
+
+```r
 ## time:
 # solution1
 system.time(which(abs(x-your.number)==min(abs(x-your.number))))
+```
+
+```
+##    user  system elapsed 
+##   0.024   0.020   0.043
+```
+
+```r
 # solution2
 system.time(which.min(abs(x-your.number)))
+```
+
+```
+##    user  system elapsed 
+##   0.008   0.004   0.012
+```
+
+```r
 # solution3
 system.time(dt[J(your.number), roll = "nearest"])
+```
+
+```
+##    user  system elapsed 
+##   0.000   0.000   0.001
 ```
 
 To my surprise the base R functions perform pretty well, though in really large datasets `data.table` is worth a punt.
