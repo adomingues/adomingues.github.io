@@ -5,9 +5,180 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 14 Feb 2016 18:58:44 +0100</pubDate>
-    <lastBuildDate>Sun, 14 Feb 2016 18:58:44 +0100</lastBuildDate>
+    <pubDate>Sun, 14 Feb 2016 19:18:28 +0100</pubDate>
+    <lastBuildDate>Sun, 14 Feb 2016 19:18:28 +0100</lastBuildDate>
     <generator>Jekyll v3.0.3</generator>
+    
+      <item>
+        <title>Testing for over-representation of anything</title>
+        <description>&lt;p&gt;Recently I wrote a post on how to test for &lt;a href=&quot;http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/&quot;&gt;chromosome over-representation&lt;/a&gt; on a list of genes. The solution, which I thought it was clever at the time, can be simpled to be applied to test if overlap between two lists of genes is significant. Let’s use the pasilla data again:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;r
+# library(&quot;Biobase&quot;)
+library(&quot;pasilla&quot;)
+library(&quot;Biobase&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Loading required package: BiocGenerics
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Loading required package: methods
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Loading required package: parallel
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## 
+## Attaching package: &#39;BiocGenerics&#39;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## The following objects are masked from &#39;package:parallel&#39;:
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## The following object is masked from &#39;package:stats&#39;:
+## 
+##     xtabs
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist, unsplit
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;r
+library(&quot;DESeq&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Loading required package: locfit
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## locfit 1.5-9.1 	 2013-03-22
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Loading required package: lattice
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Creating a generic function for &#39;nchar&#39; from package &#39;base&#39; in package &#39;S4Vectors&#39;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+##     Welcome to &#39;DESeq&#39;. For improved performance, usability and
+##     functionality, please consider migrating to &#39;DESeq2&#39;.
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;```r
+data(“pasillaGenes”)&lt;/p&gt;
+
+&lt;p&gt;geneset1 &amp;lt;- sample(rownames(counts(pasillaGenes)), 2500)
+geneset2 &amp;lt;- sample(rownames(counts(pasillaGenes)), 3500)&lt;/p&gt;
+
+&lt;p&gt;universe &amp;lt;- length(
+   unique(rownames(counts(pasillaGenes)))
+   )&lt;/p&gt;
+
+&lt;p&gt;common &amp;lt;- length(
+   intersect(
+      unique(geneset1),
+      unique(geneset2)
+      )
+   )&lt;/p&gt;
+
+&lt;p&gt;mat &amp;lt;- matrix(
+   c(
+      universe - length(union(geneset1, geneset2)),
+      length(setdiff(geneset1, geneset2)),
+      length(setdiff(geneset2, geneset1)),
+      length(intersect(geneset1, geneset2))
+      ),
+   nrow=2
+   )&lt;/p&gt;
+
+&lt;p&gt;fr &amp;lt;- fisher.test(mat, alternative=”greater”)
+fr
+```&lt;/p&gt;
+
+&lt;p&gt;Since this a random set of genes, it is not surprising that there is no overlap. This works fairly well and it could even be wrapped in a nice function. Yep, someone else has done &lt;a href=&quot;http://rpackages.ianhowson.com/bioc/GeneOverlap/man/GeneOverlap.html&quot;&gt;it&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;geneoverlap&quot;&gt;GeneOverlap&lt;/h1&gt;
+
+&lt;p&gt;amongst other things, including visualization of overlaps, this package has a  great function, &lt;code&gt;testGeneOverlap&lt;/code&gt;, which uses an object created with &lt;code&gt;newGeneOverlap&lt;/code&gt;, that does exactly the above:&lt;/p&gt;
+
+&lt;p&gt;```r
+library(GeneOverlap)
+overl &amp;lt;- newGeneOverlap(
+   unique(geneset1),
+   unique(geneset2),
+   genome.size=universe)&lt;/p&gt;
+
+&lt;p&gt;overl &amp;lt;- testGeneOverlap(overl)
+print(overl)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Detailed information about this GeneOverlap object:
+## listA size=2500, e.g. FBgn0010355 FBgn0004171 FBgn0023097
+## listB size=3500, e.g. FBgn0015796 FBgn0039741 FBgn0038890
+## Intersection size=617, e.g. FBgn0053468 FBgn0035298 FBgn0051729
+## Union size=5383, e.g. FBgn0010355 FBgn0004171 FBgn0023097
+## Genome size=14470
+## # Contingency Table:
+##      notA  inA
+## notB 9087 1883
+## inB  2883  617
+## Overlapping p-value=0.27
+## Odds ratio=1.0
+## Overlap tested using Fisher&#39;s exact test (alternative=greater)
+## Jaccard Index=0.1
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;And the results is the same. However, &lt;code&gt;GeneOverlap&lt;/code&gt; also outputs the results of a few more tests that can be quite useful:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The Fisher’s exact test also gives an odds ratio which represents the strength of association. If an odds ratio is equal to or less than 1, there is no association between the two lists. If the odds ratio is much larger than 1, then the association is strong. The class also calculates the Jaccard index which measures the similarity between two lists. The Jaccard index varies between 0 and 1, with 0 meaning there is no similarity between the two and 1 meaning the two are identical.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The explanations are also quite nice for beginners. Great Bioconductor package.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 14 Feb 2016 19:02:00 +0100</pubDate>
+        <link>http://adomingues.github.io/2016/02/14/significance-of-gene-overlap/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/02/14/significance-of-gene-overlap/</guid>
+        
+        <category>R</category>
+        
+        <category>Bioconductor</category>
+        
+        <category>Fisher</category>
+        
+        
+      </item>
     
       <item>
         <title>Merge fastq sample from different lanes and rename them</title>
@@ -265,99 +436,6 @@ library(directlabels)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>R</category>
         
         <category>devtools</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Testing for over-representation of anything</title>
-        <description>&lt;p&gt;Recently I wrote a post on how to test for &lt;a href=&quot;http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/&quot;&gt;chromosome over-representation&lt;/a&gt; on a list of genes. The solution, which I thought it was clever at the time, can be simpled to be applied to test if overlap between two lists of genes is significant. Let’s use the pasilla data again:&lt;/p&gt;
-
-&lt;p&gt;```r
-# library(“Biobase”)
-library(“pasilla”)
-library(“Biobase”)
-data(“pasillaGenes”)&lt;/p&gt;
-
-&lt;p&gt;geneset1 &amp;lt;- sample(rownames(counts(pasillaGenes)), 2500)
-geneset2 &amp;lt;- sample(rownames(counts(pasillaGenes)), 3500)&lt;/p&gt;
-
-&lt;p&gt;universe &amp;lt;- length(
-   unique(rownames(counts(pasillaGenes)))
-   )&lt;/p&gt;
-
-&lt;p&gt;common &amp;lt;- length(
-   intersect(
-      unique(geneset1),
-      unique(geneset2)
-      )
-   )&lt;/p&gt;
-
-&lt;p&gt;mat &amp;lt;- matrix(
-   c(
-      universe - length(union(geneset1, geneset2)),
-      length(setdiff(geneset1, geneset2)),
-      length(setdiff(geneset2, geneset1)),
-      length(intersect(geneset1, geneset2))
-      ),
-   nrow=2
-   )&lt;/p&gt;
-
-&lt;p&gt;fr &amp;lt;- fisher.test(mat, alternative=”greater”)
-fr
-```&lt;/p&gt;
-
-&lt;p&gt;Since this a random set of genes, it is not surprising that there is no overlap. This works fairly well and it could even be wrapped in a nice function. Yep, someone else has done &lt;a href=&quot;http://rpackages.ianhowson.com/bioc/GeneOverlap/man/GeneOverlap.html&quot;&gt;it&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;geneoverlap&quot;&gt;GeneOverlap&lt;/h1&gt;
-
-&lt;p&gt;amongst other things, including visualization of overlaps, this package has a  great function, &lt;code&gt;testGeneOverlap&lt;/code&gt;, which uses an object created with &lt;code&gt;newGeneOverlap&lt;/code&gt;, that does exactly the above:&lt;/p&gt;
-
-&lt;p&gt;```r
-library(GeneOverlap)
-overl &amp;lt;- newGeneOverlap(
-   unique(geneset1),
-   unique(geneset2),
-   genome.size=universe)&lt;/p&gt;
-
-&lt;p&gt;overl &amp;lt;- testGeneOverlap(overl)
-print(overl)
-```&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;
-## Detailed information about this GeneOverlap object:
-## listA size=2500, e.g. FBgn0053895 FBgn0033041 FBgn0250840
-## listB size=3500, e.g. FBgn0014269 FBgn0036705 FBgn0022355
-## Intersection size=601, e.g. FBgn0053895 FBgn0039311 FBgn0037744
-## Union size=5399, e.g. FBgn0053895 FBgn0033041 FBgn0250840
-## Genome size=14470
-## # Contingency Table:
-##      notA  inA
-## notB 9071 1899
-## inB  2899  601
-## Overlapping p-value=0.58
-## Odds ratio=1.0
-## Overlap tested using Fisher&#39;s exact test (alternative=greater)
-## Jaccard Index=0.1
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;And the results is the same. However, &lt;code&gt;GeneOverlap&lt;/code&gt; also outputs the results of a few more tests that can be quite useful:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The Fisher’s exact test also gives an odds ratio which represents the strength of association. If an odds ratio is equal to or less than 1, there is no association between the two lists. If the odds ratio is much larger than 1, then the association is strong. The class also calculates the Jaccard index which measures the similarity between two lists. The Jaccard index varies between 0 and 1, with 0 meaning there is no similarity between the two and 1 meaning the two are identical.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The explanations are also quite nice for beginners. Great Bioconductor package.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 19 Mar 2015 11:32:00 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/19/sgnificance-of-gene-overlap/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/sgnificance-of-gene-overlap/</guid>
-        
-        <category>R</category>
-        
-        <category>Bioconductor</category>
-        
-        <category>Fisher</category>
         
         
       </item>

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Testing for over-representation of anything
-date: 2015-03-19 11:32:00.000000000 +01:00
+date: 2016-02-14 19:02:00.000000000 +01:00
 categories: []
 tags:
 - R
@@ -14,11 +14,13 @@ published: true
 
 Recently I wrote a post on how to test for [chromosome over-representation](http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/) on a list of genes. The solution, which I thought it was clever at the time, can be simpled to be applied to test if overlap between two lists of genes is significant. Let's use the pasilla data again:
 
+```{r results='hide', message='FALSE'}
 
-```r
 # library("Biobase")
 library("pasilla")
 library("Biobase")
+library("DESeq")
+
 data("pasillaGenes")
 
 geneset1 <- sample(rownames(counts(pasillaGenes)), 2500)
@@ -57,8 +59,7 @@ Since this a random set of genes, it is not surprising that there is no overlap.
 
 amongst other things, including visualization of overlaps, this package has a  great function, `testGeneOverlap`, which uses an object created with `newGeneOverlap`, that does exactly the above:
 
-
-```r
+```{r }
 library(GeneOverlap)
 overl <- newGeneOverlap(
    unique(geneset1),
@@ -67,23 +68,6 @@ overl <- newGeneOverlap(
 
 overl <- testGeneOverlap(overl)
 print(overl)
-```
-
-```
-## Detailed information about this GeneOverlap object:
-## listA size=2500, e.g. FBgn0053895 FBgn0033041 FBgn0250840
-## listB size=3500, e.g. FBgn0014269 FBgn0036705 FBgn0022355
-## Intersection size=601, e.g. FBgn0053895 FBgn0039311 FBgn0037744
-## Union size=5399, e.g. FBgn0053895 FBgn0033041 FBgn0250840
-## Genome size=14470
-## # Contingency Table:
-##      notA  inA
-## notB 9071 1899
-## inB  2899  601
-## Overlapping p-value=0.58
-## Odds ratio=1.0
-## Overlap tested using Fisher's exact test (alternative=greater)
-## Jaccard Index=0.1
 ```
 
 And the results is the same. However, `GeneOverlap` also outputs the results of a few more tests that can be quite useful:
