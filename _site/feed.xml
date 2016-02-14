@@ -5,72 +5,211 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 24 Sep 2015 22:00:12 +0200</pubDate>
-    <lastBuildDate>Thu, 24 Sep 2015 22:00:12 +0200</lastBuildDate>
-    <generator>Jekyll v2.4.0</generator>
+    <pubDate>Sun, 14 Feb 2016 18:58:44 +0100</pubDate>
+    <lastBuildDate>Sun, 14 Feb 2016 18:58:44 +0100</lastBuildDate>
+    <generator>Jekyll v3.0.3</generator>
+    
+      <item>
+        <title>Merge fastq sample from different lanes and rename them</title>
+        <description>&lt;p&gt;This is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blogThis is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blog.&lt;/p&gt;
+
+&lt;h1 id=&quot;problem&quot;&gt;Problem&lt;/h1&gt;
+
+&lt;p&gt;Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - everything after will have plot names which are alcd ..
+most presentation/publication ready, so one last thing to change manually.&lt;/p&gt;
+
+&lt;h1 id=&quot;st-step-merge&quot;&gt;1st step: merge&lt;/h1&gt;
+
+&lt;p&gt;```bash
+PROJECT=’my_project’&lt;/p&gt;
+
+&lt;h1 id=&quot;create-project-folder&quot;&gt;create project folder&lt;/h1&gt;
+&lt;p&gt;mkdir -p ${PROJECT}/data/reads/03_December_2015
+cd ${PROJECT}/data/reads/03_December_2015&lt;/p&gt;
+
+&lt;h1 id=&quot;copy-original-reads---these-will-always-be-kept&quot;&gt;copy original reads - these will always be kept!&lt;/h1&gt;
+&lt;p&gt;rsync -r -t -x -v –progress -u -l -z -s /fsimb/exchange/imb-genomicscf/AG_Ketting/imb_ketting_2015_22/ ./&lt;/p&gt;
+
+&lt;h1 id=&quot;merge-the-reads-in-parallel-taking-advantage-of-the-cluster&quot;&gt;merge the reads in parallel taking advantage of the cluster&lt;/h1&gt;
+&lt;p&gt;mkdir -p logs
+for f in $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”);
+do
+    echo $f
+    bsub -q short -n 1 -app Reserve3G -o logs/output.txt -J logs/mergeFastQ_“$f” -e logs/mergeFastQ_“$f”.err.log mergeFastQ.sh $f “single”
+done&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;This will call &lt;code&gt;mergeFastQ.sh&lt;/code&gt; that changes to each sample directory and merges the files therein (save it in a folder that is on your &lt;code&gt;$PATH&lt;/code&gt;):&lt;/p&gt;
+
+&lt;p&gt;```bash
+#!/usr/bin/env bash&lt;/p&gt;
+
+&lt;h1 id=&quot;mergefastqcsh&quot;&gt;mergeFastQC.sh&lt;/h1&gt;
+&lt;p&gt;# António Domingues
+# 22.01.2015&lt;/p&gt;
+
+&lt;p&gt;cd $1
+# outname=&lt;code&gt;echo $1 | sed -r &#39;s/_[a-Z]{6}_.*(_R[1-2]).*$/\1/&#39;&lt;/code&gt;
+outname=${PWD##*/}
+echo $outname
+# read1=&lt;code&gt;find -name &quot;*R1*.fastq.gz&quot;&lt;/code&gt;
+# read2=&lt;code&gt;find -name &quot;*R2*.fastq.gz&quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;if [ “$2” = “paired” ]; then
+   echo “Paired”&lt;/p&gt;
+
+&lt;p&gt;cat &lt;em&gt;_R1_&lt;/em&gt;.fastq.gz &amp;gt; “$outname”_R1.fastq.gz&lt;/p&gt;
+
+&lt;p&gt;cat &lt;em&gt;_R2_&lt;/em&gt;.fastq.gz &amp;gt; “$outname”_R2.fastq.gz&lt;/p&gt;
+
+&lt;p&gt;elif [ “$2” = “single” ]; then
+   echo “Single”&lt;/p&gt;
+
+&lt;p&gt;cat &lt;em&gt;_R1_&lt;/em&gt;.fastq.gz &amp;gt; “$outname”.fastq.gz&lt;/p&gt;
+
+&lt;p&gt;fi
+```&lt;/p&gt;
+
+&lt;h1 id=&quot;nd-step-rename&quot;&gt;2nd step: rename&lt;/h1&gt;
+
+&lt;p&gt;Once the merge is confirmed, merged files were renamed and moved to a merge folder. Original files were compressed in a folder.&lt;/p&gt;
+
+&lt;p&gt;```shell&lt;/p&gt;
+
+&lt;p&gt;mkdir -p pooled&lt;/p&gt;
+
+&lt;p&gt;for f in $(find ./ -type f -name “Sample&lt;em&gt;.fastq.gz”);
+do
+    n=”pooled/”$(echo &lt;code&gt;basename $f&lt;/code&gt; | sed -e ‘s/Sample_imb_ketting_2015_22_[0-9]&lt;/em&gt;_//’)
+    mv $f $n
+done&lt;/p&gt;
+
+&lt;h1 id=&quot;compress-the-original-reads-in-tar-and-cleans-up&quot;&gt;compress the original reads in tar and cleans up&lt;/h1&gt;
+&lt;p&gt;tar cf Sample_imb_ketting_2015_20.tar $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”)
+rm -rf $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”)
+```&lt;/p&gt;
+
+&lt;h1 id=&quot;rd-step-processing&quot;&gt;3rd step: processing&lt;/h1&gt;
+
+&lt;p&gt;Once we have this we start the removal of poor quality reads, fastQC, mapping, etc. For his I take advantage of the Institutes’s pipelines, &lt;a href=&quot;https://github.com/imbforge/NGSpipe2go&quot;&gt;NGSpipe2go&lt;/a&gt;, to which I added a small RNA-seq pipeline. You can download the whole thing &lt;a href=&quot;https://github.com/adomingues/NGSpipe2go&quot;&gt;here&lt;/a&gt; to your &lt;code&gt;${PROJECT}&lt;/code&gt; folder and uncompress the zip file. Then to run you will only need one command: &lt;code&gt;bpipe run smallrnaseq_v0.1.txt data/reads/03_December_2015/*.fastq.gz&lt;/code&gt;. All the required scripts and files should be accessible.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 03 Dec 2015 00:00:00 +0100</pubDate>
+        <link>http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</guid>
+        
+        <category>bash</category>
+        
+        <category>fastq</category>
+        
+        
+      </item>
     
       <item>
         <title>Finding the closest element to a number in a vector</title>
         <description>&lt;p&gt;A colleague came to my office the other day with an interesting question:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Is there a way in R to find the closest number to X in a list?&lt;/p&gt;
+  &lt;p&gt;Is there a way in R to find the closest number to X in a list?&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;I knowing full well the power the power of R, I naturally said that surely there is such a function, but I have never used it. So I set out to find it because I am curious. It turns out there is not an of the shelf &lt;code&gt;closest&lt;/code&gt; function. There are however a few solution out there which I have collected and are bellow. To top it off there is a comparison of how fast each solution is.&lt;/p&gt;
 
-&lt;h1&gt;solution 1&lt;/h1&gt;
-
+&lt;h1 id=&quot;solution-1&quot;&gt;solution 1&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&quot;https://stat.ethz.ch/pipermail/r-help/2008-July/167226.html&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;x&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-your.number&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;90000.43&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## [1] 90000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;solution 2&lt;/h1&gt;
 
+&lt;p&gt;&lt;code&gt;r
+x=c(1:10^6)
+your.number=90000.43
+which(abs(x-your.number)==min(abs(x-your.number)))
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## [1] 90000
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;solution-2&quot;&gt;solution 2&lt;/h1&gt;
 &lt;p&gt;Same source as before.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kp&quot;&gt;which.min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## [1] 90000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;solution 3&lt;/h1&gt;
 
+&lt;p&gt;&lt;code&gt;r
+which.min(abs(x-your.number))
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## [1] 90000
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;solution-3&quot;&gt;solution 3&lt;/h1&gt;
 &lt;p&gt;From &lt;a href=&quot;http://stackoverflow.com/questions/20133344/find-closest-value-in-a-vector-with-binary-search&quot;&gt;here&lt;/a&gt;. It requires &lt;code&gt;data.table&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;install.packages&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;data.table&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## Installing package into &amp;#39;/home/adomingu/R/x86_64-pc-linux-gnu-library/3.2&amp;#39;
-## (as &amp;#39;lib&amp;#39; is unspecified)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;data.table&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-dt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; data.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; val &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# you&amp;#39;ll see why val is needed in a sec&lt;/span&gt;
-setattr&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dt&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;sorted&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;x&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# let data.table know that w is sorted&lt;/span&gt;
-setkey&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dt&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; x&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# sorts the data&lt;/span&gt;
 
-&lt;span class=&quot;c1&quot;&gt;# binary search and &amp;quot;roll&amp;quot; to the nearest neighbour&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# In the final expression the val column will have the you&amp;#39;re looking for.&lt;/span&gt;
-dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; roll &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;nearest&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##        x   val
+&lt;p&gt;&lt;code&gt;r
+install.packages(&quot;data.table&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Installing package into &#39;/home/adomingu/R/x86_64-pc-linux-gnu-library/3.2&#39;
+## (as &#39;lib&#39; is unspecified)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;```r
+library(data.table)
+dt = data.table(x, val = x) # you’ll see why val is needed in a sec
+setattr(dt, “sorted”, “x”)  # let data.table know that w is sorted
+setkey(dt, x) # sorts the data&lt;/p&gt;
+
+&lt;h1 id=&quot;binary-search-and-roll-to-the-nearest-neighbour&quot;&gt;binary search and “roll” to the nearest neighbour&lt;/h1&gt;
+&lt;p&gt;# In the final expression the val column will have the you’re looking for.
+dt[J(your.number), roll = “nearest”]
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+##        x   val
 ## 1: 90000 90000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1&gt;Speed comparison&lt;/h1&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;## time:&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# solution1&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;system.time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;))))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    user  system elapsed 
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;speed-comparison&quot;&gt;Speed comparison&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;r
+## time:
+# solution1
+system.time(which(abs(x-your.number)==min(abs(x-your.number))))
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+##    user  system elapsed 
 ##   0.024   0.020   0.043
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# solution2&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;system.time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;which.min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    user  system elapsed 
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;r
+# solution2
+system.time(which.min(abs(x-your.number)))
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+##    user  system elapsed 
 ##   0.008   0.004   0.012
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# solution3&lt;/span&gt;
-&lt;span class=&quot;kp&quot;&gt;system.time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;your.number&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; roll &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;nearest&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    user  system elapsed 
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;r
+# solution3
+system.time(dt[J(your.number), roll = &quot;nearest&quot;])
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+##    user  system elapsed 
 ##   0.000   0.000   0.001
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;To my surprise the base R functions perform pretty well, though in really large datasets &lt;code&gt;data.table&lt;/code&gt; is worth a punt.&lt;/p&gt;
 </description>
         <pubDate>Thu, 24 Sep 2015 00:00:00 +0200</pubDate>
-        <link>http://adomingues.github.io/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/09/24/2015-09-24-finding-closest-element-to-a-number-in-a-list/</guid>
+        <link>http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
         
         <category>R</category>
         
@@ -81,18 +220,14 @@ dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt
         <title>Table of results embed in a PDF</title>
         <description>&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;: This is a rant.&lt;/p&gt;
 
-&lt;p&gt;I had to run a quick analysis on someone else&amp;#39;s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Great! Assuming the analysis is correct, I can poke around their data and compare/extract results that are relevant to my project.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;I had to run a quick analysis on someone else’s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:
+&amp;gt; Great! Assuming the analysis is correct, I can poke around their data and compare/extract results that are relevant to my project.&lt;/p&gt;
 
 &lt;p&gt;That is where the fun ends. In this particular paper, they where kind enough to report the processed tables of results in a single PDF.&lt;/p&gt;
 
 &lt;p&gt;Seriously? All 4 tables of results were embedded in a single PDF. The lists of up and down-regulated genes spanned several pages. Is it that hard to have supplement text files with the relevant tables? Or if that is not convenient for data presentation (yes, there were highlighted row in the tables), at the very least make the original excel tables available. Unless all the calculations were painstakingly done by hand and noted down in Word, it seems that it was more difficult to move the table from Excel -&amp;gt; Word -&amp;gt; PDF than just published the excel files in the first place.&lt;/p&gt;
 
-&lt;h2&gt;Extraction of table from PDF to R-friendly format&lt;/h2&gt;
-
+&lt;h2 id=&quot;extraction-of-table-from-pdf-to-r-friendly-format&quot;&gt;Extraction of table from PDF to R-friendly format&lt;/h2&gt;
 &lt;p&gt;To extract the list of differentially expressed genes embedded in the supp. data pdf, I used okular following this &lt;a href=&quot;http://stackoverflow.com/a/11437638/1274242&quot;&gt;tip&lt;/a&gt;. However, when copying directly to Oo Calc I stumbled upon some encoding problems, so in the end table was copied to a text editor (the column that was relevant to me). It is not ideal but solved the problem. It took me an hour all in all.&lt;/p&gt;
 
 &lt;p&gt;Of course, I could have download the raw reads, QC, map, count, re-do the analysis, compare to the published results to make sure all is kosher, but having the table of DEG saves a lot time that we can focus on extracting biologically relevant insights. That is what science should be about and sharing knowledge, in the format of papers, should be a help in this endeavor and not an hindrance.&lt;/p&gt;
@@ -108,19 +243,20 @@ dt&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;J&lt;span class=&quot;p&quot;&gt
     
       <item>
         <title>Painless installation of R packages from source</title>
-        <description>&lt;p&gt;I was minding my own business trying to add labels to a line plot in &lt;code&gt;ggplot2&lt;/code&gt;. Then I saw that the package &lt;a href=&quot;http://directlabels.r-forge.r-project.org/&quot;&gt;directlabels&lt;/a&gt; would solve all my problems with one single line of code. I proceed to install it using &lt;code&gt;install.packages(&amp;quot;directlabels&amp;quot;, repo=&amp;quot;http://r-forge.r-project.org&amp;quot;)&lt;/code&gt;. Sadly:&lt;/p&gt;
+        <description>&lt;p&gt;I was minding my own business trying to add labels to a line plot in &lt;code&gt;ggplot2&lt;/code&gt;. Then I saw that the package &lt;a href=&quot;http://directlabels.r-forge.r-project.org/&quot;&gt;directlabels&lt;/a&gt; would solve all my problems with one single line of code. I proceed to install it using &lt;code&gt;install.packages(&quot;directlabels&quot;, repo=&quot;http://r-forge.r-project.org&quot;)&lt;/code&gt;. Sadly:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;package &lt;code&gt;directlabels&lt;/code&gt; is not available (for R version 3.1.3)&lt;/p&gt;
+  &lt;p&gt;package &lt;code&gt;directlabels&lt;/code&gt; is not available (for R version 3.1.3)&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Usually, I would download the source code, then use &lt;code&gt;install.packages()&lt;/code&gt; from source. But this still did not work due some dependency issues. Thankfully there is the package &lt;code&gt;devtools&lt;/code&gt; to help:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;devtools&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://cran.r-project.org/src/contrib/directlabels_2013.6.15.tar.gz&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;directlabels&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;library(devtools)
+install_url(&amp;quot;http://cran.r-project.org/src/contrib/directlabels_2013.6.15.tar.gz&amp;quot;)
+library(directlabels)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;As simple as that. It also allows installation from github repos. &lt;/p&gt;
+&lt;p&gt;As simple as that. It also allows installation from github repos.&lt;/p&gt;
+
 </description>
         <pubDate>Thu, 16 Apr 2015 11:32:22 +0200</pubDate>
         <link>http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</link>
@@ -134,60 +270,152 @@ install_url&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&
       </item>
     
       <item>
+        <title>Testing for over-representation of anything</title>
+        <description>&lt;p&gt;Recently I wrote a post on how to test for &lt;a href=&quot;http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/&quot;&gt;chromosome over-representation&lt;/a&gt; on a list of genes. The solution, which I thought it was clever at the time, can be simpled to be applied to test if overlap between two lists of genes is significant. Let’s use the pasilla data again:&lt;/p&gt;
+
+&lt;p&gt;```r
+# library(“Biobase”)
+library(“pasilla”)
+library(“Biobase”)
+data(“pasillaGenes”)&lt;/p&gt;
+
+&lt;p&gt;geneset1 &amp;lt;- sample(rownames(counts(pasillaGenes)), 2500)
+geneset2 &amp;lt;- sample(rownames(counts(pasillaGenes)), 3500)&lt;/p&gt;
+
+&lt;p&gt;universe &amp;lt;- length(
+   unique(rownames(counts(pasillaGenes)))
+   )&lt;/p&gt;
+
+&lt;p&gt;common &amp;lt;- length(
+   intersect(
+      unique(geneset1),
+      unique(geneset2)
+      )
+   )&lt;/p&gt;
+
+&lt;p&gt;mat &amp;lt;- matrix(
+   c(
+      universe - length(union(geneset1, geneset2)),
+      length(setdiff(geneset1, geneset2)),
+      length(setdiff(geneset2, geneset1)),
+      length(intersect(geneset1, geneset2))
+      ),
+   nrow=2
+   )&lt;/p&gt;
+
+&lt;p&gt;fr &amp;lt;- fisher.test(mat, alternative=”greater”)
+fr
+```&lt;/p&gt;
+
+&lt;p&gt;Since this a random set of genes, it is not surprising that there is no overlap. This works fairly well and it could even be wrapped in a nice function. Yep, someone else has done &lt;a href=&quot;http://rpackages.ianhowson.com/bioc/GeneOverlap/man/GeneOverlap.html&quot;&gt;it&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;geneoverlap&quot;&gt;GeneOverlap&lt;/h1&gt;
+
+&lt;p&gt;amongst other things, including visualization of overlaps, this package has a  great function, &lt;code&gt;testGeneOverlap&lt;/code&gt;, which uses an object created with &lt;code&gt;newGeneOverlap&lt;/code&gt;, that does exactly the above:&lt;/p&gt;
+
+&lt;p&gt;```r
+library(GeneOverlap)
+overl &amp;lt;- newGeneOverlap(
+   unique(geneset1),
+   unique(geneset2),
+   genome.size=universe)&lt;/p&gt;
+
+&lt;p&gt;overl &amp;lt;- testGeneOverlap(overl)
+print(overl)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+## Detailed information about this GeneOverlap object:
+## listA size=2500, e.g. FBgn0053895 FBgn0033041 FBgn0250840
+## listB size=3500, e.g. FBgn0014269 FBgn0036705 FBgn0022355
+## Intersection size=601, e.g. FBgn0053895 FBgn0039311 FBgn0037744
+## Union size=5399, e.g. FBgn0053895 FBgn0033041 FBgn0250840
+## Genome size=14470
+## # Contingency Table:
+##      notA  inA
+## notB 9071 1899
+## inB  2899  601
+## Overlapping p-value=0.58
+## Odds ratio=1.0
+## Overlap tested using Fisher&#39;s exact test (alternative=greater)
+## Jaccard Index=0.1
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;And the results is the same. However, &lt;code&gt;GeneOverlap&lt;/code&gt; also outputs the results of a few more tests that can be quite useful:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The Fisher’s exact test also gives an odds ratio which represents the strength of association. If an odds ratio is equal to or less than 1, there is no association between the two lists. If the odds ratio is much larger than 1, then the association is strong. The class also calculates the Jaccard index which measures the similarity between two lists. The Jaccard index varies between 0 and 1, with 0 meaning there is no similarity between the two and 1 meaning the two are identical.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The explanations are also quite nice for beginners. Great Bioconductor package.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 Mar 2015 11:32:00 +0100</pubDate>
+        <link>http://adomingues.github.io/2015/03/19/sgnificance-of-gene-overlap/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/sgnificance-of-gene-overlap/</guid>
+        
+        <category>R</category>
+        
+        <category>Bioconductor</category>
+        
+        <category>Fisher</category>
+        
+        
+      </item>
+    
+      <item>
         <title>Testing for chromosome over-representation</title>
-        <description>&lt;p&gt;Sometimes I am working on some data and notice certain biases, say differentially expressed genes appearing to originate more often from a chromosome. Or a factor binding more often to a class of transcripts. In these situations I tend to turn to Fisher&amp;#39;s exact test. Here I will put an example of what I do.&lt;/p&gt;
+        <description>&lt;p&gt;Sometimes I am working on some data and notice certain biases, say differentially expressed genes appearing to originate more often from a chromosome. Or a factor binding more often to a class of transcripts. In these situations I tend to turn to Fisher’s exact test. Here I will put an example of what I do.&lt;/p&gt;
 
-&lt;h2&gt;Get some data&lt;/h2&gt;
+&lt;h2 id=&quot;get-some-data&quot;&gt;Get some data&lt;/h2&gt;
 
-&lt;p&gt;For the sake of simplicity I will use data from the Pasilla&lt;a href=&quot;http://bioconductor.org/packages/release/data/experiment/html/pasilla.html&quot;&gt;1&lt;/a&gt; dataset and run differential gene expression analysis with DESeq2&lt;a href=&quot;http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html&quot;&gt;2&lt;/a&gt; following the vignette&amp;#39;s instructions. The &lt;code&gt;data.table&lt;/code&gt; package is used because I like it&amp;#39;s speed and syntax, specially for sub-setting. Since I am still learning all the ins and outs of it, I mix &lt;code&gt;data.frame&lt;/code&gt; code with it. Whatever works.&lt;/p&gt;
+&lt;p&gt;For the sake of simplicity I will use data from the Pasilla&lt;a href=&quot;http://bioconductor.org/packages/release/data/experiment/html/pasilla.html&quot;&gt;1&lt;/a&gt; dataset and run differential gene expression analysis with DESeq2&lt;a href=&quot;http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html&quot;&gt;2&lt;/a&gt; following the vignette’s instructions. The &lt;code&gt;data.table&lt;/code&gt; package is used because I like it’s speed and syntax, specially for sub-setting. Since I am still learning all the ins and outs of it, I mix &lt;code&gt;data.frame&lt;/code&gt; code with it. Whatever works.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;data.table&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pasilla&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Biobase&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-data&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pasillaGenes&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;DESeq2&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;biomaRt&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;library(&amp;quot;data.table&amp;quot;)
+library(&amp;quot;pasilla&amp;quot;)
+library(&amp;quot;Biobase&amp;quot;)
+data(&amp;quot;pasillaGenes&amp;quot;)
+library(&amp;quot;DESeq2&amp;quot;)
+library(&amp;quot;biomaRt&amp;quot;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;While loading the &lt;code&gt;pasillaGenes&lt;/code&gt; R was throwing an error at me:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Warning: namespace ‘DESeq’ is not available and has been replaced&lt;/p&gt;
+  &lt;p&gt;Warning: namespace ‘DESeq’ is not available and has been replaced&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;It turns out that &lt;code&gt;DESeq&lt;/code&gt; needed to be installed to load the data. No idea why. So let&amp;#39;s get us some results:&lt;/p&gt;
+&lt;p&gt;It turns out that &lt;code&gt;DESeq&lt;/code&gt; needed to be installed to load the data. No idea why. So let’s get us some results:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;countData &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; counts&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pasillaGenes&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-colData &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; pData&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pasillaGenes&lt;span class=&quot;p&quot;&gt;)[,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;condition&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
-dds &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; DESeqDataSetFromMatrix&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-   countData &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; countData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-   colData &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; colData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-   design &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt; condition
-   &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-dds&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; relevel&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;condition&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;untreated&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-dds &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; DESeq&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;countData &amp;lt;- counts(pasillaGenes)
+colData &amp;lt;- pData(pasillaGenes)[,c(&amp;quot;condition&amp;quot;,&amp;quot;type&amp;quot;)]
+dds &amp;lt;- DESeqDataSetFromMatrix(
+   countData = countData,
+   colData = colData,
+   design = ~ condition
+   )
+dds$condition &amp;lt;- relevel(dds$condition, &amp;quot;untreated&amp;quot;)
+dds &amp;lt;- DESeq(dds)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h2&gt;Add chromosome information&lt;/h2&gt;
-
+&lt;h2 id=&quot;add-chromosome-information&quot;&gt;Add chromosome information&lt;/h2&gt;
 &lt;p&gt;Now the fun starts. I created a &lt;code&gt;data.table&lt;/code&gt; with the results plus gene IDs, And will now added some extra information with biomaRt. I have only added chromosome and biotype, but the amount of information one can add is large. I usually also add gene symbol and description. Very useful to have a quick idea of the function of a particular gene. Adding the full gene location might be useful to later on subset data and easily create a bed file.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;results&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;results&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dds&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; data.table&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res &amp;lt;- as.data.frame(results(dds))
+res$ensembl_gene_id &amp;lt;- rownames(results(dds))
+res &amp;lt;- data.table(res)
 
-ensembl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; useMart&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ensembl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; dataset &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;dmelanogaster_gene_ensembl&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-genemap &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; getBM&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; attributes &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ensembl_gene_id&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;chromosome_name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;gene_biotype&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                  filters &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ensembl_gene_id&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                  values &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                  mart &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; ensembl&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-idx &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; genemap&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; genemap&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;chromosome_name&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; idx &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;gene_biotype &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; genemap&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;gene_biotype&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; idx &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+ensembl = useMart(&amp;quot;ensembl&amp;quot;, dataset = &amp;quot;dmelanogaster_gene_ensembl&amp;quot;)
+genemap &amp;lt;- getBM( attributes = c(&amp;quot;ensembl_gene_id&amp;quot;, &amp;quot;chromosome_name&amp;quot;, &amp;quot;gene_biotype&amp;quot;),
+                  filters = &amp;quot;ensembl_gene_id&amp;quot;,
+                  values = res$ensembl_gene_id,
+                  mart = ensembl)
+idx &amp;lt;- match( res$ensembl_gene_id, genemap$ensembl_gene_id )
+res$chromosome &amp;lt;- genemap$chromosome_name[ idx ]
+res$gene_biotype &amp;lt;- genemap$gene_biotype[ idx ]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;Now let&amp;#39;s have a look at down-regulated genes with &lt;code&gt;padj &amp;lt; 0.1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now let’s have a look at down-regulated genes with &lt;code&gt;padj &amp;lt; 0.1&lt;/code&gt;.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res[padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##        baseMean log2FoldChange     lfcSE      stat       pvalue
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##        baseMean log2FoldChange     lfcSE      stat       pvalue
 ##   1:   85.00693     -0.7067901 0.2196386 -3.217969 1.291017e-03
 ##   2:  273.13010     -0.3878740 0.1360678 -2.850593 4.363776e-03
 ##   3: 1257.88508     -0.3896927 0.1321601 -2.948640 3.191754e-03
@@ -210,46 +438,46 @@ res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;gene_biotype &lt;span class=&qu
 ## 405: 3.079189e-02     FBgn0261546         NA             NA
 ## 406: 9.950931e-03     FBgn0261547         3L protein_coding
 ## 407: 1.106943e-18     FBgn0261552         3R protein_coding
-## 408: 3.710330e-08     FBgn0261560         2L protein_coding&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+## 408: 3.710330e-08     FBgn0261560         2L protein_coding&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;Most of these appear to be coding genes. Not a great surprise. But...  Oh! There are a lot of genes located in chromosome 2L. Is this a coincidence? Let us test it.&lt;/p&gt;
+&lt;p&gt;Most of these appear to be coding genes. Not a great surprise. But…  Oh! There are a lot of genes located in chromosome 2L. Is this a coincidence? Let us test it.&lt;/p&gt;
 
-&lt;h2&gt;Test for over-representation&lt;/h2&gt;
+&lt;h2 id=&quot;test-for-over-representation&quot;&gt;Test for over-representation&lt;/h2&gt;
 
-&lt;h3&gt;Chromosome 3L&lt;/h3&gt;
+&lt;h3 id=&quot;chromosome-3l&quot;&gt;Chromosome 3L&lt;/h3&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrom&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;3L&amp;quot;&lt;/span&gt;
-all &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; res&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
-hits &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
-hits_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chrom &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-genes_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chrom&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-hits_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hits&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-genes_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrom=&amp;quot;3L&amp;quot;
+all &amp;lt;- res$ensembl_gene_id
+hits &amp;lt;- res[padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id
+hits_in_chr &amp;lt;- length(res[chromosome == chrom &amp;amp; padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id)
+genes_in_chr &amp;lt;- length(res[chromosome == chrom]$ensembl_gene_id)
+hits_total &amp;lt;- length(hits)
+genes_total &amp;lt;- length(all)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;Expected number of hits in chromosome 3L would be 71.8440912 and we have 61. Is this significant? I will use Fisher&amp;#39;s exact test, as applied &lt;a href=&quot;https://www.biostars.org/p/102946/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt; for very similar problems.&lt;/p&gt;
+&lt;p&gt;Expected number of hits in chromosome 3L would be 71.8440912 and we have 61. Is this significant? I will use Fisher’s exact test, as applied &lt;a href=&quot;https://www.biostars.org/p/102946/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt; for very similar problems.&lt;/p&gt;
 
-&lt;p&gt;Firstly I construct a table/matrix with the events and from that calculated Fisher&amp;#39;s Exact test, or the probability of having more genes in chromosome 3L than expected by chance. There are more details &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Firstly I construct a table/matrix with the events and from that calculated Fisher’s Exact test, or the probability of having more genes in chromosome 3L than expected by chance. There are more details &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-   &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-      hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      genes_in_chr&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      genes_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;genes_in_chr&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;hits_in_chr
-      &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-      nrow&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      ncol&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-mat&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mat &amp;lt;- matrix(
+   c(
+      hits_in_chr,
+      genes_in_chr-hits_in_chr,
+      hits_total-hits_in_chr,
+      genes_total-hits_total-genes_in_chr+hits_in_chr
+      ),
+      nrow=2,
+      ncol=2)
+mat&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##      [,1]  [,2]
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##      [,1]  [,2]
 ## [1,]   61   347
-## [2,] 2487 11575&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+## [2,] 2487 11575&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;fr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fisher.test&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mat&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; alternative&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;greater&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-fr&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;fr &amp;lt;- fisher.test(mat, alternative=&amp;quot;greater&amp;quot;)
+fr&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## 
-##  Fisher&amp;#39;s Exact Test for Count Data
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## 
+## 	Fisher&amp;#39;s Exact Test for Count Data
 ## 
 ## data:  mat
 ## p-value = 0.935
@@ -258,89 +486,89 @@ fr&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 ##  0.6400274       Inf
 ## sample estimates:
 ## odds ratio 
-##  0.8181856&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+##  0.8181856&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;So there is a p-value of 0.9349979 and we can reject the hypothesis that there is enrichment for or genes in 3L. My eyes were seeing patterns where this is none. Also, since I was testing only for over-representation, or enrichment, the option &lt;code&gt;alternative=&amp;quot;greater&amp;quot;&lt;/code&gt; was used in the test. Other options are available.&lt;/p&gt;
+&lt;p&gt;So there is a p-value of 0.9349979 and we can reject the hypothesis that there is enrichment for or genes in 3L. My eyes were seeing patterns where this is none. Also, since I was testing only for over-representation, or enrichment, the option &lt;code&gt;alternative=&quot;greater&quot;&lt;/code&gt; was used in the test. Other options are available.&lt;/p&gt;
 
-&lt;h3&gt;For all chromosomes&lt;/h3&gt;
+&lt;h3 id=&quot;for-all-chromosomes&quot;&gt;For all chromosomes&lt;/h3&gt;
 
 &lt;p&gt;Is this this the case for any of the other chromosome? I will construct a function, and then loop over the chromosomes.&lt;/p&gt;
 
 &lt;p&gt;The function &lt;code&gt;chrEnrichment&lt;/code&gt; is minimal and it only tests for down-regulated gens, but could be easily extended to add other arguments. It could also be used to test for biases in gene biotype.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrEnrichment &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; df&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-   &lt;span class=&quot;c1&quot;&gt;# Test for chromosome overpresentation in DESe2 results&lt;/span&gt;
-   all &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; df&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
-   hits &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; df&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrEnrichment &amp;lt;- function(chr, df){
+   # Test for chromosome overpresentation in DESe2 results
+   all &amp;lt;- df$ensembl_gene_id
+   hits &amp;lt;- df[padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id
 
-   hits_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chr &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; padj &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; log2FoldChange &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-   genes_in_chr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;chromosome &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; chr&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;ensembl_gene_id&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-   hits_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hits&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-   genes_total &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   hits_in_chr &amp;lt;- length(res[chromosome == chr &amp;amp; padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id)
+   genes_in_chr &amp;lt;- length(res[chromosome == chr]$ensembl_gene_id)
+   hits_total &amp;lt;- length(hits)
+   genes_total &amp;lt;- length(all)
 
-   mat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-      &lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-         hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-         genes_in_chr&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-         hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-         genes_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;hits_total&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;genes_in_chr&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;hits_in_chr
-         &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-         nrow&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-         ncol&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-   fr &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; fisher.test&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;mat&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; alternative&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;greater&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-   df &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-      chromosome &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; chromosome&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      observed &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; hits_in_chr&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      expected &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;hits_total &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; genes_in_chr &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; genes_total&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-      odds.ratio&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; fr&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;estimate&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;odds ratio&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt;
-      pvalue &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; fr&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;p.value
-      &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-   &lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;df&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   mat &amp;lt;- matrix(
+      c(
+         hits_in_chr,
+         genes_in_chr-hits_in_chr,
+         hits_total-hits_in_chr,
+         genes_total-hits_total-genes_in_chr+hits_in_chr
+         ),
+         nrow=2,
+         ncol=2)
+   fr &amp;lt;- fisher.test(mat, alternative=&amp;quot;greater&amp;quot;)
+   df &amp;lt;- data.frame(
+      chromosome = chromosome,
+      observed = hits_in_chr,
+      expected = round(hits_total * genes_in_chr / genes_total, 1),
+      odds.ratio= fr$estimate[[&amp;quot;odds ratio&amp;quot;]],
+      pvalue = fr$p.value
+      )
+   return(df)
+}
 
 
-chromosomes &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;na.omit&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;res&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;like&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Zv9&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-l_res &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chromosome &lt;span class=&quot;kr&quot;&gt;in&lt;/span&gt; chromosomes&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-   l_res&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; chrEnrichment&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chromosome&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+chromosomes &amp;lt;- unique(na.omit(res[!like(chromosome,&amp;quot;Zv9&amp;quot;)])$chromosome)
+l_res &amp;lt;- list()
+for (chromosome in chromosomes){
+   l_res[[chromosome]] &amp;lt;- chrEnrichment(chromosome, res)
+}
 
-table_fisher &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; rbindlist&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;l_res&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt;p.adjust&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;pvalue&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; method&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;bonferroni&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),]&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# add FDR&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+table_fisher &amp;lt;- rbindlist(l_res)
+table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add FDR&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
 ## 1:         2R       91     78.1  1.2197190 0.05874683 0.4112278
 ## 2:         3L       61     71.8  0.8181856 0.93499788 1.0000000
 ## 3:         2L       86     70.2  1.2958104 0.02276513 0.1593559
 ## 4:         3R       95     90.2  1.0719388 0.29753414 1.0000000
 ## 5:          X       46     58.6  0.7523146 0.97261113 1.0000000
 ## 6:          4        0      2.3  0.0000000 1.00000000 1.0000000
-## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;setkey&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;table_fisher&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; FDR&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# will also sort by pvalue&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;setkey(table_fisher, FDR) # will also sort by pvalue&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Since I am testing for all chromosomes, I have also calculated the adjusted p-value (bonferroni) to be on the safe side.&lt;/p&gt;
 
 &lt;p&gt;And what does Fisher say?&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;table_fisher&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;table_fisher&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
 ## 1:         2L       86     70.2  1.2958104 0.02276513 0.1593559
 ## 2:         2R       91     78.1  1.2197190 0.05874683 0.4112278
 ## 3:         3L       61     71.8  0.8181856 0.93499788 1.0000000
 ## 4:         3R       95     90.2  1.0719388 0.29753414 1.0000000
 ## 5:          X       46     58.6  0.7523146 0.97261113 1.0000000
 ## 6:          4        0      2.3  0.0000000 1.00000000 1.0000000
-## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;That we have a pretty much random distribution of down-regulated genes in the fly chromosomes.&lt;/p&gt;
 
-&lt;h2&gt;References&lt;/h2&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;sessionInfo&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;sessionInfo()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## R version 3.1.3 (2015-03-09)
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## R version 3.1.3 (2015-03-09)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 14.04.2 LTS
 ## 
@@ -383,7 +611,8 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 ## [43] RSQLite_1.0.0        scales_0.2.4         sendmailR_1.2-1     
 ## [46] splines_3.1.3        stringr_0.6.2        survival_2.38-1     
 ## [49] tools_3.1.3          XML_3.98-1.1         xtable_1.7-4        
-## [52] XVector_0.6.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+## [52] XVector_0.6.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 </description>
         <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
         <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
@@ -402,9 +631,9 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
     
       <item>
         <title>Reminder - building blog locally with Jekyll</title>
-        <description>&lt;p&gt;It took me while from moving my blog from &lt;a href=&quot;https://movingtothedarkside.wordpress.com/&quot;&gt;wordpress&lt;/a&gt; to &lt;a href=&quot;http://adomingues.github.io/&quot;&gt;github pages&lt;/a&gt; and writing a new post. Such a long time that I forgot that to build the site locally I need to use &lt;code&gt;bundle exec jekyll serve --watch&lt;/code&gt; instead of &lt;code&gt;jekyll serve --watch&lt;/code&gt;. &lt;/p&gt;
+        <description>&lt;p&gt;It took me while from moving my blog from &lt;a href=&quot;https://movingtothedarkside.wordpress.com/&quot;&gt;wordpress&lt;/a&gt; to &lt;a href=&quot;http://adomingues.github.io/&quot;&gt;github pages&lt;/a&gt; and writing a new post. Such a long time that I forgot that to build the site locally I need to use &lt;code&gt;bundle exec jekyll serve --watch&lt;/code&gt; instead of &lt;code&gt;jekyll serve --watch&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;I won&amp;#39;t forget now. &lt;/p&gt;
+&lt;p&gt;I won’t forget now.&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
         <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
@@ -421,17 +650,18 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 
 &lt;p&gt;Firstly the source code was downloaded with:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;svn co --username &lt;span class=&quot;nb&quot;&gt;readonly&lt;/span&gt; --password &lt;span class=&quot;nb&quot;&gt;readonly &lt;/span&gt;https://hedgehog.fhcrc.org/bioconductor/branches/RELEASE_3_0/madman/Rpacks/DEXSeq DEXSeq&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;svn co --username readonly --password readonly https://hedgehog.fhcrc.org/bioconductor/branches/RELEASE_3_0/madman/Rpacks/DEXSeq DEXSeq&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;This followed a build to generated a package:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;R CMD build --no-build-vignettes DEXSeq&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;R CMD build --no-build-vignettes DEXSeq&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;I had issues with the build process, which failed during the vignette build. As I don&amp;#39;t care about it, using &lt;code&gt;--no-build-vignettes&lt;/code&gt; bypassed the problem. Then it was a simply matter of starting R and installing the package:&lt;/p&gt;
+&lt;p&gt;I had issues with the build process, which failed during the vignette build. As I don’t care about it, using &lt;code&gt;--no-build-vignettes&lt;/code&gt; bypassed the problem. Then it was a simply matter of starting R and installing the package:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;install.packages&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;DEXSeq_1.12.2.tar.gz&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; repos&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;install.packages(&amp;quot;DEXSeq_1.12.2.tar.gz&amp;quot;, repos=NULL)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Simple.&lt;/p&gt;
+
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
         <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
@@ -444,7 +674,7 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
         <title>virtualenvs or: How I Learned to Stop Worrying and Love not having sudo powers in a server</title>
         <description>&lt;p&gt;Well, you might think, there is always &lt;code&gt;pip install --user&lt;/code&gt;. Aha! Yes, that works most of the time, but not when some package upgrade (distribute for deepTools) conflicts with globally installed packages.&lt;/p&gt;
 
-&lt;h2&gt;The solution (for python packages)&lt;/h2&gt;
+&lt;h2 id=&quot;the-solution-for-python-packages&quot;&gt;The solution (for python packages)&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;Python virtualenvs&lt;/em&gt; to the rescue!&lt;/p&gt;
 
@@ -455,6 +685,7 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
 &lt;p&gt;For a proper (practical tutorial) see this post by &lt;a href=&quot;http://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/&quot;&gt;Jamie Mathews&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;In the meantime, &lt;em&gt;deepTools&lt;/em&gt; just finished compiling and I can now go to work.&lt;/p&gt;
+
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
         <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
@@ -467,53 +698,54 @@ table_fisher&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;FDR&lt;span class=&qu
         <title>Clone all repositories from a user (bitbucket)</title>
         <description>&lt;p&gt;Now that I have computer, the next step is to install everything I use on daily basis, and set-up my projects space. This involves cloning all my repositories. I could do this manually one by one, but what is the fun in that?&lt;/p&gt;
 
-&lt;h2&gt;Solution 1&lt;/h2&gt;
+&lt;h2 id=&quot;solution-1&quot;&gt;Solution 1&lt;/h2&gt;
 
-&lt;p&gt;My rule is that &amp;quot;if there is a way to make some task more efficient programatically, some one else thought of it before, so google it before starting scripting&amp;quot;. So I did, and of course someone else came up with a &lt;a href=&quot;http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/&quot;&gt;solution&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;My rule is that “if there is a way to make some task more efficient programatically, some one else thought of it before, so google it before starting scripting”. So I did, and of course someone else came up with a &lt;a href=&quot;http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/&quot;&gt;solution&lt;/a&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#Script to get all repositories under a user from bitbucket&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#Usage: getAllRepos.sh [username]&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;## credit to Harold Soh&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;#!/bin/bash
+#Script to get all repositories under a user from bitbucket
+#Usage: getAllRepos.sh [username]
+## credit to Harold Soh
  
-curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;  https://api.bitbucket.org/1.0/users/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &amp;gt; repoinfo
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; repo_name in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;grep &lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;name&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt; repoinfo &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f4 -d&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    hg clone ssh://hg@bitbucket.org/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$repo_name&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+curl -u ${1}  https://api.bitbucket.org/1.0/users/${1} &amp;gt; repoinfo
+for repo_name in `grep \&amp;quot;name\&amp;quot; repoinfo | cut -f4 -d\&amp;quot;`
+do
+    hg clone ssh://hg@bitbucket.org/${1}/$repo_name
+done&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This however did not work perfectly for me. When downloading the rep info, the json config comes poorly formatted as a single line. This meant that the line &lt;code&gt;grep \&amp;quot;name\&amp;quot; repoinfo | cut -f4 -d\&amp;quot;&lt;/code&gt; was return &lt;code&gt;scm&lt;/code&gt;, which obviously is not what one of my repositories.&lt;/p&gt;
+&lt;p&gt;This however did not work perfectly for me. When downloading the rep info, the json config comes poorly formatted as a single line. This meant that the line &lt;code&gt;grep \&quot;name\&quot; repoinfo | cut -f4 -d\&quot;&lt;/code&gt; was return &lt;code&gt;scm&lt;/code&gt;, which obviously is not what one of my repositories.&lt;/p&gt;
 
-&lt;h2&gt;Fix&lt;/h2&gt;
+&lt;h2 id=&quot;fix&quot;&gt;Fix&lt;/h2&gt;
 
 &lt;p&gt;So I hacked a little and came up with a not-very-elegant-but-working-solution to parse the json:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#Script to get all repositories under a user from bitbucket&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#Usage: getAllRepos.sh [username]&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#source: http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;#!/bin/bash
+#Script to get all repositories under a user from bitbucket
+#Usage: getAllRepos.sh [username]
+#source: http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/
  
-curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; https://api.bitbucket.org/1.0/users/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &amp;gt; repoinfo
-&lt;span class=&quot;c&quot;&gt;# curl -u adomingues https://api.bitbucket.org/1.0/users/adomingues&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# cat repoinfo&lt;/span&gt;
+curl -u ${1} https://api.bitbucket.org/1.0/users/${1} &amp;gt; repoinfo
+# curl -u adomingues https://api.bitbucket.org/1.0/users/adomingues
+# cat repoinfo
  
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; repo_name in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;cat repoinfo &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -r &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/(&amp;quot;name&amp;quot;: )/\n\1/g&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -r &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/&amp;quot;name&amp;quot;: &amp;quot;(.*)&amp;quot;/\1/&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -e &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/{//&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; cut -f1 -d&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tr &lt;span class=&quot;s1&quot;&gt;&amp;#39;\n&amp;#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Cloning &amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$repo_name&lt;/span&gt;
-    hg clone https://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;@bitbucket.org/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;nv&quot;&gt;$repo_name&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;---&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+for repo_name in `cat repoinfo | sed -r &amp;#39;s/(&amp;quot;name&amp;quot;: )/\n\1/g&amp;#39; | sed -r &amp;#39;s/&amp;quot;name&amp;quot;: &amp;quot;(.*)&amp;quot;/\1/&amp;#39; | sed -e &amp;#39;s/{//&amp;#39; | cut -f1 -d\&amp;quot; | tr &amp;#39;\n&amp;#39; &amp;#39; &amp;#39;`
+do
+    echo &amp;quot;Cloning &amp;quot; $repo_name
+    hg clone https://${1}@bitbucket.org/${1}/$repo_name
+    echo &amp;quot;---&amp;quot;
+done&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This basically the same script as that of Harold, but with a more complex parsing:&lt;br&gt;
-- &lt;code&gt;sed -r &amp;#39;s/(&amp;quot;name&amp;quot;: )/\n\1/g&amp;#39;&lt;/code&gt; makes sure that the repo name is not at the start of each line;&lt;br&gt;
-- &lt;code&gt;sed -r &amp;#39;s/&amp;quot;name&amp;quot;: &amp;quot;(.*)&amp;quot;/\1/&amp;#39;&lt;/code&gt;, removes the string &amp;quot;name&amp;quot; at the beginning of the line;&lt;br&gt;
-- &lt;code&gt;sed -e &amp;#39;s/{//&amp;#39;&lt;/code&gt; removes a funny curly bracktet ar the start of the file;&lt;br&gt;
-- &lt;code&gt;cut -f1 -d\&amp;quot;&lt;/code&gt;, separates and keeps the actual repository name;&lt;br&gt;
-- &lt;code&gt;tr &amp;#39;\n&amp;#39; &amp;#39; &amp;#39; &amp;#39;&lt;/code&gt; just removes the new line character creating a list of repository names to be looped.&lt;/p&gt;
+&lt;p&gt;This basically the same script as that of Harold, but with a more complex parsing:&lt;br /&gt;
+- &lt;code&gt;sed -r &#39;s/(&quot;name&quot;: )/\n\1/g&#39;&lt;/code&gt; makes sure that the repo name is not at the start of each line;&lt;br /&gt;
+- &lt;code&gt;sed -r &#39;s/&quot;name&quot;: &quot;(.*)&quot;/\1/&#39;&lt;/code&gt;, removes the string “name” at the beginning of the line;&lt;br /&gt;
+- &lt;code&gt;sed -e &#39;s/{//&#39;&lt;/code&gt; removes a funny curly bracktet ar the start of the file;&lt;br /&gt;
+- &lt;code&gt;cut -f1 -d\&quot;&lt;/code&gt;, separates and keeps the actual repository name;&lt;br /&gt;
+- &lt;code&gt;tr &#39;\n&#39; &#39; &#39; &#39;&lt;/code&gt; just removes the new line character creating a list of repository names to be looped.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Et voilá&lt;/em&gt;! There is probably some less convoluted away of going about it, probably involving regex, but in someone else&amp;#39;s wise words: &amp;quot;if you need regex to solve a problem, you now have 2 problems&amp;quot;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Et voilá&lt;/em&gt;! There is probably some less convoluted away of going about it, probably involving regex, but in someone else’s wise words: “if you need regex to solve a problem, you now have 2 problems”.&lt;/p&gt;
 
 &lt;p&gt;The only minor inconvenience is that I need to input my password for each repository. There might be a solution for this, but I have not found it yet.&lt;/p&gt;
+
 </description>
         <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
         <link>http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
@@ -524,119 +756,6 @@ curl -u &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&q
         <category>bitbucket</category>
         
         <category>mercurial</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>New shiny toy</title>
-        <description>&lt;p&gt;&lt;em&gt;Updated on 11.01.2015 to correct spelling mistakes, grammar, and add new information about the speakers.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;My new laptop has arrived, and after testing it for a couple of days, I feel that I can post my own impressions of the Dell XPS13 (9333).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://media.engadget.com/img/products/454/9qbr/9qbr-800.jpg&quot; alt=&quot;Dell XPS13&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Those in the Linux world may have heard of it by the code name &lt;em&gt;sputnik&lt;/em&gt;. Originally this model was developed by Dell, with an eye on developers, and thus it is one of the very few laptops to be offered with Linux Ubuntu pre-installed.  As a bioinformatician, or genomics data analyst as I call myself (not very catchy), working on a *nix machine is a must. Even though I worked in OSX for a while, it never really impressed me, so when deciding on a laptop for my new job, I had three things on my wish-list:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Linux compatibility, to run all the tools I need;&lt;/li&gt;
-&lt;li&gt;
-light, to carry home and show results to colleagues;&lt;/li&gt;
-&lt;li&gt;
-somewhat powerful, to test scripts and be &amp;quot;future-proof&amp;quot;;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Some specs&lt;/h2&gt;
-
-&lt;p&gt;With the above in mind, I got the XP13 with the following specs:&lt;/p&gt;
-
-&lt;p&gt;Intel(r) Core(tm) i7-4510U  (4M Cache, up to 3.1 GHz)&lt;br&gt;
-8 GB Dual-Channel DDR3 with 1.600 MHz&lt;br&gt;
-Solid-State-hardrive (SSD) with 512 GB&lt;br&gt;
-Intel HD Grafics 4400&lt;br&gt;
-1.37 kg&lt;/p&gt;
-
-&lt;p&gt;Unfortunately the model with pre-installed Ubuntu was not available in Germany, apparently they are out of stock, so mine came with Windows 8 pre-installed. Obviously the 1st thing I did to replace Windows with a fresh install of Ubuntu 14.04 from a liveUSB. Everything pretty much worked out of the box, which is the new unremarkable normal for modern Linux distros, specially those based on Ubuntu. Of note, the touchscreen  (which I do not care about) works, at least selecting and scrolling. Connecting the wifi was also a doodle. It took me almost more time to disable the annoying Windows features to allow the Linux installation than it did to make the install itself. In less than 1 hour I had the computer ready to work.&lt;/p&gt;
-
-&lt;h2&gt;Review&lt;/h2&gt;
-
-&lt;h3&gt;Design&lt;/h3&gt;
-
-&lt;p&gt;Oh boy does it look good! Nice aluminium touch, very elegant. I could compare it to a Macbook Air and it is noticeable smaller, both in width and depth, and prettier for my eyes.&lt;/p&gt;
-
-&lt;h3&gt;Screen&lt;/h3&gt;
-
-&lt;p&gt;Excellent resolution, bright colours - amazing.  The less fun part is that at 1920x1080 fonts and icons are rather small, but nothing that can&amp;#39;t be fixed.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;coil whine&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;This refers to a wizz sound coming from the keyboard area. In my case it is barely noticeable, and turning of the keyboard back-lighting stops it. I don&amp;#39;t care about this light so it works for me. Most of the time the noise is barely audible though.&lt;/p&gt;
-
-&lt;h3&gt;Temperature&lt;/h3&gt;
-
-&lt;p&gt;This is something of a problem with Linux laptops. I have installed laptop-mode-tools and, as we speak, it is running at 45-55ºc, with Firefox, Thunderbird, Sublime text, and terminal open. So not an issue for me.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Keyboard and mousepad&lt;/strong&gt;&lt;br&gt;
-The keyboard is responsive, without being too edgy. The mouse pad is rather large, and does not have physically separated buttons, so it I am still adjusting and trying to the right-click. Both feel somewhat roughed, at least in comparison to my Toshiba T230, which is neither a good or bad thing, it just offers more resistance and feedback to the touch. It should be noted that the page-up and -down do not have dedicated buttons, nor does the end/start (so useful to navigate lines of code). However, the use of &lt;code&gt;fn + arrows&lt;/code&gt; solves the problem.&lt;/p&gt;
-
-&lt;h3&gt;Sound&lt;/h3&gt;
-
-&lt;p&gt;Good enough. This is a laptop, not a sound system. Scracth that, after some more testing, the sound is loud and clear. Very decent (for a laptop of course).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;battery life&lt;/strong&gt;&lt;br&gt;
-It looks like I can squeeze 5 hours out of it easily, but it is too early to tell.&lt;/p&gt;
-
-&lt;h3&gt;Dock&lt;/h3&gt;
-
-&lt;p&gt;I also got a Dell dock with it, because let&amp;#39;s face it, 2 USB entries is just low, and I am connected to a server most of the time and prefer to do it over an ethernet connection for stability. From what I tested so far, the sound and display entries of the dock do not work. On the other hand, the USB and the ethernet work.&lt;/p&gt;
-
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;All in all I am very happy with my new shinny Ubuntu ultrabook. And I stress ultra because coming from a 4 year old laptop (still working well) with less than 2 kg, I cannot entertain the thought of not having a light laptop and the XPS13 is the perfect upgrade to my Toshiba T230.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 08 Jan 2015 19:12:38 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/08/new-shiny-toy/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/08/new-shiny-toy/</guid>
-        
-        <category>hardware</category>
-        
-        <category>linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>The &quot;p&quot; problem in R plots, or when a dot is a font in inkscape</title>
-        <description>&lt;p&gt;My graphics/figure workflow generally involves plotting something in R, saving it as a pdf (+png if writing a report with &lt;em&gt;Rmarkdown&lt;/em&gt;), followed by some manual editing with &lt;a href=&quot;https://inkscape.org/&quot;&gt;Inkscape&lt;/a&gt;. Inkscape is a free, as in speech &lt;strong&gt;and&lt;/strong&gt; beer, vector graphics editor - think of a non-commercial Illustrator - and it has very very useful since most of the time I don&amp;#39;t have access to Illustrator, through a combination of working mostly in Linux and the groups not paying for a license. No matter as Inkscape serves me well, including for personal use.&lt;/p&gt;
-
-&lt;h2&gt;Problem&lt;/h2&gt;
-
-&lt;p&gt;Back to the science. There is a quick with R plots: by default plots save symbols as fonts &lt;a href=&quot;http://en.wikipedia.org/wiki/Dingbat&quot;&gt;dingbats font&lt;/a&gt;. This means that when opening a pdf created with R in Inkscape (or Illustrator), points are (correctly) displayed as &amp;quot;p&amp;quot;. Even though this is technically correct, it is a nightmare when editing a figure last minute before a presentation.&lt;/p&gt;
-
-&lt;h2&gt;Solution&lt;/h2&gt;
-
-&lt;p&gt;Set set the option &lt;code&gt;r useDingbats = FALSE&lt;/code&gt; when saving the plot:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;dat &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dat&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-pdf&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;plot.pdf&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; useDingbats &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-plot&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dat&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
-dev.off&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Or even better, make use of Rprofile for more than &lt;a href=&quot;http://movingtothedarkside.wordpress.com/2015/01/05/nerd-up-your-r/&quot;&gt;witty R quotes&lt;/a&gt;, adding to it the line &lt;code&gt;grDevices::pdf.optionspdf.options(useDingbats = FALSE)&lt;/code&gt;. Like this, you will not have to remember this every time a plot is saved. And if you are like me, this will happen often - both the saving and the forgetting.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.inkscapeforum.com/viewtopic.php?f=5&amp;amp;t=7581&quot;&gt;Source1&lt;/a&gt;&lt;br&gt;
-&lt;a href=&quot;https://support.rstudio.com/hc/communities/public/questions/200664843-Problem-reading-exported-PDFs-in-other-programs&quot;&gt;Source2&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 06 Jan 2015 10:55:25 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/06/the-p-problem-in-r-plots-or-when-a-dot-is-a-font-in-inkscape/</guid>
-        
-        <category>Inkscape</category>
-        
-        <category>plots</category>
-        
-        <category>R</category>
         
         
       </item>
