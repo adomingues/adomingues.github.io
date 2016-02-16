@@ -24,4 +24,4 @@ Find me on [Google+][google] / [Github][github] or just drop a line at
 [pwf]: http://processwire.com/talk
 [jekyll]: http://jekyllrb.com
 [github]: https://github.com/adomingues
-[google]: google.com/+AntónioMigueldeJesusDomingues
+[google]: https://google.com/+AntónioMigueldeJesusDomingues
