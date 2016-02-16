@@ -3,42 +3,42 @@
   <channel>
     <title></title>
     <description>Leaving the Pipette for a Keyboard.</description>
-    <link>http://127.0.0.1:4000/</link>
-    <atom:link href="http://127.0.0.1:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Feb 2016 17:07:27 +0100</pubDate>
-    <lastBuildDate>Tue, 16 Feb 2016 17:07:27 +0100</lastBuildDate>
+    <link>http://adomingues.github.io/</link>
+    <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Tue, 16 Feb 2016 18:34:54 +0100</pubDate>
+    <lastBuildDate>Tue, 16 Feb 2016 18:34:54 +0100</lastBuildDate>
     <generator>Jekyll v3.0.3</generator>
     
       <item>
         <title>Testing for over-representation of anything</title>
         <description>&lt;p&gt;Recently I wrote a post on how to test for &lt;a href=&quot;http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/&quot;&gt;chromosome over-representation&lt;/a&gt; on a list of genes. The solution, which I thought it was clever at the time, can be simpled to be applied to test if overlap between two lists of genes is significant. Let’s use the pasilla data again:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;javascript
-var s = &quot;JavaScript syntax highlighting&quot;;
-alert(s);
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;# library(&quot;Biobase&quot;)
+library(&quot;pasilla&quot;)
+library(&quot;Biobase&quot;)
+library(&quot;DESeq&quot;)
 
-&lt;p&gt;```R
-library(“pasilla”)
-library(“Biobase”)
-library(“DESeq”)
-data(“pasillaGenes”)&lt;/p&gt;
+data(&quot;pasillaGenes&quot;)
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;geneset1 &amp;lt;- sample(rownames(counts(pasillaGenes)), 2500)
-geneset2 &amp;lt;- sample(rownames(counts(pasillaGenes)), 3500)&lt;/p&gt;
+&lt;p&gt;From that we can select two list of genes to test for overlap significance using my homemade approach (fisher exact test, &lt;code&gt;fisher.test&lt;/code&gt;):&lt;/p&gt;
 
-&lt;p&gt;universe &amp;lt;- length(
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;geneset1 &amp;lt;- sample(rownames(counts(pasillaGenes)), 2500)
+geneset2 &amp;lt;- sample(rownames(counts(pasillaGenes)), 3500)
+
+universe &amp;lt;- length(
    unique(rownames(counts(pasillaGenes)))
-   )&lt;/p&gt;
+   )
 
-&lt;p&gt;common &amp;lt;- length(
+common &amp;lt;- length(
    intersect(
       unique(geneset1),
       unique(geneset2)
       )
-   )&lt;/p&gt;
+   )
 
-&lt;p&gt;mat &amp;lt;- matrix(
+
+mat &amp;lt;- matrix(
    c(
       universe - length(union(geneset1, geneset2)),
       length(setdiff(geneset1, geneset2)),
@@ -46,45 +46,43 @@ geneset2 &amp;lt;- sample(rownames(counts(pasillaGenes)), 3500)&lt;/p&gt;
       length(intersect(geneset1, geneset2))
       ),
    nrow=2
-   )&lt;/p&gt;
+   )
 
-&lt;p&gt;fr &amp;lt;- fisher.test(mat, alternative=”greater”)
+fr &amp;lt;- fisher.test(mat, alternative=&quot;greater&quot;)
 fr
-```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Since this a random set of genes, it is not surprising that there is no overlap. This works fairly well and it could even be wrapped in a nice function. Yep, someone else has done &lt;a href=&quot;http://rpackages.ianhowson.com/bioc/GeneOverlap/man/GeneOverlap.html&quot;&gt;it&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;geneoverlap&quot;&gt;GeneOverlap&lt;/h1&gt;
 
-&lt;p&gt;amongst other things, including visualization of overlaps, this package has a  great function, &lt;code&gt;testGeneOverlap&lt;/code&gt;, which uses an object created with &lt;code&gt;newGeneOverlap&lt;/code&gt;, that does exactly the above:&lt;/p&gt;
+&lt;p&gt;Amongst other things, including visualization of overlaps, this package has a  great function, &lt;code&gt;testGeneOverlap&lt;/code&gt;, which uses an object created with &lt;code&gt;newGeneOverlap&lt;/code&gt;, that does exactly the above:&lt;/p&gt;
 
-&lt;p&gt;```
-library(GeneOverlap)
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;library(GeneOverlap)
 overl &amp;lt;- newGeneOverlap(
    unique(geneset1),
    unique(geneset2),
-   genome.size=universe)&lt;/p&gt;
+   genome.size=universe)
 
-&lt;p&gt;overl &amp;lt;- testGeneOverlap(overl)
+overl &amp;lt;- testGeneOverlap(overl)
 print(overl)
-```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-## Detailed information about this GeneOverlap object:
-## listA size=2500, e.g. FBgn0010355 FBgn0004171 FBgn0023097
-## listB size=3500, e.g. FBgn0015796 FBgn0039741 FBgn0038890
-## Intersection size=617, e.g. FBgn0053468 FBgn0035298 FBgn0051729
-## Union size=5383, e.g. FBgn0010355 FBgn0004171 FBgn0023097
+&lt;pre&gt;&lt;code&gt;## Detailed information about this GeneOverlap object:
+## listA size=2500, e.g. FBgn0031233 FBgn0035504 FBgn0050468
+## listB size=3500, e.g. FBgn0035004 FBgn0085756 FBgn0036820
+## Intersection size=583, e.g. FBgn0015805 FBgn0038159 FBgn0052354
+## Union size=5417, e.g. FBgn0031233 FBgn0035504 FBgn0050468
 ## Genome size=14470
 ## # Contingency Table:
 ##      notA  inA
-## notB 9087 1883
-## inB  2883  617
-## Overlapping p-value=0.27
-## Odds ratio=1.0
+## notB 9053 1917
+## inB  2917  583
+## Overlapping p-value=0.87
+## Odds ratio=0.9
 ## Overlap tested using Fisher&#39;s exact test (alternative=greater)
 ## Jaccard Index=0.1
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;And the results is the same. However, &lt;code&gt;GeneOverlap&lt;/code&gt; also outputs the results of a few more tests that can be quite useful:&lt;/p&gt;
 
@@ -95,8 +93,8 @@ print(overl)
 &lt;p&gt;The explanations are also quite nice for beginners. Great Bioconductor package.&lt;/p&gt;
 </description>
         <pubDate>Sun, 14 Feb 2016 19:02:00 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2016/02/14/test-gene-overlap/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2016/02/14/test-gene-overlap/</guid>
+        <link>http://adomingues.github.io/2016/02/14/test-gene-overlap/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/02/14/test-gene-overlap/</guid>
         
         <category>R</category>
         
@@ -113,80 +111,78 @@ print(overl)
 
 &lt;h1 id=&quot;problem&quot;&gt;Problem&lt;/h1&gt;
 
-&lt;p&gt;Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - everything after will have plot names which are alcd ..
+&lt;p&gt;Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - everything after will have plot names which are alcd ..&lt;br /&gt;
 most presentation/publication ready, so one last thing to change manually.&lt;/p&gt;
 
 &lt;h1 id=&quot;st-step-merge&quot;&gt;1st step: merge&lt;/h1&gt;
 
-&lt;p&gt;```bash
-PROJECT=’my_project’&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;PROJECT=&#39;my_project&#39;
 
-&lt;h1 id=&quot;create-project-folder&quot;&gt;create project folder&lt;/h1&gt;
-&lt;p&gt;mkdir -p ${PROJECT}/data/reads/03_December_2015
-cd ${PROJECT}/data/reads/03_December_2015&lt;/p&gt;
+# create project folder
+mkdir -p ${PROJECT}/data/reads/03_December_2015
+cd ${PROJECT}/data/reads/03_December_2015
 
-&lt;h1 id=&quot;copy-original-reads---these-will-always-be-kept&quot;&gt;copy original reads - these will always be kept!&lt;/h1&gt;
-&lt;p&gt;rsync -r -t -x -v –progress -u -l -z -s /fsimb/exchange/imb-genomicscf/AG_Ketting/imb_ketting_2015_22/ ./&lt;/p&gt;
+# copy original reads - these will always be kept!
+rsync -r -t -x -v --progress -u -l -z -s /fsimb/exchange/imb-genomicscf/AG_Ketting/imb_ketting_2015_22/ ./
 
-&lt;h1 id=&quot;merge-the-reads-in-parallel-taking-advantage-of-the-cluster&quot;&gt;merge the reads in parallel taking advantage of the cluster&lt;/h1&gt;
-&lt;p&gt;mkdir -p logs
-for f in $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”);
+# merge the reads in parallel taking advantage of the cluster
+mkdir -p logs
+for f in $(find ./ -type d -name &quot;*imb*&quot;);
 do
     echo $f
-    bsub -q short -n 1 -app Reserve3G -o logs/output.txt -J logs/mergeFastQ_“$f” -e logs/mergeFastQ_“$f”.err.log mergeFastQ.sh $f “single”
-done&lt;/p&gt;
+    bsub -q short -n 1 -app Reserve3G -o logs/output.txt -J logs/mergeFastQ_&quot;$f&quot; -e logs/mergeFastQ_&quot;$f&quot;.err.log mergeFastQ.sh $f &quot;single&quot;
+done
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This will call &lt;code&gt;mergeFastQ.sh&lt;/code&gt; that changes to each sample directory and merges the files therein (save it in a folder that is on your &lt;code&gt;$PATH&lt;/code&gt;):&lt;/p&gt;
 
-&lt;p&gt;```bash
-#!/usr/bin/env bash&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;#!/usr/bin/env bash
 
-&lt;h1 id=&quot;mergefastqcsh&quot;&gt;mergeFastQC.sh&lt;/h1&gt;
-&lt;p&gt;# António Domingues
-# 22.01.2015&lt;/p&gt;
+# mergeFastQC.sh
+# António Domingues
+# 22.01.2015
 
-&lt;p&gt;cd $1
-# outname=&lt;code&gt;echo $1 | sed -r &#39;s/_[a-Z]{6}_.*(_R[1-2]).*$/\1/&#39;&lt;/code&gt;
+cd $1
+# outname=`echo $1 | sed -r &#39;s/_[a-Z]{6}_.*(_R[1-2]).*$/\1/&#39;`
 outname=${PWD##*/}
 echo $outname
-# read1=&lt;code&gt;find -name &quot;*R1*.fastq.gz&quot;&lt;/code&gt;
-# read2=&lt;code&gt;find -name &quot;*R2*.fastq.gz&quot;&lt;/code&gt;&lt;/p&gt;
+# read1=`find -name &quot;*R1*.fastq.gz&quot;`
+# read2=`find -name &quot;*R2*.fastq.gz&quot;`
 
-&lt;p&gt;if [ “$2” = “paired” ]; then
-   echo “Paired”&lt;/p&gt;
 
-&lt;p&gt;cat &lt;em&gt;_R1_&lt;/em&gt;.fastq.gz &amp;gt; “$outname”_R1.fastq.gz&lt;/p&gt;
+if [ &quot;$2&quot; = &quot;paired&quot; ]; then
+   echo &quot;Paired&quot;
 
-&lt;p&gt;cat &lt;em&gt;_R2_&lt;/em&gt;.fastq.gz &amp;gt; “$outname”_R2.fastq.gz&lt;/p&gt;
+   cat *_R1_*.fastq.gz &amp;gt; &quot;$outname&quot;_R1.fastq.gz
 
-&lt;p&gt;elif [ “$2” = “single” ]; then
-   echo “Single”&lt;/p&gt;
+   cat *_R2_*.fastq.gz &amp;gt; &quot;$outname&quot;_R2.fastq.gz
 
-&lt;p&gt;cat &lt;em&gt;_R1_&lt;/em&gt;.fastq.gz &amp;gt; “$outname”.fastq.gz&lt;/p&gt;
+elif [ &quot;$2&quot; = &quot;single&quot; ]; then
+   echo &quot;Single&quot;
 
-&lt;p&gt;fi
-```&lt;/p&gt;
+   cat *_R1_*.fastq.gz &amp;gt; &quot;$outname&quot;.fastq.gz
+
+fi
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1 id=&quot;nd-step-rename&quot;&gt;2nd step: rename&lt;/h1&gt;
 
 &lt;p&gt;Once the merge is confirmed, merged files were renamed and moved to a merge folder. Original files were compressed in a folder.&lt;/p&gt;
 
-&lt;p&gt;```shell&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;
+mkdir -p pooled
 
-&lt;p&gt;mkdir -p pooled&lt;/p&gt;
-
-&lt;p&gt;for f in $(find ./ -type f -name “Sample&lt;em&gt;.fastq.gz”);
+for f in $(find ./ -type f -name &quot;Sample*.fastq.gz&quot;);
 do
-    n=”pooled/”$(echo &lt;code&gt;basename $f&lt;/code&gt; | sed -e ‘s/Sample_imb_ketting_2015_22_[0-9]&lt;/em&gt;_//’)
+    n=&quot;pooled/&quot;$(echo `basename $f` | sed -e &#39;s/Sample_imb_ketting_2015_22_[0-9]*_//&#39;)
     mv $f $n
-done&lt;/p&gt;
+done
 
-&lt;h1 id=&quot;compress-the-original-reads-in-tar-and-cleans-up&quot;&gt;compress the original reads in tar and cleans up&lt;/h1&gt;
-&lt;p&gt;tar cf Sample_imb_ketting_2015_20.tar $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”)
-rm -rf $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”)
-```&lt;/p&gt;
+# compress the original reads in tar and cleans up
+tar cf Sample_imb_ketting_2015_20.tar $(find ./ -type d -name &quot;*imb*&quot;)
+rm -rf $(find ./ -type d -name &quot;*imb*&quot;)
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1 id=&quot;rd-step-processing&quot;&gt;3rd step: processing&lt;/h1&gt;
 
@@ -194,8 +190,8 @@ rm -rf $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”)
 
 </description>
         <pubDate>Thu, 03 Dec 2015 00:00:00 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2015/12/03/renaming-and-merging-fastq/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/12/03/renaming-and-merging-fastq/</guid>
+        <link>http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</guid>
         
         <category>bash</category>
         
@@ -217,97 +213,82 @@ rm -rf $(find ./ -type d -name “&lt;em&gt;imb&lt;/em&gt;”)
 &lt;h1 id=&quot;solution-1&quot;&gt;solution 1&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&quot;https://stat.ethz.ch/pipermail/r-help/2008-July/167226.html&quot;&gt;Source&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;r
-x=c(1:10^6)
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;x=c(1:10^6)
 your.number=90000.43
 which(abs(x-your.number)==min(abs(x-your.number)))
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-## [1] 90000
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 90000
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1 id=&quot;solution-2&quot;&gt;solution 2&lt;/h1&gt;
 &lt;p&gt;Same source as before.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;r
-which.min(abs(x-your.number))
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;which.min(abs(x-your.number))
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-## [1] 90000
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 90000
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1 id=&quot;solution-3&quot;&gt;solution 3&lt;/h1&gt;
 &lt;p&gt;From &lt;a href=&quot;http://stackoverflow.com/questions/20133344/find-closest-value-in-a-vector-with-binary-search&quot;&gt;here&lt;/a&gt;. It requires &lt;code&gt;data.table&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;r
-install.packages(&quot;data.table&quot;)
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;install.packages(&quot;data.table&quot;)
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-## Installing package into &#39;/home/adomingu/R/x86_64-pc-linux-gnu-library/3.2&#39;
+&lt;pre&gt;&lt;code&gt;## Installing package into &#39;/home/adomingu/R/x86_64-pc-linux-gnu-library/3.2&#39;
 ## (as &#39;lib&#39; is unspecified)
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;```r
-library(data.table)
-dt = data.table(x, val = x) # you’ll see why val is needed in a sec
-setattr(dt, “sorted”, “x”)  # let data.table know that w is sorted
-setkey(dt, x) # sorts the data&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;library(data.table)
+dt = data.table(x, val = x) # you&#39;ll see why val is needed in a sec
+setattr(dt, &quot;sorted&quot;, &quot;x&quot;)  # let data.table know that w is sorted
+setkey(dt, x) # sorts the data
 
-&lt;h1 id=&quot;binary-search-and-roll-to-the-nearest-neighbour&quot;&gt;binary search and “roll” to the nearest neighbour&lt;/h1&gt;
-&lt;p&gt;# In the final expression the val column will have the you’re looking for.
-dt[J(your.number), roll = “nearest”]
-```&lt;/p&gt;
+# binary search and &quot;roll&quot; to the nearest neighbour
+# In the final expression the val column will have the you&#39;re looking for.
+dt[J(your.number), roll = &quot;nearest&quot;]
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-##        x   val
+&lt;pre&gt;&lt;code&gt;##        x   val
 ## 1: 90000 90000
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h1 id=&quot;speed-comparison&quot;&gt;Speed comparison&lt;/h1&gt;
 
-&lt;p&gt;&lt;code&gt;r
-## time:
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;## time:
 # solution1
 system.time(which(abs(x-your.number)==min(abs(x-your.number))))
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-##    user  system elapsed 
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
 ##   0.024   0.020   0.043
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;r
-# solution2
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;# solution2
 system.time(which.min(abs(x-your.number)))
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-##    user  system elapsed 
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
 ##   0.008   0.004   0.012
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;r
-# solution3
+&lt;pre&gt;&lt;code class=&quot;language-r&quot;&gt;# solution3
 system.time(dt[J(your.number), roll = &quot;nearest&quot;])
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;
-##    user  system elapsed 
+&lt;pre&gt;&lt;code&gt;##    user  system elapsed 
 ##   0.000   0.000   0.001
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;To my surprise the base R functions perform pretty well, though in really large datasets &lt;code&gt;data.table&lt;/code&gt; is worth a punt.&lt;/p&gt;
 </description>
         <pubDate>Thu, 24 Sep 2015 00:00:00 +0200</pubDate>
-        <link>http://127.0.0.1:4000/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
+        <link>http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
         
         <category>R</category>
         
@@ -318,7 +299,7 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
         <title>Table of results embed in a PDF</title>
         <description>&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;: This is a rant.&lt;/p&gt;
 
-&lt;p&gt;I had to run a quick analysis on someone else’s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:
+&lt;p&gt;I had to run a quick analysis on someone else’s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:&lt;br /&gt;
 &amp;gt; Great! Assuming the analysis is correct, I can poke around their data and compare/extract results that are relevant to my project.&lt;/p&gt;
 
 &lt;p&gt;That is where the fun ends. In this particular paper, they where kind enough to report the processed tables of results in a single PDF.&lt;/p&gt;
@@ -331,8 +312,8 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
 &lt;p&gt;Of course, I could have download the raw reads, QC, map, count, re-do the analysis, compare to the published results to make sure all is kosher, but having the table of DEG saves a lot time that we can focus on extracting biologically relevant insights. That is what science should be about and sharing knowledge, in the format of papers, should be a help in this endeavor and not an hindrance.&lt;/p&gt;
 </description>
         <pubDate>Thu, 16 Apr 2015 15:52:02 +0200</pubDate>
-        <link>http://127.0.0.1:4000/2015/04/16/rant-about-results-tables/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/04/16/rant-about-results-tables/</guid>
+        <link>http://adomingues.github.io/2015/04/16/rant-about-results-tables/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/rant-about-results-tables/</guid>
         
         <category>Jekyll</category>
         
@@ -357,8 +338,8 @@ library(directlabels)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 16 Apr 2015 11:32:22 +0200</pubDate>
-        <link>http://127.0.0.1:4000/2015/04/16/install-r-packages-from-source/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/04/16/install-r-packages-from-source/</guid>
+        <link>http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</guid>
         
         <category>R</category>
         
@@ -620,8 +601,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2015/03/19/chromosome-over-representation-in-DGE/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/03/19/chromosome-over-representation-in-DGE/</guid>
+        <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</guid>
         
         <category>R</category>
         
@@ -641,8 +622,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 &lt;p&gt;I won’t forget now.&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2015/03/18/local-jeckyll-build/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/03/18/local-jeckyll-build/</guid>
+        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
         
         <category>Jekyll</category>
         
@@ -669,8 +650,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2015/02/25/install-bioconductor-packages-from-svn/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/02/25/install-bioconductor-packages-from-svn/</guid>
+        <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
         
         
       </item>
@@ -693,8 +674,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
+        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>
@@ -740,11 +721,11 @@ do
     echo &amp;quot;---&amp;quot;
 done&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This basically the same script as that of Harold, but with a more complex parsing:&lt;br /&gt;
-- &lt;code&gt;sed -r &#39;s/(&quot;name&quot;: )/\n\1/g&#39;&lt;/code&gt; makes sure that the repo name is not at the start of each line;&lt;br /&gt;
-- &lt;code&gt;sed -r &#39;s/&quot;name&quot;: &quot;(.*)&quot;/\1/&#39;&lt;/code&gt;, removes the string “name” at the beginning of the line;&lt;br /&gt;
-- &lt;code&gt;sed -e &#39;s/{//&#39;&lt;/code&gt; removes a funny curly bracktet ar the start of the file;&lt;br /&gt;
-- &lt;code&gt;cut -f1 -d\&quot;&lt;/code&gt;, separates and keeps the actual repository name;&lt;br /&gt;
+&lt;p&gt;This basically the same script as that of Harold, but with a more complex parsing:  &lt;br /&gt;
+- &lt;code&gt;sed -r &#39;s/(&quot;name&quot;: )/\n\1/g&#39;&lt;/code&gt; makes sure that the repo name is not at the start of each line;  &lt;br /&gt;
+- &lt;code&gt;sed -r &#39;s/&quot;name&quot;: &quot;(.*)&quot;/\1/&#39;&lt;/code&gt;, removes the string “name” at the beginning of the line;  &lt;br /&gt;
+- &lt;code&gt;sed -e &#39;s/{//&#39;&lt;/code&gt; removes a funny curly bracktet ar the start of the file;  &lt;br /&gt;
+- &lt;code&gt;cut -f1 -d\&quot;&lt;/code&gt;, separates and keeps the actual repository name;  &lt;br /&gt;
 - &lt;code&gt;tr &#39;\n&#39; &#39; &#39; &#39;&lt;/code&gt; just removes the new line character creating a list of repository names to be looped.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Et voilá&lt;/em&gt;! There is probably some less convoluted away of going about it, probably involving regex, but in someone else’s wise words: “if you need regex to solve a problem, you now have 2 problems”.&lt;/p&gt;
@@ -753,8 +734,8 @@ done&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
-        <link>http://127.0.0.1:4000/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
-        <guid isPermaLink="true">http://127.0.0.1:4000/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
+        <link>http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
         
         <category>bash</category>
         
