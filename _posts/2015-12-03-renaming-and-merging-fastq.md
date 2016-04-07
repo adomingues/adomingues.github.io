@@ -12,12 +12,12 @@ published: true
 ---
 
 
-This is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blogThis is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blog.
+This is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blog.
+
 
 # Problem
 
-Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - everything after will have plot names which are alcd ..
-most presentation/publication ready, so one last thing to change manually. 
+Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - afterwards everything  will have plot names which are mostly presentation/publication ready, so one last thing to change manually. 
 
 
 # 1st step: merge
@@ -98,5 +98,3 @@ rm -rf $(find ./ -type d -name "*imb*")
 # 3rd step: processing
 
 Once we have this we start the removal of poor quality reads, fastQC, mapping, etc. For his I take advantage of the Institutes's pipelines, [NGSpipe2go](https://github.com/imbforge/NGSpipe2go), to which I added a small RNA-seq pipeline. You can download the whole thing [here](https://github.com/adomingues/NGSpipe2go) to your `${PROJECT}` folder and uncompress the zip file. Then to run you will only need one command: `bpipe run smallrnaseq_v0.1.txt data/reads/03_December_2015/*.fastq.gz`. All the required scripts and files should be accessible.
-
-

@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>Leaving the Pipette for a Keyboard.</description>
-    <link>http://0.0.0.0:4000/</link>
-    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 07 Apr 2016 14:06:52 +0200</pubDate>
-    <lastBuildDate>Thu, 07 Apr 2016 14:06:52 +0200</lastBuildDate>
+    <link>http://adomingues.github.io/</link>
+    <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 07 Apr 2016 14:13:44 +0200</pubDate>
+    <lastBuildDate>Thu, 07 Apr 2016 14:13:44 +0200</lastBuildDate>
     <generator>Jekyll v3.0.3</generator>
     
       <item>
@@ -29,8 +29,8 @@ bkill $j
 &lt;p&gt;&lt;code&gt;grep&lt;/code&gt; will capture the jobs with a particular name, also using patters if needed, and &lt;code&gt;awk&lt;/code&gt; will print the column with the job ids. &lt;code&gt;awk&lt;/code&gt; could have also been used to capture the relevant jobs, but I feel more comfortable using &lt;code&gt;grep&lt;/code&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 07 Apr 2016 13:47:02 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2016/04/07/kill-bsub-jobs/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/04/07/kill-bsub-jobs/</guid>
+        <link>http://adomingues.github.io/2016/04/07/kill-bsub-jobs/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/04/07/kill-bsub-jobs/</guid>
         
         <category>queue</category>
         
@@ -121,8 +121,8 @@ print(overl)
 &lt;p&gt;The explanations are also quite nice for beginners. Great Bioconductor package.&lt;/p&gt;
 </description>
         <pubDate>Sun, 14 Feb 2016 19:02:00 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2016/02/14/test-gene-overlap/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2016/02/14/test-gene-overlap/</guid>
+        <link>http://adomingues.github.io/2016/02/14/test-gene-overlap/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/02/14/test-gene-overlap/</guid>
         
         <category>R</category>
         
@@ -135,12 +135,11 @@ print(overl)
     
       <item>
         <title>Merge fastq sample from different lanes and rename them</title>
-        <description>&lt;p&gt;This is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blogThis is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blog.&lt;/p&gt;
+        <description>&lt;p&gt;This is something I need to do often and a collegue asked me how to do it herself. So the best way to share is to post it in the blog.&lt;/p&gt;
 
 &lt;h1 id=&quot;problem&quot;&gt;Problem&lt;/h1&gt;
 
-&lt;p&gt;Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - everything after will have plot names which are alcd ..&lt;br /&gt;
-most presentation/publication ready, so one last thing to change manually.&lt;/p&gt;
+&lt;p&gt;Quite often samples are sequenced in multiple lanes, or for whatever reason are split in multiple file, which we receive. Before processing, I like to join the fastq files and rename the at that point - afterwards everything  will have plot names which are mostly presentation/publication ready, so one last thing to change manually.&lt;/p&gt;
 
 &lt;h1 id=&quot;st-step-merge&quot;&gt;1st step: merge&lt;/h1&gt;
 
@@ -215,11 +214,10 @@ rm -rf $(find ./ -type d -name &quot;*imb*&quot;)
 &lt;h1 id=&quot;rd-step-processing&quot;&gt;3rd step: processing&lt;/h1&gt;
 
 &lt;p&gt;Once we have this we start the removal of poor quality reads, fastQC, mapping, etc. For his I take advantage of the Institutes’s pipelines, &lt;a href=&quot;https://github.com/imbforge/NGSpipe2go&quot;&gt;NGSpipe2go&lt;/a&gt;, to which I added a small RNA-seq pipeline. You can download the whole thing &lt;a href=&quot;https://github.com/adomingues/NGSpipe2go&quot;&gt;here&lt;/a&gt; to your &lt;code&gt;${PROJECT}&lt;/code&gt; folder and uncompress the zip file. Then to run you will only need one command: &lt;code&gt;bpipe run smallrnaseq_v0.1.txt data/reads/03_December_2015/*.fastq.gz&lt;/code&gt;. All the required scripts and files should be accessible.&lt;/p&gt;
-
 </description>
         <pubDate>Thu, 03 Dec 2015 00:00:00 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/12/03/renaming-and-merging-fastq/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/12/03/renaming-and-merging-fastq/</guid>
+        <link>http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</guid>
         
         <category>bash</category>
         
@@ -315,8 +313,8 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
 &lt;p&gt;To my surprise the base R functions perform pretty well, though in really large datasets &lt;code&gt;data.table&lt;/code&gt; is worth a punt.&lt;/p&gt;
 </description>
         <pubDate>Thu, 24 Sep 2015 00:00:00 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
+        <link>http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
         
         <category>R</category>
         
@@ -340,8 +338,8 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
 &lt;p&gt;Of course, I could have download the raw reads, QC, map, count, re-do the analysis, compare to the published results to make sure all is kosher, but having the table of DEG saves a lot time that we can focus on extracting biologically relevant insights. That is what science should be about and sharing knowledge, in the format of papers, should be a help in this endeavor and not an hindrance.&lt;/p&gt;
 </description>
         <pubDate>Thu, 16 Apr 2015 15:52:02 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</guid>
+        <link>http://adomingues.github.io/2015/04/16/rant-about-results-tables/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/rant-about-results-tables/</guid>
         
         <category>Jekyll</category>
         
@@ -366,8 +364,8 @@ library(directlabels)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 16 Apr 2015 11:32:22 +0200</pubDate>
-        <link>http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</guid>
+        <link>http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</guid>
         
         <category>R</category>
         
@@ -629,8 +627,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</guid>
+        <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</guid>
         
         <category>R</category>
         
@@ -650,8 +648,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 &lt;p&gt;I won’t forget now.&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</guid>
+        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
         
         <category>Jekyll</category>
         
@@ -678,8 +676,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</guid>
+        <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
         
         
       </item>
@@ -702,8 +700,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
+        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>
