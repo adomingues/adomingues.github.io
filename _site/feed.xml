@@ -3,11 +3,39 @@
   <channel>
     <title></title>
     <description>Leaving the Pipette for a Keyboard.</description>
-    <link>http://adomingues.github.io/</link>
-    <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 16 Feb 2016 18:34:54 +0100</pubDate>
-    <lastBuildDate>Tue, 16 Feb 2016 18:34:54 +0100</lastBuildDate>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 07 Apr 2016 14:06:52 +0200</pubDate>
+    <lastBuildDate>Thu, 07 Apr 2016 14:06:52 +0200</lastBuildDate>
     <generator>Jekyll v3.0.3</generator>
+    
+      <item>
+        <title>Kill all jobs with a name</title>
+        <description>&lt;p&gt;I had some jobs waiting in queue with non-consecutive job id numbers, but all with the same job name. Mistakes were made and they needed killing. A solution would be to copy-paste all the relevant job IDs and go:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;bkill 1001 1002 1030
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But where is the fun in that? (Not mention that mistake could have been made and unintended jobs might have been canceled).&lt;/p&gt;
+
+&lt;h1 id=&quot;solution&quot;&gt;Solution&lt;/h1&gt;
+
+&lt;p&gt;How to kill all jobs in queue with a certain name:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;j=`bjobs | grep bam2bw | awk &#39;{print $1}&#39;`
+bkill $j
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;grep&lt;/code&gt; will capture the jobs with a particular name, also using patters if needed, and &lt;code&gt;awk&lt;/code&gt; will print the column with the job ids. &lt;code&gt;awk&lt;/code&gt; could have also been used to capture the relevant jobs, but I feel more comfortable using &lt;code&gt;grep&lt;/code&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Apr 2016 13:47:02 +0200</pubDate>
+        <link>http://0.0.0.0:4000/2016/04/07/kill-bsub-jobs/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/04/07/kill-bsub-jobs/</guid>
+        
+        <category>queue</category>
+        
+        
+      </item>
     
       <item>
         <title>Testing for over-representation of anything</title>
@@ -93,8 +121,8 @@ print(overl)
 &lt;p&gt;The explanations are also quite nice for beginners. Great Bioconductor package.&lt;/p&gt;
 </description>
         <pubDate>Sun, 14 Feb 2016 19:02:00 +0100</pubDate>
-        <link>http://adomingues.github.io/2016/02/14/test-gene-overlap/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2016/02/14/test-gene-overlap/</guid>
+        <link>http://0.0.0.0:4000/2016/02/14/test-gene-overlap/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2016/02/14/test-gene-overlap/</guid>
         
         <category>R</category>
         
@@ -190,8 +218,8 @@ rm -rf $(find ./ -type d -name &quot;*imb*&quot;)
 
 </description>
         <pubDate>Thu, 03 Dec 2015 00:00:00 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/12/03/renaming-and-merging-fastq/</guid>
+        <link>http://0.0.0.0:4000/2015/12/03/renaming-and-merging-fastq/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/12/03/renaming-and-merging-fastq/</guid>
         
         <category>bash</category>
         
@@ -287,8 +315,8 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
 &lt;p&gt;To my surprise the base R functions perform pretty well, though in really large datasets &lt;code&gt;data.table&lt;/code&gt; is worth a punt.&lt;/p&gt;
 </description>
         <pubDate>Thu, 24 Sep 2015 00:00:00 +0200</pubDate>
-        <link>http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
+        <link>http://0.0.0.0:4000/2015/09/24/finding-closest-element-to-a-number-in-a-list/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/09/24/finding-closest-element-to-a-number-in-a-list/</guid>
         
         <category>R</category>
         
@@ -312,8 +340,8 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
 &lt;p&gt;Of course, I could have download the raw reads, QC, map, count, re-do the analysis, compare to the published results to make sure all is kosher, but having the table of DEG saves a lot time that we can focus on extracting biologically relevant insights. That is what science should be about and sharing knowledge, in the format of papers, should be a help in this endeavor and not an hindrance.&lt;/p&gt;
 </description>
         <pubDate>Thu, 16 Apr 2015 15:52:02 +0200</pubDate>
-        <link>http://adomingues.github.io/2015/04/16/rant-about-results-tables/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/rant-about-results-tables/</guid>
+        <link>http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/rant-about-results-tables/</guid>
         
         <category>Jekyll</category>
         
@@ -338,8 +366,8 @@ library(directlabels)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 16 Apr 2015 11:32:22 +0200</pubDate>
-        <link>http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/04/16/install-r-packages-from-source/</guid>
+        <link>http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/04/16/install-r-packages-from-source/</guid>
         
         <category>R</category>
         
@@ -601,8 +629,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</guid>
+        <link>http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/19/chromosome-over-representation-in-DGE/</guid>
         
         <category>R</category>
         
@@ -622,8 +650,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 &lt;p&gt;I won’t forget now.&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
+        <link>http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/03/18/local-jeckyll-build/</guid>
         
         <category>Jekyll</category>
         
@@ -650,8 +678,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
+        <link>http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/02/25/install-bioconductor-packages-from-svn/</guid>
         
         
       </item>
@@ -674,74 +702,8 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
 
 </description>
         <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Clone all repositories from a user (bitbucket)</title>
-        <description>&lt;p&gt;Now that I have computer, the next step is to install everything I use on daily basis, and set-up my projects space. This involves cloning all my repositories. I could do this manually one by one, but what is the fun in that?&lt;/p&gt;
-
-&lt;h2 id=&quot;solution-1&quot;&gt;Solution 1&lt;/h2&gt;
-
-&lt;p&gt;My rule is that “if there is a way to make some task more efficient programatically, some one else thought of it before, so google it before starting scripting”. So I did, and of course someone else came up with a &lt;a href=&quot;http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/&quot;&gt;solution&lt;/a&gt;:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;#!/bin/bash
-#Script to get all repositories under a user from bitbucket
-#Usage: getAllRepos.sh [username]
-## credit to Harold Soh
- 
-curl -u ${1}  https://api.bitbucket.org/1.0/users/${1} &amp;gt; repoinfo
-for repo_name in `grep \&amp;quot;name\&amp;quot; repoinfo | cut -f4 -d\&amp;quot;`
-do
-    hg clone ssh://hg@bitbucket.org/${1}/$repo_name
-done&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;This however did not work perfectly for me. When downloading the rep info, the json config comes poorly formatted as a single line. This meant that the line &lt;code&gt;grep \&quot;name\&quot; repoinfo | cut -f4 -d\&quot;&lt;/code&gt; was return &lt;code&gt;scm&lt;/code&gt;, which obviously is not what one of my repositories.&lt;/p&gt;
-
-&lt;h2 id=&quot;fix&quot;&gt;Fix&lt;/h2&gt;
-
-&lt;p&gt;So I hacked a little and came up with a not-very-elegant-but-working-solution to parse the json:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;#!/bin/bash
-#Script to get all repositories under a user from bitbucket
-#Usage: getAllRepos.sh [username]
-#source: http://haroldsoh.com/2011/10/07/clone-all-repos-from-a-bitbucket-source/
- 
-curl -u ${1} https://api.bitbucket.org/1.0/users/${1} &amp;gt; repoinfo
-# curl -u adomingues https://api.bitbucket.org/1.0/users/adomingues
-# cat repoinfo
- 
-for repo_name in `cat repoinfo | sed -r &amp;#39;s/(&amp;quot;name&amp;quot;: )/\n\1/g&amp;#39; | sed -r &amp;#39;s/&amp;quot;name&amp;quot;: &amp;quot;(.*)&amp;quot;/\1/&amp;#39; | sed -e &amp;#39;s/{//&amp;#39; | cut -f1 -d\&amp;quot; | tr &amp;#39;\n&amp;#39; &amp;#39; &amp;#39;`
-do
-    echo &amp;quot;Cloning &amp;quot; $repo_name
-    hg clone https://${1}@bitbucket.org/${1}/$repo_name
-    echo &amp;quot;---&amp;quot;
-done&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;This basically the same script as that of Harold, but with a more complex parsing:  &lt;br /&gt;
-- &lt;code&gt;sed -r &#39;s/(&quot;name&quot;: )/\n\1/g&#39;&lt;/code&gt; makes sure that the repo name is not at the start of each line;  &lt;br /&gt;
-- &lt;code&gt;sed -r &#39;s/&quot;name&quot;: &quot;(.*)&quot;/\1/&#39;&lt;/code&gt;, removes the string “name” at the beginning of the line;  &lt;br /&gt;
-- &lt;code&gt;sed -e &#39;s/{//&#39;&lt;/code&gt; removes a funny curly bracktet ar the start of the file;  &lt;br /&gt;
-- &lt;code&gt;cut -f1 -d\&quot;&lt;/code&gt;, separates and keeps the actual repository name;  &lt;br /&gt;
-- &lt;code&gt;tr &#39;\n&#39; &#39; &#39; &#39;&lt;/code&gt; just removes the new line character creating a list of repository names to be looped.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Et voilá&lt;/em&gt;! There is probably some less convoluted away of going about it, probably involving regex, but in someone else’s wise words: “if you need regex to solve a problem, you now have 2 problems”.&lt;/p&gt;
-
-&lt;p&gt;The only minor inconvenience is that I need to input my password for each repository. There might be a solution for this, but I have not found it yet.&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 10 Jan 2015 13:12:15 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/10/clone-all-repositories-from-a-user-bitbucket/</guid>
-        
-        <category>bash</category>
-        
-        <category>bitbucket</category>
-        
-        <category>mercurial</category>
+        <link>http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>

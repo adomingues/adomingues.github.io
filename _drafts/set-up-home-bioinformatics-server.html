@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="date" content="2016-02-14 19:02:00.000000000 +01:00">
+<meta name="layout" content="post">
+<meta name="categories" content="[]">
+<meta name="tags" content=""><style></style><title>Hot to set-up a home bioinformatics server (old laptop)</title></head><body><article class="markdown-body"><ul>
+<li>R</li>
+<li>Bioconductor</li>
+<li>Fisher<br />
+status: publish<br />
+type: post<br />
+published: true</li>
+</ul>
+<hr />
+<p>WARNING: it should go without saying, but I will say it nonetheless. If you value anything in your current set-up, stop now. If you continue do a back-up before starting. Better yet. When was the last time you backed-up your files? Do it again now regardless.  </p>
+<h1 id="download-iso"><a name="user-content-download-iso" href="#download-iso" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Download iso</h1>
+<p>The iso can be found in <a href="https://www.debian.org/CD/netinst/">debian-8.3.0-amd64-netinst.iso</a>, and I choose the <a href="http://cdimage.debian.org/debian-cd/8.3.0/amd64/iso-cd/debian-8.3.0-amd64-netinst.iso">latest (minimal) version</a></p>
+<p>During the installation there wher issue with properitary drivers, so I had to donwload a <a href="">version</a> that includes these.</p>
+<h1 id="create-liveusb"><a name="user-content-create-liveusb" href="#create-liveusb" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>create liveUSB</h1>
+<p>I used this <a href="http://www.ubuntu.com/download/desktop/create-a-usb-stick-on-ubuntu">tutoriall</a>  because I am using Ubuntu. Unibotin is also a good option for other OS.</p>
+<h1 id="install-debian-from-usb"><a name="user-content-install-debian-from-usb" href="#install-debian-from-usb" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Install Debian from USB</h1>
+<p>To boot from the USB press F12 when the computer starts, and choose USB in the boot menu options. Then I followed the instructions <a href="https://www.howtoforge.com/perfect-server-debian-wheezy-apache2-bind-dovecot-ispconfig-3">here</a> (graphical install). I choose English (UK) as the language, Germany as a location, and Portuguese keyboard layout (yes, that is weird).</p>
+<h1 id="graphical-interface"><a name="user-content-graphical-interface" href="#graphical-interface" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>graphical interface</h1>
+<p><a href="http://docs.xfce.org/xfce/getting-started">Xfce</a> is a lightweight interface useful for under-powered and old computers. Install with:</p>
+<p><pre><code class="bash">sudo apt-get update &amp;&amp;
+sudo apt-get install -y xfce4 xfce4-goodies
+</code></pre><br />
+ To start: <code>sudo startxfce4</code>. <code>sudo</code> is not required but it might useful to mount external drives. Exit by logging out.</p>
+<h1 id="reboot-from-command-line"><a href="http://askubuntu.com/questions/187071/how-do-i-restart-shutdown-from-a-terminal">reboot from command-line</a></h1>
+<p><code>sudo reboot</code></p></article></body></html>
