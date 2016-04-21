@@ -5,9 +5,85 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 07 Apr 2016 14:13:44 +0200</pubDate>
-    <lastBuildDate>Thu, 07 Apr 2016 14:13:44 +0200</lastBuildDate>
+    <pubDate>Thu, 21 Apr 2016 13:16:10 +0200</pubDate>
+    <lastBuildDate>Thu, 21 Apr 2016 13:16:10 +0200</lastBuildDate>
     <generator>Jekyll v3.0.3</generator>
+    
+      <item>
+        <title>Repeat mapping</title>
+        <description>&lt;p&gt;Most of the projects I am involved with deal with mapping reads to repeat regions of the genome. Specifically transposons. While not all genomic repeats have &lt;strong&gt;exactly&lt;/strong&gt; the same sequence, it is nonetheless challenging to accurately map as many reads as possible - more reads mapped -&amp;gt; more information (for the same €€).&lt;/p&gt;
+
+&lt;h1 id=&quot;what-is-the-problem&quot;&gt;What is the problem?&lt;/h1&gt;
+
+&lt;p&gt;The issue is what to with reads whose mapping location is uncertain, or rather that map to more than one genomic position. What to do next? We can overall find in the literature two consensual ways to deal with this problem (at the level of mapping):&lt;br /&gt;
+- retain only reads that map one (unique mappers) gives us confidence about the read position in exchange for loss of information;&lt;br /&gt;
+- randomly assign to a single location a read that map multiple times (multi-mappers), ensuring increased read numbers at the expense of uncertainty about the origin of the reads.&lt;/p&gt;
+
+&lt;p&gt;There also post-mapping strategies to quantify expression of repeat regions. For instance one can allow random assignment of multimapping reads and simply quantify classes of Repeats. The assumption here is that if a read maps to multiple times with the same confidence it will probably be to different copies of the &lt;em&gt;same&lt;/em&gt; element. Exact genomic location is not important, only the element. ERANGE on the other hand, uses uniquely mapping reads to calculate which repeats (genes) are more likely to be expressed, and by how much, and then assigns the multimapping reads to genes based on the estimate.&lt;/p&gt;
+
+&lt;p&gt;Regardless, there will genes with so many copies with almost identical sequences in the genome, that it will be virtually impossible to map reads (or quantify expression) to any of those copies. This is the &lt;em&gt;black hole&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;beware-of-dragons&quot;&gt;Beware of Dragons&lt;/h1&gt;
+
+&lt;p&gt;The above introduction serves to say that when it comes to the mapping in repeat sequences/regions, there is no right way of doing it, and compromises will have to be taken. These choices should always be present when analyzing and interpreting the downstream results.&lt;/p&gt;
+
+&lt;p&gt;So, there is no &lt;em&gt;right&lt;/em&gt; solution for this problem, but could there be a (or many) wrong way(s) of doing it?&lt;/p&gt;
+
+&lt;p&gt;There are certainly two papers that I am aware of that came under scrutiny for the strategy used when dealing with reads mapping to repetitive regions. The most recent one, &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/24998597&quot;&gt;Samans et al&lt;/a&gt;, was dissected &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/27046835&quot;&gt;here&lt;/a&gt;. I will not review in detail the arguments, but the main contention is that by using the bowtie parameter &lt;code&gt;-a&lt;/code&gt; Saman et al. is counting each multimapping read multiple times. Basically if a read maps to 2 positions in the genome, it will be assigned to both positions.&lt;/p&gt;
+
+&lt;p&gt;1 becomes 2.&lt;/p&gt;
+
+&lt;p&gt;2 can be hundreds.&lt;/p&gt;
+
+&lt;p&gt;As we can expect, Royo et al. when re-analysing the data shows that this affects disproportionately reads mapping to repeat regions, with a large increase in mappings to these regions. This is significant because Saman et al. found a strong enrichment of nucleosomes at repetitive regions. Two senior authors of the Samans et al study replied and &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/27046829&quot;&gt;stood by their conclusions&lt;/a&gt; arguing that these dark regions of the genome (more than half of the mammalian genome) must be considered in the data analysis and not simply throw away the data. This is very true and I agree with their sentiment, but facing the choice between ignoring reads for which the location I am unsure of, or ignoring them, I will stray on the side of caution. I will definitely avoid multiple assignment (double counting) of reads.&lt;/p&gt;
+
+&lt;p&gt;Previously, a paper by &lt;a href=&quot;www.ncbi.nlm.nih.gov/pubmed/23434410&quot;&gt;Huang et al&lt;/a&gt; found enrichment of Piwi (an Argonaut protein involved in transposon repression) in transposon loci, using ChIP-seq. &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/25805138&quot;&gt;Marinov et al&lt;/a&gt; re-analyzed the data, and in my opinion the most important control - simply swapping input background with the Piwi IP for peak calling - showed similar enrichment at transposons. In a reply, &lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pubmed/25805139&quot;&gt;Lin et al.&lt;/a&gt; upon re-analysis of their own data, agree that the genomic targets of Piwi are still unknown. Once again the results falter due (mostly) to the handling of multimapping reads. There are other issues, namely the non-standard peak-calling, which should be an eye opener to anyone interested in mapping to transposons/repeats.&lt;/p&gt;
+
+&lt;p&gt;I did not dwell in the biological questions being address by Samans et al. or Huang et al., nor on the finer details. The goal is to bring some attention, and focus my mind in the issue of multimapping reads. I live in constant paranoia that a simple mistake (switching &lt;code&gt;-M&lt;/code&gt; for &lt;code&gt;-m&lt;/code&gt; in bowtie), or lack of understanding of the best practices will result in poor results. It can happen to anyone, so please go ahead and read the papers, specially the re-analyses and rebuttals. It is just a few pages each and it save many headaches in the future.&lt;/p&gt;
+
+&lt;h1 id=&quot;is-there-a-way-to-kill-the-dragons&quot;&gt;Is there a way to kill the Dragons?&lt;/h1&gt;
+
+&lt;p&gt;As you can probably notice, this multimapping reads issue is a lot on my mind. Sometime ago after lab discussions, and embryonic idea of how assign these reads started taking shape. Something like:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;map reads and keep multi-mappers.&lt;/li&gt;
+  &lt;li&gt;use uniquely map reads to estimate local coverage&lt;/li&gt;
+  &lt;li&gt;assign multi-mappers to regions based on the coverage. That is, if there are 100 non-redundant reads that map with equal confidence (as assigned by the mapper) to two locations in the genome, one with coverage=10 and the other with coverage=1, the 9/10 of the 100 reads would go to a position 1 and 1/10 to position 2.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Note that this is not the same as existing solution of &lt;strong&gt;counting&lt;/strong&gt; a read proportionally to the number of mapping positions. The output would be a sam/bam alignment file in which every single read would have a single genomic position. This alignment file could then be used for instance to call peaks.&lt;/p&gt;
+
+&lt;p&gt;With my very näive solution also came the though: “someone smarter than me already though to something like this”. So I put this on my TODO when-there-is-time list, and kept an eye in the literature.&lt;/p&gt;
+
+&lt;p&gt;Now, a group of smarter people than me did put this solution into a proper package, &lt;a href=&quot;http://dx.doi.org/10.1101/044099&quot;&gt;ShortStack&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Improved Placement of Multi-Mapping Small RNAs&lt;/strong&gt;&lt;br /&gt;
+Nathan R. Johnson, Jonathan M. Yeoh, Ceyda Coruh, and Michael J. Axtell&lt;br /&gt;
+Article Summary:&lt;br /&gt;
+High-throughput sequencing of small RNAs (sRNA-seq) is a frequently used technique in the study of small RNAs. Alignment to a reference genome is a key step in processing sRNA-seq libraries, but suffers from enormous rates of multi-mapping reads. Current methods for sRNA- seq alignment either place these reads randomly or ignore them, both of which distort downstream analyses. Here, we describe a locality-based weighting approach to make better decisions of placement of multi-mapped sRNA-seq data, and test our implementation of this method. We find that our method gives superior performance in terms of placing multi-mapped sRNA-seq data. An implementation of our method is freely available within the ShortStack small RNA analysis program. Use of this method may dramatically improve genome-wide analyses of small RNAs.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Isn’t great? They even put it up as preprint in biorxiv. This is quite crucial because in a typical small RNA-seq experiment we only get about 20-30% of unique mappers, and 50-60% of reads are multi-mappers. If the results of the paper hold true, about 70-30% of these multi-mappers would be “saved” by ShortStack. I still have to test it for ChIP-seq, but it looks promising.&lt;/p&gt;
+
+&lt;p&gt;ShortStack is not the panacea for all the multimapping issues, and authors acknowledge that for some reads assigning a single genomic position, but it should increase the number of available reads for downstream analysis, post-mapping, without sacrificing accuracy.&lt;/p&gt;
+
+&lt;p&gt;Good times ahead.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 21 Apr 2016 13:15:02 +0200</pubDate>
+        <link>http://adomingues.github.io/2016/04/21/Repeat-mapping/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/04/21/Repeat-mapping/</guid>
+        
+        <category>Mapping</category>
+        
+        <category>Repeats</category>
+        
+        <category>Review</category>
+        
+        <category>small RNA-seq</category>
+        
+        
+      </item>
     
       <item>
         <title>Kill all jobs with a name</title>
@@ -678,30 +754,6 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
         <pubDate>Wed, 25 Feb 2015 13:50:24 +0100</pubDate>
         <link>http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</link>
         <guid isPermaLink="true">http://adomingues.github.io/2015/02/25/install-bioconductor-packages-from-svn/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>virtualenvs or: How I Learned to Stop Worrying and Love not having sudo powers in a server</title>
-        <description>&lt;p&gt;Well, you might think, there is always &lt;code&gt;pip install --user&lt;/code&gt;. Aha! Yes, that works most of the time, but not when some package upgrade (distribute for deepTools) conflicts with globally installed packages.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-solution-for-python-packages&quot;&gt;The solution (for python packages)&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Python virtualenvs&lt;/em&gt; to the rescue!&lt;/p&gt;
-
-&lt;p&gt;These have been around for sometime, but I never felt inclined to dig into it until now (I can also be a bit of a &lt;em&gt;Luddite&lt;/em&gt;). Put simply, &lt;em&gt;virtualenvs&lt;/em&gt; are reservoirs of custom python and package installations. In practice, one creates a folder where all the packages can be installed, and then simply source it. From that point on, everythying done in python is using whathever is in that folder or &lt;em&gt;virtualenv&lt;/em&gt;. Even a copy of the python binary will be there.&lt;/p&gt;
-
-&lt;p&gt;One of the major appeals, for me at least, is that no &lt;em&gt;sudo&lt;/em&gt; is required for the set-up of the &lt;em&gt;virtualenv&lt;/em&gt; or installation of packages. Also, one can have multiple virtualenvs, say for different projects.&lt;/p&gt;
-
-&lt;p&gt;For a proper (practical tutorial) see this post by &lt;a href=&quot;http://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/&quot;&gt;Jamie Mathews&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In the meantime, &lt;em&gt;deepTools&lt;/em&gt; just finished compiling and I can now go to work.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 28 Jan 2015 07:45:06 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/01/28/virtualenvs-or-how-i-learned-to-stop-worrying-and-love-not-having-sudo-powers-in-a-server/</guid>
         
         
       </item>
