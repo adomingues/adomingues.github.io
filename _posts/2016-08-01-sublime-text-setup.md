@@ -22,6 +22,7 @@ Recently I upgrade to version 3, and re-installed my most used packages. I will 
 ## Packages
 
 Installed packages:
+
 - [package control](https://packagecontrol.io/installation), to manage all packages
 - [AcademicMarkdown](https://github.com/mangecoeur/AcademicMarkdown), neat highlighting of markdown syntax. 
 - MarkdownEditing
@@ -41,6 +42,7 @@ Installed packages:
 - [pythonpep8autoformat](https://bitbucket.org/StephaneBunel/pythonpep8autoformat), formats old code with pep8 rules.
 - [python3](https://github.com/petervaro/python), syntax highlighting.
 - [carlcalderon sublime color schemes](https://github.com/carlcalderon/sublime-color-schemes), I prefer not so dark schemes, and use the Tyrann Kim or the Tyrann Alex.
+
 
 ## Extras
 
