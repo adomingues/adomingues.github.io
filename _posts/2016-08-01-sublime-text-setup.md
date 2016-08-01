@@ -12,7 +12,7 @@ type: post
 published: true
 ---
 
-##Preamble
+## Preamble
 
 I am big fan of Sublime Text! It is a lightweight text editor, inexpensive license, and with contributions by hundreds of users, highly extensible and customizable. From a practical prespective, I prefer to use it instead of IDEs, such as Jupyter or RStudio, because I also write a lot of little bash/shell scripts or just one-liners embedded in markdown (my projects notebooks). Also, the [pipeline](https://github.com/adomingues/NGSpipe2go) I am using is based on groovy. Sometimes I write code in all 4 languages in a single day, and thus it is easy to see why I prefer a single development environment instead of having to memorize different shortcuts/layouts. Personally it makes my life easier. Also, I love the multi-line editing features of sublime text and the ability to search within projects, etc. 
 
@@ -42,7 +42,7 @@ Installed packages:
 - [python3](https://github.com/petervaro/python), syntax highlighting.
 - [carlcalderon sublime color schemes](https://github.com/carlcalderon/sublime-color-schemes), I prefer not so dark schemes, and use the Tyrann Kim or the Tyrann Alex.
 
-##Extras
+## Extras
 
 `AcademicMarkdown` code blocks do not highlight code in blocks labelled "bash", but only has "shell", or "sh". This is in an [issue](https://github.com/mangecoeur/AcademicMarkdown/issues/12) when converting to html via pandoc. To solve this, I simple followed [these instructions](http://www.sublimetext.com/docs/3/packages.html), and modified locally the file [AcademicMarkdown.tmLanguage](https://github.com/mangecoeur/AcademicMarkdown/blob/3e7ff4bf7498bbbfe49650cfcfe265a7bfe06e66/AcademicMarkdown.tmLanguage) from:
 
