@@ -5,9 +5,9 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 22 Apr 2016 16:15:56 +0200</pubDate>
-    <lastBuildDate>Fri, 22 Apr 2016 16:15:56 +0200</lastBuildDate>
-    <generator>Jekyll v3.0.3</generator>
+    <pubDate>Mon, 01 Aug 2016 10:51:46 +0200</pubDate>
+    <lastBuildDate>Mon, 01 Aug 2016 10:51:46 +0200</lastBuildDate>
+    <generator>Jekyll v3.1.6</generator>
     
       <item>
         <title>Custom chromosome sizes for pybedtools</title>
@@ -88,8 +88,8 @@ cov_dm3 == cov_chrsizes
 
 &lt;h1 id=&quot;what-is-the-problem&quot;&gt;What is the problem?&lt;/h1&gt;
 
-&lt;p&gt;The issue is what to with reads whose mapping location is uncertain, or rather that map to more than one genomic position. What to do next? We can overall find in the literature two consensual ways to deal with this problem (at the level of mapping):&lt;br /&gt;
-- retain only reads that map one (unique mappers) gives us confidence about the read position in exchange for loss of information;&lt;br /&gt;
+&lt;p&gt;The issue is what to with reads whose mapping location is uncertain, or rather that map to more than one genomic position. What to do next? We can overall find in the literature two consensual ways to deal with this problem (at the level of mapping):
+- retain only reads that map one (unique mappers) gives us confidence about the read position in exchange for loss of information;
 - randomly assign to a single location a read that map multiple times (multi-mappers), ensuring increased read numbers at the expense of uncertainty about the origin of the reads.&lt;/p&gt;
 
 &lt;p&gt;There also post-mapping strategies to quantify expression of repeat regions. For instance one can allow random assignment of multimapping reads and simply quantify classes of Repeats. The assumption here is that if a read maps to multiple times with the same confidence it will probably be to different copies of the &lt;em&gt;same&lt;/em&gt; element. Exact genomic location is not important, only the element. ERANGE on the other hand, uses uniquely mapping reads to calculate which repeats (genes) are more likely to be expressed, and by how much, and then assigns the multimapping reads to genes based on the estimate.&lt;/p&gt;
@@ -131,9 +131,9 @@ cov_dm3 == cov_chrsizes
 &lt;p&gt;Now, a group of smarter people than me did put this solution into a proper package, &lt;a href=&quot;http://dx.doi.org/10.1101/044099&quot;&gt;ShortStack&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Improved Placement of Multi-Mapping Small RNAs&lt;/strong&gt;&lt;br /&gt;
-Nathan R. Johnson, Jonathan M. Yeoh, Ceyda Coruh, and Michael J. Axtell&lt;br /&gt;
-Article Summary:&lt;br /&gt;
+  &lt;p&gt;&lt;strong&gt;Improved Placement of Multi-Mapping Small RNAs&lt;/strong&gt;
+Nathan R. Johnson, Jonathan M. Yeoh, Ceyda Coruh, and Michael J. Axtell
+Article Summary:
 High-throughput sequencing of small RNAs (sRNA-seq) is a frequently used technique in the study of small RNAs. Alignment to a reference genome is a key step in processing sRNA-seq libraries, but suffers from enormous rates of multi-mapping reads. Current methods for sRNA- seq alignment either place these reads randomly or ignore them, both of which distort downstream analyses. Here, we describe a locality-based weighting approach to make better decisions of placement of multi-mapped sRNA-seq data, and test our implementation of this method. We find that our method gives superior performance in terms of placing multi-mapped sRNA-seq data. An implementation of our method is freely available within the ShortStack small RNA analysis program. Use of this method may dramatically improve genome-wide analyses of small RNAs.&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -474,7 +474,7 @@ system.time(dt[J(your.number), roll = &quot;nearest&quot;])
         <title>Table of results embed in a PDF</title>
         <description>&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;: This is a rant.&lt;/p&gt;
 
-&lt;p&gt;I had to run a quick analysis on someone else’s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:&lt;br /&gt;
+&lt;p&gt;I had to run a quick analysis on someone else’s results. You probably know the drill: there is a paper which reported a list of differential expressed genes for a condition that is relevant to your project. One thinks:
 &amp;gt; Great! Assuming the analysis is correct, I can poke around their data and compare/extract results that are relevant to my project.&lt;/p&gt;
 
 &lt;p&gt;That is where the fun ends. In this particular paper, they where kind enough to report the processed tables of results in a single PDF.&lt;/p&gt;
