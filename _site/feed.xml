@@ -5,9 +5,111 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 01 Aug 2016 11:00:55 +0200</pubDate>
-    <lastBuildDate>Mon, 01 Aug 2016 11:00:55 +0200</lastBuildDate>
+    <pubDate>Mon, 01 Aug 2016 17:09:37 +0200</pubDate>
+    <lastBuildDate>Mon, 01 Aug 2016 17:09:37 +0200</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Sublime Text 3 set-up</title>
+        <description>&lt;h2 id=&quot;preamble&quot;&gt;Preamble&lt;/h2&gt;
+
+&lt;p&gt;I am a big fan of Sublime Text! It is a lightweight text editor, inexpensive license, and with contributions by hundreds of users, highly extensible and customizable. From a practical perspective, I prefer to use it instead of IDEs, such as Jupyter or RStudio, because I also write a lot of little bash/shell scripts or just one-liners embedded in markdown (my projects notebooks). Also, the &lt;a href=&quot;https://github.com/adomingues/NGSpipe2go&quot;&gt;pipeline&lt;/a&gt; I am using is based on groovy. Sometimes I write code in all 4 languages in a single day, and thus it is easy to see why I prefer a single development environment instead of having to memorize different shortcuts/layouts. Personally it makes my life easier. Also, I love the multi-line editing features of sublime text and the ability to search within projects, etc.&lt;/p&gt;
+
+&lt;p&gt;Recently I upgrade to version 3, and re-installed my most used packages. I will leave the list here for future reference, and in case someone else is interested.&lt;/p&gt;
+
+&lt;h2 id=&quot;packages&quot;&gt;Packages&lt;/h2&gt;
+
+&lt;p&gt;Installed packages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/installation&quot;&gt;package control&lt;/a&gt;, to manage all packages&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown&quot;&gt;AcademicMarkdown&lt;/a&gt;, neat highlighting of markdown syntax.&lt;/li&gt;
+  &lt;li&gt;MarkdownEditing&lt;/li&gt;
+  &lt;li&gt;All &lt;a href=&quot;https://github.com/alienhard/SublimeAllAutocomplete&quot;&gt;Autocomplete&lt;/a&gt; auto complete using matches from any of the open files.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/facelessuser/BracketHighlighter&quot;&gt;BracketHighlighter&lt;/a&gt; extends the default bracket highlighting from sublime text.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/andrewheiss/SublimeKnitr&quot;&gt;SublimeKnitr&lt;/a&gt;, requires R-Box, SendREPL and LaTeXing. knitr Markdown and LaTeX support.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/LaTeX-cwl&quot;&gt;LaTeX-cwl&lt;/a&gt;, LateX commands auto-complete&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.sublimetext.com/docs/3/spell_checking.html&quot;&gt;Spell checking&lt;/a&gt;, because tipos :)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/revolunet/sublimetext-markdown-preview&quot;&gt;markdown-preview&lt;/a&gt;, build and preview markdown files in Sublime.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/SideBarEnhancements&quot;&gt;SideBarEnhancements&lt;/a&gt;, copy, delete, rename and other file opearations from your side bar.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/SublimeLinter&quot;&gt;SublimeLinter&lt;/a&gt;, verification of code quality for:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/jimhester/SublimeLinter-contrib-lintr&quot;&gt;lintr&lt;/a&gt;, R&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/SublimeLinter/SublimeLinter-pep8&quot;&gt;pep8&lt;/a&gt;, Python&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/SublimeLinter/SublimeLinter-shellcheck&quot;&gt;shellcheck&lt;/a&gt;, Shell&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/R_comments&quot;&gt;R_comments&lt;/a&gt;, easy insertion of nicely formatted R comments.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.jvcasillas.com/code/projects/R-snippets&quot;&gt;R-snippets&lt;/a&gt;, collection of R snippets.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://bitbucket.org/StephaneBunel/pythonpep8autoformat&quot;&gt;pythonpep8autoformat&lt;/a&gt;, formats old code with pep8 rules.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/petervaro/python&quot;&gt;python3&lt;/a&gt;, syntax highlighting.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/carlcalderon/sublime-color-schemes&quot;&gt;carlcalderon sublime color schemes&lt;/a&gt;, I prefer not so dark schemes, and use the Tyrann Kim or the Tyrann Alex.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;From the above the single most important one is &lt;code&gt;SendREPL&lt;/code&gt; which allows me to send commands straight from the editor to the terminal (with &lt;code&gt;tmux&lt;/code&gt;) with a keystroke &lt;code&gt;ctrl+[enter]&lt;/code&gt;. It does not matter if in &lt;code&gt;tmux&lt;/code&gt; there is an R terminal, python console, or pure ol’ bash. This flexibility is precious.&lt;/p&gt;
+
+&lt;h2 id=&quot;extras&quot;&gt;Extras&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;AcademicMarkdown&lt;/code&gt; code blocks do not highlight code in blocks labelled “bash”, but only has “shell”, or “sh”. This is in an &lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown/issues/12&quot;&gt;issue&lt;/a&gt; when converting to html via pandoc. To solve this, I simple followed &lt;a href=&quot;http://www.sublimetext.com/docs/3/packages.html&quot;&gt;these instructions&lt;/a&gt;, and modified locally the file &lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown/blob/3e7ff4bf7498bbbfe49650cfcfe265a7bfe06e66/AcademicMarkdown.tmLanguage&quot;&gt;AcademicMarkdown.tmLanguage&lt;/a&gt; from:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-xml&quot;&gt;		&amp;lt;key&amp;gt;fenced-shell&amp;lt;/key&amp;gt;
+		&amp;lt;dict&amp;gt;
+		    &amp;lt;key&amp;gt;begin&amp;lt;/key&amp;gt;
+		    &amp;lt;string&amp;gt;^(\s*[`~]{3,})(sh|shell)\s*$&amp;lt;/string&amp;gt;
+		    &amp;lt;key&amp;gt;end&amp;lt;/key&amp;gt;
+		    &amp;lt;string&amp;gt;^(\1)\n&amp;lt;/string&amp;gt;
+		    &amp;lt;key&amp;gt;name&amp;lt;/key&amp;gt;
+		    &amp;lt;string&amp;gt;markup.raw.block.markdown markup.raw.block.fenced.markdown&amp;lt;/string&amp;gt;
+		    &amp;lt;key&amp;gt;patterns&amp;lt;/key&amp;gt;
+		    &amp;lt;array&amp;gt;
+		        &amp;lt;dict&amp;gt;
+		            &amp;lt;key&amp;gt;include&amp;lt;/key&amp;gt;
+		            &amp;lt;string&amp;gt;source.shell&amp;lt;/string&amp;gt;
+		        &amp;lt;/dict&amp;gt;
+		    &amp;lt;/array&amp;gt;
+		&amp;lt;/dict&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;to&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-xml&quot;&gt;		&amp;lt;key&amp;gt;fenced-shell&amp;lt;/key&amp;gt;
+		&amp;lt;dict&amp;gt;
+		    &amp;lt;key&amp;gt;begin&amp;lt;/key&amp;gt;
+		    &amp;lt;string&amp;gt;^(\s*[`~]{3,})(sh|shell|bash)\s*$&amp;lt;/string&amp;gt;
+		    &amp;lt;key&amp;gt;end&amp;lt;/key&amp;gt;
+		    &amp;lt;string&amp;gt;^(\1)\n&amp;lt;/string&amp;gt;
+		    &amp;lt;key&amp;gt;name&amp;lt;/key&amp;gt;
+		    &amp;lt;string&amp;gt;markup.raw.block.markdown markup.raw.block.fenced.markdown&amp;lt;/string&amp;gt;
+		    &amp;lt;key&amp;gt;patterns&amp;lt;/key&amp;gt;
+		    &amp;lt;array&amp;gt;
+		        &amp;lt;dict&amp;gt;
+		            &amp;lt;key&amp;gt;include&amp;lt;/key&amp;gt;
+		            &amp;lt;string&amp;gt;source.shell&amp;lt;/string&amp;gt;
+		        &amp;lt;/dict&amp;gt;
+		    &amp;lt;/array&amp;gt;
+		&amp;lt;/dict&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note the inclusion of “bash” in the 4th line, and it now highlights fenced code labeled as “bash”. I am very proud of myself. It was fixed in the repo and a &lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown/pull/19&quot;&gt;merge request&lt;/a&gt; sent in GitHub.&lt;/p&gt;
+
+&lt;p&gt;I was also having a hard-time getting the “comment code” shortcut to work. This is a know bug that should have been solved in my version (Build 3114) bit it isn’t. Adding this to the use keybindings file &lt;a href=&quot;http://stackoverflow.com/questions/17742781/keyboard-shortcut-to-comment-lines-in-sublime-text-3&quot;&gt;solved&lt;/a&gt; the issue:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ &quot;keys&quot;: [&quot;ctrl+7&quot;], &quot;command&quot;: &quot;toggle_comment&quot;, &quot;args&quot;: { &quot;block&quot;: false } },
+{ &quot;keys&quot;: [&quot;ctrl+shift+7&quot;], &quot;command&quot;: &quot;toggle_comment&quot;, &quot;args&quot;: { &quot;block&quot;: true } }
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Mon, 01 Aug 2016 11:15:02 +0200</pubDate>
+        <link>http://adomingues.github.io/2016/08/01/sublime-text-setup/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/08/01/sublime-text-setup/</guid>
+        
+        <category>SublimeText</category>
+        
+        <category>Code</category>
+        
+        <category>GitHub</category>
+        
+        
+      </item>
     
       <item>
         <title>Custom chromosome sizes for pybedtools</title>
@@ -786,21 +888,6 @@ table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add
         <category>Fisher</category>
         
         <category>biomaRt</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Reminder - building blog locally with Jekyll</title>
-        <description>&lt;p&gt;It took me while from moving my blog from &lt;a href=&quot;https://movingtothedarkside.wordpress.com/&quot;&gt;wordpress&lt;/a&gt; to &lt;a href=&quot;http://adomingues.github.io/&quot;&gt;github pages&lt;/a&gt; and writing a new post. Such a long time that I forgot that to build the site locally I need to use &lt;code&gt;bundle exec jekyll serve --watch&lt;/code&gt; instead of &lt;code&gt;jekyll serve --watch&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;I won’t forget now.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 18 Mar 2015 09:47:02 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/18/local-jeckyll-build/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/18/local-jeckyll-build/</guid>
-        
-        <category>Jekyll</category>
         
         
       </item>
