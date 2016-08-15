@@ -11,6 +11,11 @@ type: post
 published: true
 ---
 
+_Update of 11.08.2016_
+tldr: upgraded to 16.04 with a fresh install and everything is rosy - the system is better than ever.
+
+Before reading bellow, keep in mind that the OS has changed. Originally I installed the Dell Ubuntu distro, 12.04, and then upgraded to 14.04 . I was curious about 16.04, and the promise that all my dual-external displays would be solved, but no wanting to install and customize everything from scratch, I managed to screw things a little with the direct upgrade. I tested 16.04 from a LiveUSB and it was working fine, so it must have been some installation conflict somewhere. I ended making a fresh install to 16.04 and the system is now stable and functional with no fuss. Specially display with two external monitors and the laptop screen is not working fine without itches or flickering in one of the screens. 
+
 _Updated on 11.01.2015 to correct spelling mistakes, grammar, and add new information about the speakers._
 
 My new laptop has arrived, and after testing it for a couple of days, I feel that I can post my own impressions of the Dell XPS13 (9333).
