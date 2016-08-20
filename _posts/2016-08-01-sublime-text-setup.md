@@ -12,8 +12,6 @@ type: post
 published: true
 ---
 
-## Preamble
-
 I am a big fan of Sublime Text! It is a lightweight text editor, inexpensive license, and with contributions by hundreds of users, highly extensible and customizable. From a practical perspective, I prefer to use it instead of IDEs, such as Jupyter or RStudio, because I also write a lot of little bash/shell scripts or just one-liners embedded in markdown (my projects notebooks). Also, the [pipeline](https://github.com/adomingues/NGSpipe2go) I am using is based on groovy. Sometimes I write code in all 4 languages in a single day, and thus it is easy to see why I prefer a single development environment instead of having to memorize different shortcuts/layouts. Personally it makes my life easier. Also, I love the multi-line editing features of sublime text and the ability to search within projects, etc.
 
 Recently I upgrade to version 3, and re-installed my most used packages. I will leave the list here for future reference, and in case someone else is interested.
