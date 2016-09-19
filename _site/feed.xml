@@ -5,8 +5,8 @@
     <description>Leaving the Pipette for a Keyboard.</description>
     <link>http://adomingues.github.io/</link>
     <atom:link href="http://adomingues.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 01 Aug 2016 17:09:37 +0200</pubDate>
-    <lastBuildDate>Mon, 01 Aug 2016 17:09:37 +0200</lastBuildDate>
+    <pubDate>Mon, 15 Aug 2016 21:23:02 +0200</pubDate>
+    <lastBuildDate>Mon, 15 Aug 2016 21:23:02 +0200</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -97,6 +97,10 @@
 &lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ &quot;keys&quot;: [&quot;ctrl+7&quot;], &quot;command&quot;: &quot;toggle_comment&quot;, &quot;args&quot;: { &quot;block&quot;: false } },
 { &quot;keys&quot;: [&quot;ctrl+shift+7&quot;], &quot;command&quot;: &quot;toggle_comment&quot;, &quot;args&quot;: { &quot;block&quot;: true } }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;groovy&quot;&gt;Groovy&lt;/h3&gt;
+
+&lt;p&gt;There is some bug/feature in which lines are comment with “&lt;em&gt;/ /&lt;/em&gt;”, or something like that, rather than with “//”, which I (and apparently &lt;a href=&quot;https://gist.github.com/ddeyoung/5502723&quot;&gt;others&lt;/a&gt;) prefer. The solution is &lt;a href=&quot;http://stackoverflow.com/a/24577721/1274242&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Mon, 01 Aug 2016 11:15:02 +0200</pubDate>
         <link>http://adomingues.github.io/2016/08/01/sublime-text-setup/</link>
@@ -107,6 +111,1119 @@
         <category>Code</category>
         
         <category>GitHub</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sublime Text Setup</title>
+        <description>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;date&quot; content=&quot;2016-08-01 11:15:02.000000000 +02:00&quot;&gt;
+&lt;meta name=&quot;categories&quot; content=&quot;[]&quot;&gt;
+&lt;meta name=&quot;layout&quot; content=&quot;post&quot;&gt;
+&lt;meta name=&quot;tags&quot; content=&quot;&quot;&gt;&lt;style&gt;body {
+  width: 45em;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 30px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format(&#39;woff&#39;);
+}
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAYcAA0AAAAACjQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABwAAAAca8vGTk9TLzIAAAFMAAAARAAAAFZG1VHVY21hcAAAAZAAAAA+AAABQgAP9AdjdnQgAAAB0AAAAAQAAAAEACICiGdhc3AAAAHUAAAACAAAAAj//wADZ2x5ZgAAAdwAAADRAAABEKyikaNoZWFkAAACsAAAAC0AAAA2AtXoA2hoZWEAAALgAAAAHAAAACQHngNFaG10eAAAAvwAAAAQAAAAEAwAACJsb2NhAAADDAAAAAoAAAAKALIAVG1heHAAAAMYAAAAHwAAACABEAB2bmFtZQAAAzgAAALBAAAFu3I9x/Nwb3N0AAAF/AAAAB0AAAAvaoFvbwAAAAEAAAAAzBdyYwAAAADP2IQvAAAAAM/bz7t4nGNgZGFgnMDAysDB1Ml0hoGBoR9CM75mMGLkYGBgYmBlZsAKAtJcUxgcPsR8iGF2+O/AEMPsznAYKMwIkgMA5REMOXicY2BgYGaAYBkGRgYQsAHyGMF8FgYFIM0ChED+h5j//yEk/3KoSgZGNgYYk4GRCUgwMaACRoZhDwCs7QgGAAAAIgKIAAAAAf//AAJ4nHWMMQrCQBBF/0zWrCCIKUQsTDCL2EXMohYGSSmorScInsRGL2DOYJe0Ntp7BK+gJ1BxF1stZvjz/v8DRghQzEc4kIgKwiAppcA9LtzKLSkdNhKFY3HF4lK69ExKslx7Xa+vPRVS43G98vG1DnkDMIBUgFN0MDXflU8tbaZOUkXUH0+U27RoRpOIyCKjbMCVejwypzJJG4jIwb43rfl6wbwanocrJm9XFYfskuVC5K/TPyczNU7b84CXcbxks1Un6H6tLH9vf2LRnn8Ax7A5WQAAAHicY2BkYGAA4teL1+yI57f5ysDNwgAC529f0kOmWRiYVgEpDgYmEA8AUzEKsQAAAHicY2BkYGB2+O/AEMPCAAJAkpEBFbAAADgKAe0EAAAiAAAAAAQAAAAEAAAAAAAAKgAqACoAiAAAeJxjYGRgYGBhsGFgYgABEMkFhAwM/xn0QAIAD6YBhwB4nI1Ty07cMBS9QwKlQapQW3VXySvEqDCZGbGaHULiIQ1FKgjWMxknMfLEke2A+IJu+wntrt/QbVf9gG75jK577Lg8K1qQPCfnnnt8fX1NRC/pmjrk/zprC+8D7tBy9DHgBXoWfQ44Av8t4Bj4Z8CLtBL9CniJluPXASf0Lm4CXqFX8Q84dOLnMB17N4c7tBo1AS/Qi+hTwBH4rwHHwN8DXqQ30XXAS7QaLwSc0Gn8NuAVWou/gFmnjLrEaEh9GmDdDGgL3B4JsrRPDU2hTOiMSuJUIdKQQayiAth69r6akSSFqIJuA19TrzCIaY8sIoxyrNIrL//pw7A2iMygkX5vDj+G+kuoLdX4GlGK/8Lnlz6/h9MpmoO9rafrz7ILXEHHaAx95s9lsI7AHNMBWEZHULnfAXwG9/ZqdzLI08iuwRloXE8kfhXYAvE23+23DU3t626rbs8/8adv+9DWknsHp3E17oCf+Z48rvEQNZ78paYM38qfk3v/u3l3u3GXN2Dmvmvpf1Srwk3pB/VSsp512bA/GG5i2WJ7wu430yQ5K3nFGiOqgtmSB5pJVSizwaacmUZzZhXLlZTq8qGGFY2YcSkqbth6aW1tRmlaCFs2016m5qn36SbJrqosG4uMV4aP2PHBmB3tjtmgN2izkGQyLWprekbIntJFing32a5rKWCN/SdSoga45EJykyQ7asZvHQ8PTm6cslIpwyeyjbVltNikc2HTR7YKh9LBl9DADC0U/jLcBZDKrMhUBfQBvXRzLtFtjU9eNHKin0x5InTqb8lNpfKv1s1xHzTXRqgKzek/mb7nB8RZTCDhGEX3kK/8Q75AmUM/eLkfA+0Hi908Kx4eNsMgudg5GLdRD7a84npi+YxNr5i5KIbW5izXas7cHXIMAau1OueZhfj+cOcP3P8MNIWLyYOBuxL6DRylJ4cAAAB4nGNgYoAALjDJyIAOWMCiTIxMLDmZedkABtIBygAAAA==) format(&#39;woff&#39;);
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: &quot;Helvetica Neue&quot;, Helvetica, &quot;Segoe UI&quot;, Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type=&quot;checkbox&quot;] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: &quot; &quot;;
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, &quot;Liberation Mono&quot;, Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body&gt;*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body&gt;*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.markdown-body .headeranchor-link:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li&gt;p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote&gt;:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote&gt;:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: &quot;\00a0&quot;;
+}
+
+.markdown-body pre&gt;code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition&gt;.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention&gt;.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution&gt;.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint&gt;.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger&gt;.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question&gt;.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note&gt;.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: &quot;\f056\00a0&quot;;
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: &quot;\f058\00a0&quot;;
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: &quot;\f06a\00a0&quot;;
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: &quot;\f05a\00a0&quot;;
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: &quot;\f057\00a0&quot;;
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: &quot;\f059\00a0&quot;;
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: &quot;\f040\00a0&quot;;
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition&gt;*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition&gt;*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: &#39;\f05c&#39;;
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: &quot; (&quot; attr(href) &quot;)&quot;;
+  }
+
+  .markdown-body abbr[title]:after {
+    content: &quot; (&quot; attr(title) &quot;)&quot;;
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^=&quot;javascript:&quot;]:after,
+  .markdown-body a[href^=&quot;#&quot;]:after {
+    content: &quot;&quot;;
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+&lt;/style&gt;&lt;title&gt;Sublime Text 3 set-up&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;article class=&quot;markdown-body&quot;&gt;&lt;ul&gt;
+&lt;li&gt;SublimeText&lt;/li&gt;
+&lt;li&gt;Code&lt;/li&gt;
+&lt;li&gt;GitHub&lt;br /&gt;
+status: publish&lt;br /&gt;
+type: post&lt;br /&gt;
+published: true&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;preamble&quot;&gt;&lt;a name=&quot;user-content-preamble&quot; href=&quot;#preamble&quot; class=&quot;headeranchor-link&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;headeranchor&quot;&gt;&lt;/span&gt;&lt;/a&gt;Preamble&lt;/h2&gt;
+&lt;p&gt;I am a big fan of Sublime Text! It is a lightweight text editor, inexpensive license, and with contributions by hundreds of users, highly extensible and customizable. From a practical perspective, I prefer to use it instead of IDEs, such as Jupyter or RStudio, because I also write a lot of little bash/shell scripts or just one-liners embedded in markdown (my projects notebooks). Also, the &lt;a href=&quot;https://github.com/adomingues/NGSpipe2go&quot;&gt;pipeline&lt;/a&gt; I am using is based on groovy. Sometimes I write code in all 4 languages in a single day, and thus it is easy to see why I prefer a single development environment instead of having to memorize different shortcuts/layouts. Personally it makes my life easier. Also, I love the multi-line editing features of sublime text and the ability to search within projects, etc.&lt;/p&gt;
+&lt;p&gt;Recently I upgrade to version 3, and re-installed my most used packages. I will leave the list here for future reference, and in case someone else is interested.&lt;/p&gt;
+&lt;h2 id=&quot;packages&quot;&gt;&lt;a name=&quot;user-content-packages&quot; href=&quot;#packages&quot; class=&quot;headeranchor-link&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;headeranchor&quot;&gt;&lt;/span&gt;&lt;/a&gt;Packages&lt;/h2&gt;
+&lt;p&gt;Installed packages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/installation&quot;&gt;package control&lt;/a&gt;, to manage all packages&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown&quot;&gt;AcademicMarkdown&lt;/a&gt;, neat highlighting of markdown syntax.&lt;/li&gt;
+&lt;li&gt;MarkdownEditing&lt;/li&gt;
+&lt;li&gt;All &lt;a href=&quot;https://github.com/alienhard/SublimeAllAutocomplete&quot;&gt;Autocomplete&lt;/a&gt; auto complete using matches from any of the open files.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/facelessuser/BracketHighlighter&quot;&gt;BracketHighlighter&lt;/a&gt; extends the default bracket highlighting from sublime text.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/andrewheiss/SublimeKnitr&quot;&gt;SublimeKnitr&lt;/a&gt;, requires R-Box, SendREPL and LaTeXing. knitr Markdown and LaTeX support.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/LaTeX-cwl&quot;&gt;LaTeX-cwl&lt;/a&gt;, LateX commands auto-complete&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.sublimetext.com/docs/3/spell_checking.html&quot;&gt;Spell checking&lt;/a&gt;, because tipos :)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/revolunet/sublimetext-markdown-preview&quot;&gt;markdown-preview&lt;/a&gt;, build and preview markdown files in Sublime.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/SideBarEnhancements&quot;&gt;SideBarEnhancements&lt;/a&gt;, copy, delete, rename and other file opearations from your side bar.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/SublimeLinter&quot;&gt;SublimeLinter&lt;/a&gt;, verification of code quality for:&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jimhester/SublimeLinter-contrib-lintr&quot;&gt;lintr&lt;/a&gt;, R&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/SublimeLinter/SublimeLinter-pep8&quot;&gt;pep8&lt;/a&gt;, Python&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/SublimeLinter/SublimeLinter-shellcheck&quot;&gt;shellcheck&lt;/a&gt;, Shell&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://packagecontrol.io/packages/R_comments&quot;&gt;R_comments&lt;/a&gt;, easy insertion of nicely formatted R comments.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jvcasillas.com/code/projects/R-snippets&quot;&gt;R-snippets&lt;/a&gt;, collection of R snippets.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://bitbucket.org/StephaneBunel/pythonpep8autoformat&quot;&gt;pythonpep8autoformat&lt;/a&gt;, formats old code with pep8 rules.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/petervaro/python&quot;&gt;python3&lt;/a&gt;, syntax highlighting.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/carlcalderon/sublime-color-schemes&quot;&gt;carlcalderon sublime color schemes&lt;/a&gt;, I prefer not so dark schemes, and use the Tyrann Kim or the Tyrann Alex.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;From the above the single most important one is &lt;code&gt;SendREPL&lt;/code&gt; which allows me to send commands straight from the editor to the terminal (with &lt;code&gt;tmux&lt;/code&gt;) with a keystroke &lt;code&gt;ctrl+[enter]&lt;/code&gt;. It does not matter if in &lt;code&gt;tmux&lt;/code&gt; there is an R terminal, python console, or pure ol&amp;rsquo; bash. This flexibility is precious.&lt;/p&gt;
+&lt;h2 id=&quot;extras&quot;&gt;&lt;a name=&quot;user-content-extras&quot; href=&quot;#extras&quot; class=&quot;headeranchor-link&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;headeranchor&quot;&gt;&lt;/span&gt;&lt;/a&gt;Extras&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;AcademicMarkdown&lt;/code&gt; code blocks do not highlight code in blocks labelled &amp;ldquo;bash&amp;rdquo;, but only has &amp;ldquo;shell&amp;rdquo;, or &amp;ldquo;sh&amp;rdquo;. This is in an &lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown/issues/12&quot;&gt;issue&lt;/a&gt; when converting to html via pandoc. To solve this, I simple followed &lt;a href=&quot;http://www.sublimetext.com/docs/3/packages.html&quot;&gt;these instructions&lt;/a&gt;, and modified locally the file &lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown/blob/3e7ff4bf7498bbbfe49650cfcfe265a7bfe06e66/AcademicMarkdown.tmLanguage&quot;&gt;AcademicMarkdown.tmLanguage&lt;/a&gt; from:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;        &amp;lt;key&amp;gt;fenced-shell&amp;lt;/key&amp;gt;
+        &amp;lt;dict&amp;gt;
+            &amp;lt;key&amp;gt;begin&amp;lt;/key&amp;gt;
+            &amp;lt;string&amp;gt;^(\s*[`~]{3,})(sh|shell)\s*$&amp;lt;/string&amp;gt;
+            &amp;lt;key&amp;gt;end&amp;lt;/key&amp;gt;
+            &amp;lt;string&amp;gt;^(\1)\n&amp;lt;/string&amp;gt;
+            &amp;lt;key&amp;gt;name&amp;lt;/key&amp;gt;
+            &amp;lt;string&amp;gt;markup.raw.block.markdown markup.raw.block.fenced.markdown&amp;lt;/string&amp;gt;
+            &amp;lt;key&amp;gt;patterns&amp;lt;/key&amp;gt;
+            &amp;lt;array&amp;gt;
+                &amp;lt;dict&amp;gt;
+                    &amp;lt;key&amp;gt;include&amp;lt;/key&amp;gt;
+                    &amp;lt;string&amp;gt;source.shell&amp;lt;/string&amp;gt;
+                &amp;lt;/dict&amp;gt;
+            &amp;lt;/array&amp;gt;
+        &amp;lt;/dict&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;to&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;        &amp;lt;key&amp;gt;fenced-shell&amp;lt;/key&amp;gt;
+        &amp;lt;dict&amp;gt;
+            &amp;lt;key&amp;gt;begin&amp;lt;/key&amp;gt;
+            &amp;lt;string&amp;gt;^(\s*[`~]{3,})(sh|shell|bash)\s*$&amp;lt;/string&amp;gt;
+            &amp;lt;key&amp;gt;end&amp;lt;/key&amp;gt;
+            &amp;lt;string&amp;gt;^(\1)\n&amp;lt;/string&amp;gt;
+            &amp;lt;key&amp;gt;name&amp;lt;/key&amp;gt;
+            &amp;lt;string&amp;gt;markup.raw.block.markdown markup.raw.block.fenced.markdown&amp;lt;/string&amp;gt;
+            &amp;lt;key&amp;gt;patterns&amp;lt;/key&amp;gt;
+            &amp;lt;array&amp;gt;
+                &amp;lt;dict&amp;gt;
+                    &amp;lt;key&amp;gt;include&amp;lt;/key&amp;gt;
+                    &amp;lt;string&amp;gt;source.shell&amp;lt;/string&amp;gt;
+                &amp;lt;/dict&amp;gt;
+            &amp;lt;/array&amp;gt;
+        &amp;lt;/dict&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note the inclusion of &amp;ldquo;bash&amp;rdquo; in the 4th line, and it now highlights fenced code labeled as &amp;ldquo;bash&amp;rdquo;. I am very proud of myself. It was fixed in the repo and a &lt;a href=&quot;https://github.com/mangecoeur/AcademicMarkdown/pull/19&quot;&gt;merge request&lt;/a&gt; sent in GitHub.&lt;/p&gt;
+&lt;p&gt;I was also having a hard-time getting the &amp;ldquo;comment code&amp;rdquo; shortcut to work. This is a know bug that should have been solved in my version (Build 3114) bit it isn&amp;rsquo;t. Adding this to the use keybindings file &lt;a href=&quot;http://stackoverflow.com/questions/17742781/keyboard-shortcut-to-comment-lines-in-sublime-text-3&quot;&gt;solved&lt;/a&gt; the issue:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;json&quot;&gt;{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+7&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;toggle_comment&amp;quot;, &amp;quot;args&amp;quot;: { &amp;quot;block&amp;quot;: false } },
+{ &amp;quot;keys&amp;quot;: [&amp;quot;ctrl+shift+7&amp;quot;], &amp;quot;command&amp;quot;: &amp;quot;toggle_comment&amp;quot;, &amp;quot;args&amp;quot;: { &amp;quot;block&amp;quot;: true } }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;groovy&quot;&gt;&lt;a name=&quot;user-content-groovy&quot; href=&quot;#groovy&quot; class=&quot;headeranchor-link&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;headeranchor&quot;&gt;&lt;/span&gt;&lt;/a&gt;Groovy&lt;/h3&gt;
+&lt;p&gt;There is some bug/feature in which lines are comment with &amp;ldquo;&lt;em&gt;/ /&lt;/em&gt;&amp;rdquo;, or something like that, rather than with &amp;ldquo;//&amp;rdquo;, which I (and apparently &lt;a href=&quot;&quot;&gt;others&lt;/a&gt;) prefer. The solution is here.&lt;/p&gt;&lt;/article&gt;&lt;/body&gt;&lt;/html&gt;</description>
+        <pubDate>Mon, 01 Aug 2016 00:00:00 +0200</pubDate>
+        <link>http://adomingues.github.io/2016/08/01/sublime-text-setup/</link>
+        <guid isPermaLink="true">http://adomingues.github.io/2016/08/01/sublime-text-setup/</guid>
         
         
       </item>
@@ -621,273 +1738,6 @@ library(directlabels)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
         <category>R</category>
         
         <category>devtools</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Testing for chromosome over-representation</title>
-        <description>&lt;p&gt;Sometimes I am working on some data and notice certain biases, say differentially expressed genes appearing to originate more often from a chromosome. Or a factor binding more often to a class of transcripts. In these situations I tend to turn to Fisher’s exact test. Here I will put an example of what I do.&lt;/p&gt;
-
-&lt;h2 id=&quot;get-some-data&quot;&gt;Get some data&lt;/h2&gt;
-
-&lt;p&gt;For the sake of simplicity I will use data from the Pasilla&lt;a href=&quot;http://bioconductor.org/packages/release/data/experiment/html/pasilla.html&quot;&gt;1&lt;/a&gt; dataset and run differential gene expression analysis with DESeq2&lt;a href=&quot;http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html&quot;&gt;2&lt;/a&gt; following the vignette’s instructions. The &lt;code&gt;data.table&lt;/code&gt; package is used because I like it’s speed and syntax, specially for sub-setting. Since I am still learning all the ins and outs of it, I mix &lt;code&gt;data.frame&lt;/code&gt; code with it. Whatever works.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;library(&amp;quot;data.table&amp;quot;)
-library(&amp;quot;pasilla&amp;quot;)
-library(&amp;quot;Biobase&amp;quot;)
-data(&amp;quot;pasillaGenes&amp;quot;)
-library(&amp;quot;DESeq2&amp;quot;)
-library(&amp;quot;biomaRt&amp;quot;)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;While loading the &lt;code&gt;pasillaGenes&lt;/code&gt; R was throwing an error at me:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Warning: namespace ‘DESeq’ is not available and has been replaced&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;It turns out that &lt;code&gt;DESeq&lt;/code&gt; needed to be installed to load the data. No idea why. So let’s get us some results:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;countData &amp;lt;- counts(pasillaGenes)
-colData &amp;lt;- pData(pasillaGenes)[,c(&amp;quot;condition&amp;quot;,&amp;quot;type&amp;quot;)]
-dds &amp;lt;- DESeqDataSetFromMatrix(
-   countData = countData,
-   colData = colData,
-   design = ~ condition
-   )
-dds$condition &amp;lt;- relevel(dds$condition, &amp;quot;untreated&amp;quot;)
-dds &amp;lt;- DESeq(dds)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;add-chromosome-information&quot;&gt;Add chromosome information&lt;/h2&gt;
-&lt;p&gt;Now the fun starts. I created a &lt;code&gt;data.table&lt;/code&gt; with the results plus gene IDs, And will now added some extra information with biomaRt. I have only added chromosome and biotype, but the amount of information one can add is large. I usually also add gene symbol and description. Very useful to have a quick idea of the function of a particular gene. Adding the full gene location might be useful to later on subset data and easily create a bed file.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res &amp;lt;- as.data.frame(results(dds))
-res$ensembl_gene_id &amp;lt;- rownames(results(dds))
-res &amp;lt;- data.table(res)
-
-ensembl = useMart(&amp;quot;ensembl&amp;quot;, dataset = &amp;quot;dmelanogaster_gene_ensembl&amp;quot;)
-genemap &amp;lt;- getBM( attributes = c(&amp;quot;ensembl_gene_id&amp;quot;, &amp;quot;chromosome_name&amp;quot;, &amp;quot;gene_biotype&amp;quot;),
-                  filters = &amp;quot;ensembl_gene_id&amp;quot;,
-                  values = res$ensembl_gene_id,
-                  mart = ensembl)
-idx &amp;lt;- match( res$ensembl_gene_id, genemap$ensembl_gene_id )
-res$chromosome &amp;lt;- genemap$chromosome_name[ idx ]
-res$gene_biotype &amp;lt;- genemap$gene_biotype[ idx ]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Now let’s have a look at down-regulated genes with &lt;code&gt;padj &amp;lt; 0.1&lt;/code&gt;.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;res[padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##        baseMean log2FoldChange     lfcSE      stat       pvalue
-##   1:   85.00693     -0.7067901 0.2196386 -3.217969 1.291017e-03
-##   2:  273.13010     -0.3878740 0.1360678 -2.850593 4.363776e-03
-##   3: 1257.88508     -0.3896927 0.1321601 -2.948640 3.191754e-03
-##   4:  280.32056     -0.4471012 0.1417352 -3.154483 1.607826e-03
-##   5:  141.36961     -1.3409377 0.2076951 -6.456280 1.073079e-10
-##  ---                                                           
-## 404:  998.56567     -0.4335869 0.1357833 -3.193228 1.406921e-03
-## 405:   16.42232     -0.6973109 0.2276632 -3.062906 2.191992e-03
-## 406:  373.24468     -0.4988888 0.1441100 -3.461860 5.364557e-04
-## 407: 2891.60114     -1.6134844 0.1706094 -9.457183 3.163516e-21
-## 408:  973.77088     -0.8325356 0.1332384 -6.248464 4.145082e-10
-##              padj ensembl_gene_id chromosome   gene_biotype
-##   1: 2.007727e-02     FBgn0000079         2R protein_coding
-##   2: 5.230444e-02     FBgn0000244         3R protein_coding
-##   3: 4.105429e-02     FBgn0000256         2L protein_coding
-##   4: 2.389391e-02     FBgn0000286         2L protein_coding
-##   5: 1.045641e-08     FBgn0000406         2L protein_coding
-##  ---                                                       
-## 404: 2.158653e-02     FBgn0261545         2R protein_coding
-## 405: 3.079189e-02     FBgn0261546         NA             NA
-## 406: 9.950931e-03     FBgn0261547         3L protein_coding
-## 407: 1.106943e-18     FBgn0261552         3R protein_coding
-## 408: 3.710330e-08     FBgn0261560         2L protein_coding&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Most of these appear to be coding genes. Not a great surprise. But…  Oh! There are a lot of genes located in chromosome 2L. Is this a coincidence? Let us test it.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-for-over-representation&quot;&gt;Test for over-representation&lt;/h2&gt;
-
-&lt;h3 id=&quot;chromosome-3l&quot;&gt;Chromosome 3L&lt;/h3&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrom=&amp;quot;3L&amp;quot;
-all &amp;lt;- res$ensembl_gene_id
-hits &amp;lt;- res[padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id
-hits_in_chr &amp;lt;- length(res[chromosome == chrom &amp;amp; padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id)
-genes_in_chr &amp;lt;- length(res[chromosome == chrom]$ensembl_gene_id)
-hits_total &amp;lt;- length(hits)
-genes_total &amp;lt;- length(all)&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Expected number of hits in chromosome 3L would be 71.8440912 and we have 61. Is this significant? I will use Fisher’s exact test, as applied &lt;a href=&quot;https://www.biostars.org/p/102946/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt; for very similar problems.&lt;/p&gt;
-
-&lt;p&gt;Firstly I construct a table/matrix with the events and from that calculated Fisher’s Exact test, or the probability of having more genes in chromosome 3L than expected by chance. There are more details &lt;a href=&quot;http://cgrlucb.wikispaces.com/Functional+Enrichment+Analysis&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;mat &amp;lt;- matrix(
-   c(
-      hits_in_chr,
-      genes_in_chr-hits_in_chr,
-      hits_total-hits_in_chr,
-      genes_total-hits_total-genes_in_chr+hits_in_chr
-      ),
-      nrow=2,
-      ncol=2)
-mat&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##      [,1]  [,2]
-## [1,]   61   347
-## [2,] 2487 11575&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;fr &amp;lt;- fisher.test(mat, alternative=&amp;quot;greater&amp;quot;)
-fr&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## 
-## 	Fisher&amp;#39;s Exact Test for Count Data
-## 
-## data:  mat
-## p-value = 0.935
-## alternative hypothesis: true odds ratio is greater than 1
-## 95 percent confidence interval:
-##  0.6400274       Inf
-## sample estimates:
-## odds ratio 
-##  0.8181856&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;So there is a p-value of 0.9349979 and we can reject the hypothesis that there is enrichment for or genes in 3L. My eyes were seeing patterns where this is none. Also, since I was testing only for over-representation, or enrichment, the option &lt;code&gt;alternative=&quot;greater&quot;&lt;/code&gt; was used in the test. Other options are available.&lt;/p&gt;
-
-&lt;h3 id=&quot;for-all-chromosomes&quot;&gt;For all chromosomes&lt;/h3&gt;
-
-&lt;p&gt;Is this this the case for any of the other chromosome? I will construct a function, and then loop over the chromosomes.&lt;/p&gt;
-
-&lt;p&gt;The function &lt;code&gt;chrEnrichment&lt;/code&gt; is minimal and it only tests for down-regulated gens, but could be easily extended to add other arguments. It could also be used to test for biases in gene biotype.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;chrEnrichment &amp;lt;- function(chr, df){
-   # Test for chromosome overpresentation in DESe2 results
-   all &amp;lt;- df$ensembl_gene_id
-   hits &amp;lt;- df[padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id
-
-   hits_in_chr &amp;lt;- length(res[chromosome == chr &amp;amp; padj &amp;lt; 0.1 &amp;amp; log2FoldChange &amp;lt; 0]$ensembl_gene_id)
-   genes_in_chr &amp;lt;- length(res[chromosome == chr]$ensembl_gene_id)
-   hits_total &amp;lt;- length(hits)
-   genes_total &amp;lt;- length(all)
-
-   mat &amp;lt;- matrix(
-      c(
-         hits_in_chr,
-         genes_in_chr-hits_in_chr,
-         hits_total-hits_in_chr,
-         genes_total-hits_total-genes_in_chr+hits_in_chr
-         ),
-         nrow=2,
-         ncol=2)
-   fr &amp;lt;- fisher.test(mat, alternative=&amp;quot;greater&amp;quot;)
-   df &amp;lt;- data.frame(
-      chromosome = chromosome,
-      observed = hits_in_chr,
-      expected = round(hits_total * genes_in_chr / genes_total, 1),
-      odds.ratio= fr$estimate[[&amp;quot;odds ratio&amp;quot;]],
-      pvalue = fr$p.value
-      )
-   return(df)
-}
-
-
-chromosomes &amp;lt;- unique(na.omit(res[!like(chromosome,&amp;quot;Zv9&amp;quot;)])$chromosome)
-l_res &amp;lt;- list()
-for (chromosome in chromosomes){
-   l_res[[chromosome]] &amp;lt;- chrEnrichment(chromosome, res)
-}
-
-table_fisher &amp;lt;- rbindlist(l_res)
-table_fisher[,FDR:=p.adjust(pvalue, method=&amp;#39;bonferroni&amp;#39;),] # add FDR&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
-## 1:         2R       91     78.1  1.2197190 0.05874683 0.4112278
-## 2:         3L       61     71.8  0.8181856 0.93499788 1.0000000
-## 3:         2L       86     70.2  1.2958104 0.02276513 0.1593559
-## 4:         3R       95     90.2  1.0719388 0.29753414 1.0000000
-## 5:          X       46     58.6  0.7523146 0.97261113 1.0000000
-## 6:          4        0      2.3  0.0000000 1.00000000 1.0000000
-## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;setkey(table_fisher, FDR) # will also sort by pvalue&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Since I am testing for all chromosomes, I have also calculated the adjusted p-value (bonferroni) to be on the safe side.&lt;/p&gt;
-
-&lt;p&gt;And what does Fisher say?&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;table_fisher&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;##    chromosome observed expected odds.ratio     pvalue       FDR
-## 1:         2L       86     70.2  1.2958104 0.02276513 0.1593559
-## 2:         2R       91     78.1  1.2197190 0.05874683 0.4112278
-## 3:         3L       61     71.8  0.8181856 0.93499788 1.0000000
-## 4:         3R       95     90.2  1.0719388 0.29753414 1.0000000
-## 5:          X       46     58.6  0.7523146 0.97261113 1.0000000
-## 6:          4        0      2.3  0.0000000 1.00000000 1.0000000
-## 7:       YHet        0      0.4  0.0000000 1.00000000 1.0000000&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;That we have a pretty much random distribution of down-regulated genes in the fly chromosomes.&lt;/p&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;sessionInfo()&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;## R version 3.1.3 (2015-03-09)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 14.04.2 LTS
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] stats4    parallel  methods   stats     graphics  grDevices utils    
-## [8] datasets  base     
-## 
-## other attached packages:
-##  [1] biomaRt_2.22.0            DESeq2_1.6.3             
-##  [3] RcppArmadillo_0.4.650.1.1 Rcpp_0.11.5              
-##  [5] GenomicRanges_1.18.4      GenomeInfoDb_1.2.4       
-##  [7] IRanges_2.0.1             S4Vectors_0.4.0          
-##  [9] Biobase_2.26.0            BiocGenerics_0.12.1      
-## [11] pasilla_0.5.1             data.table_1.9.4         
-## [13] knitr_1.9                
-## 
-## loaded via a namespace (and not attached):
-##  [1] acepack_1.3-3.3      annotate_1.44.0      AnnotationDbi_1.28.1
-##  [4] base64enc_0.1-2      BatchJobs_1.5        BBmisc_1.9          
-##  [7] BiocParallel_1.0.3   bitops_1.0-6         brew_1.0-6          
-## [10] checkmate_1.5.1      chron_2.3-45         cluster_2.0.1       
-## [13] codetools_0.2-11     colorspace_1.2-6     DBI_0.3.1           
-## [16] DESeq_1.18.0         digest_0.6.8         evaluate_0.5.5      
-## [19] fail_1.2             foreach_1.4.2        foreign_0.8-63      
-## [22] formatR_1.0          Formula_1.2-0        genefilter_1.48.1   
-## [25] geneplotter_1.44.0   ggplot2_1.0.1        grid_3.1.3          
-## [28] gtable_0.1.2         Hmisc_3.15-0         iterators_1.0.7     
-## [31] lattice_0.20-30      latticeExtra_0.6-26  locfit_1.5-9.1      
-## [34] MASS_7.3-39          munsell_0.4.2        nnet_7.3-9          
-## [37] plyr_1.8.1           proto_0.3-10         RColorBrewer_1.1-2  
-## [40] RCurl_1.95-4.5       reshape2_1.4.1       rpart_4.1-9         
-## [43] RSQLite_1.0.0        scales_0.2.4         sendmailR_1.2-1     
-## [46] splines_3.1.3        stringr_0.6.2        survival_2.38-1     
-## [49] tools_3.1.3          XML_3.98-1.1         xtable_1.7-4        
-## [52] XVector_0.6.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Thu, 19 Mar 2015 10:32:22 +0100</pubDate>
-        <link>http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</link>
-        <guid isPermaLink="true">http://adomingues.github.io/2015/03/19/chromosome-over-representation-in-DGE/</guid>
-        
-        <category>R</category>
-        
-        <category>Bioconductor</category>
-        
-        <category>Fisher</category>
-        
-        <category>biomaRt</category>
         
         
       </item>
