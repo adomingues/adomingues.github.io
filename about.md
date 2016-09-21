@@ -11,6 +11,10 @@ The pipette lost. Long live the keyboard.
 This blog is a collection of tips, hints, and ramblings that detail my journey from qPCR and cell culture to R scripting and bedtools - sometimes a combination of both. A journey to the dark side from the perspective of a bench biologist. It is intended primarily as personal notes for future reference, so I might even put a few cooking recipes (mostly quasi-paleo).
 
 
+### Food
+
+I like eating, cooking and sharing recipes so I created a food blog: [Food For the People](http://weekendfamily.github.io/foodforthepeople). Have a look.
+
 
 ### Contact me
 
