@@ -16,7 +16,7 @@ I really like the package Gviz to prepare figures for presentations and publicat
 
 It is a fantastic visualization package, but the time and effort that it takes to get the figures *just right* is a little too much for my daily data inspection/visualization tasks. An example of this is when plotting coverage tracks; by default axis of each panel are scaled independently which makes visualization tricky. So I created a little function that will loop over a list of `BigWig` tracks, find the maximal coverage in each chromosome, and return the max of all tracks. This value can no be used as `ymax` in plots with multiple tracks.
 
-```{r max coverage function}
+```r
   ## calculate the max values
    maxCovBw <- function(gr, myChr) {
       max_cov <- max(gr[seqnames(gr) %in% myChr,]$score)
