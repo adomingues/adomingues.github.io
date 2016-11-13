@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Function to find maximal coverage in multiple bigwigs
+title: Function to find maximal coverage in multiple bigwigs II
 date: 2016-11-14 00:41:22.000000000 +01:00
 categories: []
 tags:
