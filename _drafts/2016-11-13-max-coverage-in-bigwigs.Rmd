@@ -16,7 +16,7 @@ published: true
 
 I really like the package Gviz to prepare figures for presentations and publications (I have used in [B](http://d2ni3bh4dzb2ig.cloudfront.net/content/embojnl/early/2014/12/18/embj.201490061/F4.large.jpg?width=800&height=600&carousel=1) plus some tidying up in inskape). It is a fantastic visualization package, but the time and effort that it takes to get the figures *just right* is a little too much for my daily. An example of this is when plotting coverage tracks; by default axis of each panel are scaled independently which makes visualization tricky. 
 
-let's fist load the packages. `[derfinder](http://bioconductor.org/packages/release/bioc/html/derfinderPlot.html)` will the one containing the example datasets (chosen almost randomly).
+Let's fist load the packages. `derfinder` contains some example datasets (chosen almost randomly). You can find the vignette [here](http://bioconductor.org/packages/release/bioc/html/derfinderPlot.html).
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(message = FALSE)
@@ -51,11 +51,11 @@ One of these is the gene _PRMT2_, and the other is some random region without an
 And does the plot look like using the defaults? Let's have a look:
 
 
-```{r no limit}
+```{r no_limit}
 gen = "hg19"
-gr2 <- as.data.frame(gr2)
-start=gr2[1,2]
-end=gr2[1,3]
+gr1a <- as.data.frame(gr1)
+start=gr1a[1,2]
+end=gr1a[1,3]
 
 gTrack <- BiomartGeneRegionTrack(
   genome = gen,
@@ -84,7 +84,7 @@ Two things become clear, though not immediately:
 
 The way I am solving both these issues is to determine the maximal coverage for both tracks, and then adjust the `y-lim` of both to this value. Initially I was doing this manually, using a `Kent` tool in the terminal, and using the value in R. This is of course time consuming and not adequate if one starts using Gviz on a regular basis, mixing and matching tracks in the plots. 
 
-Becau I had a project that required me to plot the coverage over an entire chomosome rather than a gene, my first programatic solution was to calculate the top coverage for a given chromosome. The basic function `maxCovBw` will take an imported `BigWig` and do this. The `maxCovFiles` function is a wrapper that will do the same but for a list of files. 
+Because I had a project that required me to plot the coverage over an entire chomosome rather than a gene, my first programatic solution was to calculate the top coverage for a given chromosome. The basic function `maxCovBw` will take an imported `BigWig` and do this. The `maxCovFiles` function is a wrapper that will do the same but for a list of files. 
 
 ```{r max coverage function}
 ## calculate the max values
@@ -127,7 +127,7 @@ max_cov
 As I mentioned, this is useful for those situations when I am plotting a full chromosome, but in most situations what is being plotted is a narrow region, for instance, at a gene. Also a chromosome could be represented as a region as `c(0, seqlengths(seqinfo(bw1))`. So let's modify the function:
 
 
-```{r }
+```{r loop over files}
 ## calculate the max values
 maxCovBw <- function(bw, gr) {
   ovlp <- subsetByOverlaps(bw, gr)
@@ -137,10 +137,6 @@ maxCovBw <- function(bw, gr) {
   } else {
     print('WARNING: The selected genomic region has no coverage value in the BigWig')
     print('WARNING: Coverage value is arbitrary set to Zero.')
-    print('Region:')
-    print(gr)
-    print('BigWig:')
-    print(bw)
     max_cov <- 0 
   }
   print(max_cov)
@@ -170,7 +166,17 @@ gr2
 As you can see we now have the top value (which is pretty low) for each of our regions of interest. The coordinates selected contain an edge case for which there is no overlap. I decided to set it to `zero` to avoid breaking things. How does this look like in a plot then?
 
 
-```{r plot}
+```{r plot_with_ylim}
+gr2 <- as.data.frame(gr2)
+start=gr2[1,2]
+end=gr2[1,3]
+
+gTrack <- BiomartGeneRegionTrack(
+  genome = gen,
+  chromosome = "chr21",
+  start = start,
+  end = end,
+  name = "ENSEMBL")
 
 max_cov=gr2[1,6]
 
@@ -190,7 +196,7 @@ track.list=list(dTrack1, dTrack2, gTrack)
 plotTracks(track.list,from=start,to=end,chromsome="chr21")
 ```
 
-This simple change, `ylim=c(0, max_cov)`, makes massive visual difference. A quick look at the plot and it will immediately be clear that `track1` has higher coverage, and the visuals are now more consistent. This is something that could go into a manuscript dratf without too many changes.
+This simple change, `ylim=c(0, max_cov)`, makes massive visual difference. A quick look at the plot and it will immediately be clear that `track1` has higher coverage, and the visuals are now more consistent. This is something that could go into a manuscript draft without too many changes.
 
 Of course both functions could do with some more input testing and cleaning up, but they are working and a good starting point for a quick plot. One thing that is missing and would be useful is the ability use `bam/sam` as an input as `BigWigs` would become limiting in certain situations. Something to improve once the need arises.   
 
