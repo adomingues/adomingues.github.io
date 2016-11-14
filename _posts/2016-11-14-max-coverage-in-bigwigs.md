@@ -107,7 +107,7 @@ track.list=list(dTrack1, dTrack2, gTrack)
 plotTracks(track.list,from=start,to=end,chromsome="chr21")
 ```
 
-![plot of chunk no limit](figure/no limit-1.png)
+![plot of chunk plotDefault]({{ site.url }}/figure/plotDefault-1.png)
 
 Two things become clear, though not immediately:
 - the coverage is lower in track2, but since these tracks do not share the same scale a simple glance would convey the wrong message.
@@ -284,8 +284,7 @@ track.list=list(dTrack1, dTrack2, gTrack)
 plotTracks(track.list,from=start,to=end,chromsome="chr21")
 ```
 
-![plot of chunk plot with ylim]({{ site.url }}/figure/plot with ylim-1.png)
-![my photo]({{ site.url }}/figure/plot with ylim-1.png)
+![plot of chunk plotYlim]({{ site.url }}/figure//plotYlim-1.png)
 
 This simple change, `ylim=c(0, max_cov)`, makes massive visual difference. A quick look at the plot and it will immediately be clear that `track1` has higher coverage, and the visuals are now more consistent. This is something that could go into a manuscript draft without too many changes.
 
