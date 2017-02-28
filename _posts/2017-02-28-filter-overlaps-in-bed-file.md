@@ -15,10 +15,9 @@ published: true
 I was doing something that should be easy but I couldn't find a solution online: remove overlapping coordinates in a single bed file and these must be within a certain distance. In this example:
 
 ```bash
-echo -e "
 chr1 10  20
 chr1 50 60
-chr1 25 35"
+chr1 25 35
 ```
 
 Remove genes that overlap within 10 bp, so the output would be 
