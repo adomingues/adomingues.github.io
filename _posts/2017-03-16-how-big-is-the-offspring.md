@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Function to find maximal coverage in multiple bigwigs II
+title: How big is my baby?
 date: 2017-03-16 17:50:22.000000000 +01:00
 categories: []
 tags:
