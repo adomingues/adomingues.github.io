@@ -77,7 +77,7 @@ ggplot(em_tidy, aes(x=Day, y=Value)) +
   scale_colour_Publication()
 ```
 
-![plot of chunk first_plot](figure/first_plot-1.png)
+![plot of chunk first_plot]({{ site.url }}/figure/first_plot-1.png)
 
 Well, `Em` is growing so that is nice. The plot is a bit clunky though: there are no units and ti is not easy to read. ONe of those situations when `facets` ate not ideal. Let's change that.
 
@@ -107,7 +107,7 @@ p3 <- ggplot(subset(em_tidy, Measurement == "Head_circumference"), aes(x=Day, y=
 multiplot(plotlist=list(p1, p2, p3))
 ```
 
-![plot of chunk plot_with_units](figure/plot_with_units-1.png)
+![plot of chunk plot_with_units]({{ site.url }}/figure/plot_with_units-1.png)
 
 So yes, there is some growing happening but also a dip around the first week when `Em` lost nearly 200 g. Turns out this is completely [normal](http://www.nhs.uk/Conditions/pregnancy-and-baby/Pages/baby-weight-and-height.aspx) and as expected at the next visit the weight was beck up again.
 
@@ -228,7 +228,7 @@ p3 <- ggplot(subset(per_who, Measurement == "Head_circumference"), aes(x=Day, y=
 multiplot(plotlist=list(p1, p2, p3))
 ```
 
-![plot of chunk compare_to_who](figure/compare_to_who-1.png)
+![plot of chunk compare_to_who]({{ site.url }}/figure/compare_to_who-1.png)
 
 Yeah, we really screwed up with that one measurement. On the other hand, `Em` appears to be has average as an F1 can get. But we can test that as well. Suppose we want to know the WHO centile of a female child at `Em` age (182) who is 68 cm tall:
 
@@ -273,7 +273,7 @@ p2 <- ggplot(subset(em_tidy, Measurement == "Height"), aes(x=Day, y=Value, color
 multiplot(plotlist=list(p1, p2))
 ```
 
-![plot of chunk percentile_plot](figure/percentile_plot-1.png)
+![plot of chunk percentile_plot]({{ site.url }}/figure/percentile_plot-1.png)
 
 Take home messages: 
 - F1 is very average
