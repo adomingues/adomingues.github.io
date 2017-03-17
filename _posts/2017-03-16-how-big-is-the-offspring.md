@@ -13,10 +13,6 @@ published: true
 ---
 
 
-
-
-## The goal
-
 So I am a bit of a nerd and also a recent progenitor. So of course I had to find ways of analyzing the growth of my F1. What follows is a very brief look into the growth pattern of `Em`, using the little data I have so far - F1 is only 7 months old. 
 
 
