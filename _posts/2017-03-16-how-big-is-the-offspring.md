@@ -13,6 +13,9 @@ published: true
 ---
 
 
+_updated on 2017-08-28 to include 1 year measurements_
+
+
 So I am a bit of a nerd and also a recent progenitor. So of course I had to find ways of analyzing the growth of my F1. What follows is a very brief look into the growth pattern of `Em`, using the little data I have so far - F1 is only 7 months old. 
 
 
@@ -39,8 +42,6 @@ em_tidy <- em %>%
   select(-c(Week)) %>%
   gather(Measurement, Value, c( Weight, Height, Head_circumference)) %>%
   mutate(Person = "Em")
-
-colnames(em_tidy) <- c("Week", "Value", "Measurement")
 ```
 
 The units are not in the table but are `cm` for height and head circumference, and `kg` for weight.
@@ -52,7 +53,7 @@ glimpse(em_tidy)
 ```
 
 ```
-## Observations: 18
+## Observations: 22
 ## Variables: 4
 ## $ Person      <fctr> Em, Em, Em, Em, Em, Em, Em, Em, Em, Em, Em, Em, E...
 ## $ Day         <int> 0, 0, 0, 3, 3, 3, 29, 29, 29, 87, 87, 87, 170, 170...
@@ -97,7 +98,7 @@ p3 <- ggplot(subset(em_tidy, Measurement == "Head_circumference"), aes(x=Day, y=
   geom_point() +
   theme_Publication() +
   scale_colour_Publication() +
-  xlab("Age since birth (Days)") +
+  xlab("Age (Days)") +
   ylab("Head circumference (cm)") 
 
 multiplot(plotlist=list(p1, p2, p3))
@@ -127,17 +128,6 @@ It not only contains data, but also some practical functions (and visualizations
 
 ```r
 library("hbgd")
-```
-
-```
-## Loading required package: datadr
-```
-
-```
-## Loading required package: trelliscope
-```
-
-```r
 x <- seq(0, 365, by = 7)
 x
 ```
@@ -187,9 +177,9 @@ glimpse(per_who)
 ```
 
 ```
-## Observations: 39
+## Observations: 49
 ## Variables: 4
-## $ Day         <int> 0, 3, 29, 87, 170, 182, 110, 0, 3, 29, 87, 170, 18...
+## $ Day         <int> 0, 3, 29, 87, 170, 182, 110, 208, 370, 0, 3, 29, 8...
 ## $ Measurement <chr> "Weight", "Weight", "Weight", "Weight", "Weight", ...
 ## $ Value       <dbl> 3.2322, 3.2315, 4.1353, 5.7539, 7.1393, 7.2894, 6....
 ## $ Person      <chr> "WHO", "WHO", "WHO", "WHO", "WHO", "WHO", "WHO", "...
@@ -226,7 +216,8 @@ multiplot(plotlist=list(p1, p2, p3))
 
 ![plot of chunk compare_to_who]({{ site.url }}/figure/compare_to_who-1.png)
 
-Yeah, we really screwed up with that one measurement. On the other hand, `Em` appears to be has average as an F1 can get. But we can test that as well. Suppose we want to know the WHO centile of a female child at `Em` age (182) who is 68 cm tall:
+Yeah, we really screwed up with that one measurement. On the other hand, `Em` appears to be has average as an F1 can get. But we can test that as well. Suppose we want to know the WHO centile of a female child at `Em` age (370) who is 77 cm tall:
+
 
 
 ```r
@@ -240,7 +231,7 @@ per_h <- who_htcm2centile(agedays = height_age, htcm = current_height)
 per_w <- who_wtkg2centile(agedays = weight_age, wtkg = current_weight)
 ```
 
-It seems like she is in the 84.5258419 percentile for height and in the 55.0047636 percentile for weight, which makes sense - Slender was the word used by the doctor to describe `Em`.
+It seems like she is in the 86.0287518 percentile for height and in the 90.7631171 percentile for weight, which makes sense - Slender was the word used by the doctor to describe `Em`.
 
 We can also see that in when plotting the percentile bands, again using the nifty function of `hbgd`, to visualize this:
 
@@ -272,5 +263,5 @@ multiplot(plotlist=list(p1, p2))
 ![plot of chunk percentile_plot]({{ site.url }}/figure/percentile_plot-1.png)
 
 Take home messages: 
-- F1 is very average
+- F1 started as a very average baby but is now growing into a big toddler.
 - F0 is pretty poor at taking measurements
