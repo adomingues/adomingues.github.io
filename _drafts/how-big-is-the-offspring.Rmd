@@ -102,7 +102,7 @@ p3 <- ggplot(subset(em_tidy, Measurement == "Head_circumference"), aes(x=Day, y=
   geom_point() +
   theme_Publication() +
   scale_colour_Publication() +
-  xlab("Age since birth (Days)") +
+  xlab("Age (Days)") +
   ylab("Head circumference (cm)") 
 
 multiplot(plotlist=list(p1, p2, p3))
@@ -186,6 +186,7 @@ multiplot(plotlist=list(p1, p2, p3))
 
 Yeah, we really screwed up with that one measurement. On the other hand, `Em` appears to be has average as an F1 can get. But we can test that as well. Suppose we want to know the WHO centile of a female child at `Em` age (`r max(em_tidy$Day)`) who is `r max(subset(em_tidy, Measurement == "Height")$Value)` cm tall:
 
+
 ```{r em_percentile}
 current_age <- max(em_tidy$Day)
 current_weight <- max(subset(em_tidy, Measurement == "Weight")$Value)
@@ -227,5 +228,5 @@ multiplot(plotlist=list(p1, p2))
 ```
 
 Take home messages: 
-- F1 is very average
+- F1 started as a very average baby but is now growing into a big toddler.
 - F0 is pretty poor at taking measurements
