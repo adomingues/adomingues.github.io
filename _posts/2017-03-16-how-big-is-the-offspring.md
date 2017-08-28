@@ -16,12 +16,12 @@ published: true
 _updated on 2017-08-28 to include 1 year measurements_
 
 
-So I am a bit of a nerd and also a recent progenitor. So of course I had to find ways of analyzing the growth of my F1. What follows is a very brief look into the growth pattern of `Em`, using the little data I have so far - F1 is only 7 months old. 
+So I am a bit of a nerd and also a recent progenitor. So of course I had to find ways of analyzing the growth of my F1. What follows is a very brief look into the growth pattern of `Em`, using the little data I have so far - F1 is now 1 year old. 
 
 
 ## The data
 
-Initially the data was input manually, in wide format, and then convert to tidier long format, but in the end I decided to write it in a file, already in long format, because it is easier to read and update. It also makes more sense that ways because there aren't values for every time point for every variable. For instance, the circumference of the head is only measured when `Em` visits the Doctor. Nevertheless I am leaving the original code here for reference.
+Initially the data was input manually, in wide format, and then converted to a tidier long format, but in the end I decided to write it in a file, already in long format, because it is easier to read and update. It also makes more sense that way because there aren't values for every time point for every variable. For instance, the circumference of the head is only measured when `Em` visits the Doctor. Nevertheless I am leaving the original code here for reference.
 
 Another thing to keep in mind is that both the days and the measurements are estimates - some were taken at home using a bathroom scale or in changing station with a ruler. I expect that over time the will be ironed out. Also, this is just a bit of fun. 
 
@@ -76,7 +76,7 @@ ggplot(em_tidy, aes(x=Day, y=Value)) +
 
 ![plot of chunk first_plot]({{ site.url }}/figure/first_plot-1.png)
 
-Well, `Em` is growing so that is nice. The plot is a bit clunky though: there are no units and ti is not easy to read. ONe of those situations when `facets` ate not ideal. Let's change that.
+Well, `Em` is growing so that is nice. The plot is a bit clunky though: there are no units and it is not easy to read. One of those situations when `facets` are not ideal. Let's change that.
 
 
 ```r
@@ -106,7 +106,7 @@ multiplot(plotlist=list(p1, p2, p3))
 
 ![plot of chunk plot_with_units]({{ site.url }}/figure/plot_with_units-1.png)
 
-So yes, there is some growing happening but also a dip around the first week when `Em` lost nearly 200 g. Turns out this is completely [normal](http://www.nhs.uk/Conditions/pregnancy-and-baby/Pages/baby-weight-and-height.aspx) and as expected at the next visit the weight was beck up again.
+So yes, there is some growing happening but also a dip around the first week when `Em` lost nearly 200 g. Turns out this is completely [normal](http://www.nhs.uk/Conditions/pregnancy-and-baby/Pages/baby-weight-and-height.aspx) and as expected at the next visit the weight was back up again.
 
 Looking at her numbers alone feel a little bland, and as I keep hearing in [more or less](http://www.bbc.co.uk/programmes/b006qshd) to understand how big a number really is, one needs to compare it to something.  
 
@@ -216,7 +216,7 @@ multiplot(plotlist=list(p1, p2, p3))
 
 ![plot of chunk compare_to_who]({{ site.url }}/figure/compare_to_who-1.png)
 
-Yeah, we really screwed up with that one measurement. On the other hand, `Em` appears to be has average as an F1 can get. But we can test that as well. Suppose we want to know the WHO centile of a female child at `Em` age (370) who is 77 cm tall:
+Yeah, we really screwed up with that one measurement. On the other hand, `Em` appears to be as average as an F1 can get. But we can test that as well. Suppose we want to know the WHO centile of a female child at `Em` age (370) who is 77 cm tall:
 
 
 
@@ -263,5 +263,6 @@ multiplot(plotlist=list(p1, p2))
 ![plot of chunk percentile_plot]({{ site.url }}/figure/percentile_plot-1.png)
 
 Take home messages: 
+
 - F1 started as a very average baby but is now growing into a big toddler.
 - F0 is pretty poor at taking measurements
