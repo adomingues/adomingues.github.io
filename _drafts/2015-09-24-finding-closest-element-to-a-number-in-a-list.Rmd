@@ -15,7 +15,7 @@ A colleague came to my office the other day with an interesting question:
 
 > Is there a way in R to find the closest number to X in a list?
 
-I knowing full well the power the power of R, I naturally said that surely there is such a function, but I have never used it. So I set out to find it because I am curious. It turns out there is not an of the shelf `closest` function. There are however a few solution out there which I have collected and are bellow. To top it off there is a comparison of how fast each solution is.
+I knowing full well the power the power of R, I naturally said that surely there is such a function, but I have never used it. So I set out to find it because I am curious. It turns out there isn't one off the shelf `closest` function. There are however a few solutions out there which I have collected and are bellow. To top it off there is a comparison of how fast each solution is.
 
 # solution 1
 [Source](https://stat.ethz.ch/pipermail/r-help/2008-July/167226.html)
