@@ -30,7 +30,7 @@ plot(dat)
 dev.off()  
 {% endhighlight %}
 
-Or even better, make use of Rprofile for more than [witty R quotes][2], adding to it the line `grDevices::pdf.optionspdf.options(useDingbats = FALSE)`. Like this, you will not have to remember this every time a plot is saved. And if you are like me, this will happen often - both the saving and the forgetting.
+Or even better, make use of Rprofile for more than [witty R quotes][2], adding to it the line `grDevices::pdf.options(useDingbats = FALSE)`. Like this, you will not have to remember this every time a plot is saved. And if you are like me, this will happen often - both the saving and the forgetting.
 
 [Source1][3]  
 [Source2][4]
