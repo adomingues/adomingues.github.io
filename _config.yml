@@ -4,7 +4,7 @@
 baseurl:
 
 # Site live URL
-# url: http://adomingues.github.io
+url: http://adomingues.github.io
 # Stuff for RSS feed alongside with the site url
 name:         Moving to the Dark Side
 description:  Leaving the Pipette for a Keyboard.
