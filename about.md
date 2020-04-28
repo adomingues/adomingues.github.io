@@ -4,12 +4,13 @@ title: About me
 permalink: /about/
 ---
 
-I have a background in experimental (neuro)-biology but I am now a __Bioinformatics Data Analyst__ with seven years of experience in the analysis and integration of multiple types of next generation sequencing (NGS) data [CV]({{ site.baseurl }}{% link AntonioDominguesCurriculumVitae.pdf %}), including long-reads. I get a kick out of data visualization and creating plots to communicate results.
+I have a background in experimental (neuro)-biology but I am now a __Bioinformatics Data Analyst__ with seven years of experience in the analysis and integration of multiple types of next generation sequencing (NGS) data, including long-reads. I get a kick out of data visualization and creating plots to communicate results.
 
 Even though it has been a while since I last donned a bench coat, My previous experience in bench work is quite useful when communicating data analysis and results with collaborators - and understanding their requests. I very much see my job as translating collaborators' research goals into testable hypothesis, and ultimately interesting and novel findings. I even help with experimental design quite often (as it should be).
 
 My research focus has been on RNA biology and regulation of gene expression, but I have a curious mind and crave challenges. 
 
+And here is my [CV]({{ site.baseurl }}{% link AntonioDominguesCurriculumVitae.pdf %})
 
 ### How I came to data analysis
 
