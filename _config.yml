@@ -64,6 +64,7 @@ exclude:
   - .gitignore
   - .sass-cache
   - Gemfile.lock
+  - “*.Rmd"
 
 # Sass conversion configs
 sass:
