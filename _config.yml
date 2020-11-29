@@ -52,6 +52,8 @@ highlighter: Rouge
 
 kramdown:
   input: GFM
+  syntax_highlighter: rouge
+  extensions: fenced_code_blocks
 
 # Permalinks
 permalink:        pretty
@@ -64,7 +66,7 @@ exclude:
   - .gitignore
   - .sass-cache
   - Gemfile.lock
-  - “*.Rmd"
+  - '*.Rmd'
 
 # Sass conversion configs
 sass:
