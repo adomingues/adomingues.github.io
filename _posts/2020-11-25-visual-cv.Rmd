@@ -33,7 +33,7 @@ knitr::opts_chunk$set(
 
 **TLDR**; I made a visual timeline of my career (CV) completely in R. Here I will show how it was done, and in the process how to hack `ggplot` objects, add images to plots, and use pretty much any font in your ggplots.
 
-![](assets/img/visual_cv.png?w=300)
+![](../assets/img/visual_cv.png?w=300)
 
 This is the final result, and if you are interested on how it was generated, so read along. 
 
@@ -78,7 +78,7 @@ First set is to load the libraries:
 - `ggthemes`, I don't think this was actually used.
 - `scales`, functions to add some spice to ggplot axis
 - `cowplot`, to add images to plots
-- `extrafont`,
+- `extrafont`, use of system fonts
 
 ```{r libraries, results='hide', message=FALSE, warning=FALSE}
 library("tidyverse")
@@ -86,13 +86,9 @@ library("lubridate")
 library("data.table")
 library("ggplot2")
 library("ggthemes")
-# library("scales")
 library("cowplot")
 library("extrafont")
-# extrafont::font_import()
 extrafont::loadfonts(quiet = TRUE)
-# fonttable() %>%
-#   filter(stringr::str_detect(FullName, "Annie"))
 library("bib2df")
 library("rcrossref")
 ```
@@ -158,7 +154,7 @@ theme_update(
 
 With that I could produce the first, and very basic, plot:
 
-```{r base-plot}
+```{r base-plot, fig.show="asis"}
 p <- ggplot(antonio, aes(x = Date, y = da_ratio)) +
   geom_smooth(method = "loess", color = "black", size = 1.5, span = 1, se = FALSE) +
   xlim(min(antonio$Date), as.IDate("2020-12-01")) +
