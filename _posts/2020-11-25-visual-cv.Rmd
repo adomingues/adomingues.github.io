@@ -35,41 +35,41 @@ knitr::opts_chunk$set(
 
 ![](../assets/img/visual_cv.png?w=300)
 
-This is the final result, and if you are interested on how it was generated, so read along. 
+This is the final result, and if you are interested on how it was generated, read on. 
 
 <!--more-->
 
 ## Motivation
 
-Recently I give a presentation with an overview of my career, with a focus on data analysis / bioinformatics. As my path to data analysis has not been straightforward, I wanted walk the audience through my career as we went along the several stages. Because I am someone who generally takes pride on my presentations, and this was about me after all, and I wanted something:
+Recently I gave a presentation with an overview of my career, focusing on data analysis / bioinformatics. As my path to data analysis has not been straightforward, I wanted walk the audience through my career as we went along the several stages. Because I am someone who generally takes pride on giving good presentations, and this was about me after all, and I wanted it to be:
 
-- Clean and elegant design
+- Clean and with an elegant design
 - Rich in features
 - Playful
-- With a wind a nod to data analysis and visualization
+- With a wink a nod to data analysis and visualization
 
 Basically me in a plot.
 
-On top of that, I wanted to showcase my coding skills, so whatever I presented it had to be done 100% with code. No post-production in Inkscape, and in keeping with this mantra, the slide-deck itself was done with `LaTeX`.  
+On top of that, I wanted to showcase my coding skills, so whatever I presented had to be done 100% with code. No post-production in Inkscape. In keeping with this mantra, the slide-deck itself was done with `LaTeX`.  
 
-Because the plot is so intrinsically linked with the presentation itself, I will also explain my though process on certain choices and how that is linked with the presentation[^1].
+Because the plot is so intrinsically linked with the presentation itself, as I explain the how the plot was done, I will include my though process on certain choices and how that is linked with the presentation[^1].
 
 ## Framework
 
-Important for me, due to to way my career as paned out so far,and the goal of the presentation was to [^2]:
+Important for me, due to the way my career as paned out so far, and the goal of the presentation was to [^2]:
 
-- depict my journey from wet lab to data analysis, with increasing amounts of time spent analysis data.
-- the rough dates should be present
-- include milestones such as academic publications and degrees
-- show how international the path has been
+- depict my journey from wet lab to data analysis, with increasing amounts of time spent analyzing data.
+- include a rough timeline should be present
+- highlight milestones such as academic publications and degrees
+- demonstrate how international the path has been
 
-Initially I thought of using a Gantt chart as those are the got to plot for timelines and there are several packages for this [^3]. However, after prototyping with pen and paper, I decided it would be too hard to incorporate all the features I wanted to have without cluttering the plot. Basically, it didn't feel right.
+Initially I thought of using a Gantt chart as those are the go to visual representations for timelines and there are several packages available [^3]. However, after prototyping with pen and paper, I decided it would be too hard to incorporate all the features I wanted to have without cluttering the plot. Basically, it didn't feel right.
 
-Luckily inspiration was in one of my favorite [blogs](https://shirinsplayground.netlify.app/) by an excellent data scientist and communicator, which just happened to have a similar path to data science as my own. Her visual CV is [hand drawn](https://shirinsplayground.netlify.app/page/about/), and looks great, but I made it a challenge to re-create that playfulness, along with the richness of information (also I am terrible at drawing/painting).
+Luckily inspiration was at hand in one of my favorite [blogs](https://shirinsplayground.netlify.app/), by an excellent data scientist and communicator, which just happened to have a similar path to data science as my own. Her visual CV is [hand drawn](https://shirinsplayground.netlify.app/page/about/), and looks great, but I made it a challenge to re-create that playfulness, along with the richness of information, in code (also I am terrible at drawing/painting).
 
 ## Set-up
 
-First set is to load the libraries:
+First step is to load the libraries I'll be using:
 
 - `tidyverse`, for general data wrangling
 - `lubridate`, fancy functions to work with dates
@@ -77,7 +77,7 @@ First set is to load the libraries:
 - `ggplot2`, plots et al.
 - `ggthemes`, I don't think this was actually used.
 - `scales`, functions to add some spice to ggplot axis
-- `cowplot`, to add images to plots
+- `cowplot`, add images to plots
 - `extrafont`, use of system fonts
 
 ```{r libraries, results='hide', message=FALSE, warning=FALSE}
@@ -117,7 +117,7 @@ With the events of my CV in tabular format I could get started with plotting. Ke
 2. The font carefully selected (luckily I have dozens of fonts installed in my system)
 3. Addition of small pictograms
 
-The first and second items were achieved with a custom theme and the package `extrafont`. `extrafont` allows us to use pretty much any system font in out R plots. There a couple of steps that need to be done before system font can be used:
+The first and second items were achieved with a custom theme and the package `extrafont`. `extrafont` allows us to use pretty much any system font in R plots. There a couple of steps that need to be done before system font can be used:
 
 - The first is `extrafont::font_import()` to detect and import system fonts. This needs to be done only once after installing the package, or any time a new font installed. This can take several minutes depending on how many system fonts your system has. Mine has a LOT.
 - The second step is to load the system fonts in the current `R` session to make them available, `extrafont::loadfonts(quiet = TRUE)` 
@@ -130,7 +130,9 @@ fonttable() %>%
   filter(stringr::str_detect(FullName, "Annie"))  
 ```
 
-You can also also the third snippet of code make sure the desired font is indeed available in `R`.
+You can also use the third snippet of code make sure the desired font is indeed available in `R`.
+
+The theme is a variation of `theme_light` to which I removed as many elements as I thought necessary give it that clean aspect. Mind you this is not for data visualization but rather to be aesthetically pleasing (ideally one should be able to combine both). The is also at this stage that the custom font was defined. By creating a theme in this manner we don't need to add these lines to every plot.  
 
 ```{r gg-themes}
 theme_set(theme_light())
@@ -152,7 +154,7 @@ theme_update(
   )
 ```
 
-With that I could produce the first, and very basic, plot:
+With the theme set I could produce the first, and very basic, plot:
 
 ```{r base-plot, fig.show="asis"}
 p <- ggplot(antonio, aes(x = Date, y = da_ratio)) +
@@ -172,11 +174,11 @@ p <- ggplot(antonio, aes(x = Date, y = da_ratio)) +
 p
 ```
 
-The data science trajectory line is a smooth line result of linear model fitted to the time points in the CV. The model was chosen based on the very accurate statistical measure that the fit needed be visually appealing - smooth and in an upward trajectory after a particular time point. 
+The data science trajectory line is a smooth line, result of a linear model fitted to the time points in the CV. The model was chosen based on the very accurate statistical measure of "being easy on the eye" - smooth and in an upward trajectory after a particular time point. 
 
-To add the small icons, I ended up `magick` which I could only install with conda (well, [mamba](https://github.com/mamba-org/mamba)), due to missing dependencies. I did try the R way with `install.packages("magick")` but gave up after the second error. Life is too short. 
+To add the small icons, I ended up using `magick` (via `cowplot`) which I could only install with conda (well, [mamba](https://github.com/mamba-org/mamba)), due to missing dependencies. I did try the R way with `install.packages("magick")` but gave up after the second error. Life is too short. 
 
-The icons themselves were downloaded from the [Noun Project](https://thenounproject.com/) which has tons of free to use icons (with attribution). I ended up paying for these because I liked them so much, but I will credit the author, [Tippawan Sookruay](https://thenounproject.com/wanny4/), nevertheless.
+The icons themselves were downloaded from the [Noun Project](https://thenounproject.com/) which has tons of free to use icons (with attribution). I ended up paying for these because I liked them so much, but nevertheless I will credit the author, [Tippawan Sookruay](https://thenounproject.com/wanny4/).
 
 As these images will be included in several versions of the plot, I wrapped the code in a function to save typing:
 
@@ -190,7 +192,6 @@ add_img <- function(gg){
 
 p_save <- add_img(p)
 
-# ggsave("../assets/img/timeline_final.pdf", dpi = 600, width = 10, height = 6, units = "cm")
 ggsave("../assets/img/timeline_icons.png", p_save, dpi = 600, width = 10, height = 6, units = "cm")
 
 ```
@@ -198,24 +199,24 @@ ggsave("../assets/img/timeline_icons.png", p_save, dpi = 600, width = 10, height
 ![Timeline with icons](../assets/img/timeline_icons.png?w=300)
 
 
-So now we have the basics:
+So now the plots has the basics:
 
 - A timeline on the x-axis
 - rough % of data analysis as part of my job
-- and a few icons to show how it started and it is going
+- and a couple of cool looking icons to show how it all started and it is going
 
-In technical terms, the most difficult part was to add the icons, and in particular placing them in the right location. Not only did it take a lot of trial an error, it was only just right once saved as a file (pdf). I wanted to have a wide plot to fit with the slides, and the plotting window is square, so some eye-balling was required. I tried a few option in terms of packages (patchwork for example), but in the end `magick` was the best one for my purposes.
+In technical terms, the most difficult part was to add the icons, and in particular placing them in the right location. Not only did it take a lot of trial an error, it was only just right once saved as a file (pdf). I wanted to have a wide plot to fit with the slides, and the plotting window is square, so some eye-balling was required. I tried a few other packages (patchwork for example), but in the end `magick` + `cowplot` was the best option for my purposes.
 
-But we are not done yet: career milestones and cities I lived are still missing.
+But we are not done yet: career milestones and cities I lived in are still missing.
 
 
 ## Publications
 
 Until now I have worked in fairly academic milieu where one's achievements are measured mostly by publications. whilst I don't particularly agree with this[^4], it is a decent proxy for output which is what I was looking to represent. Other fields will have their own metrics of productivity (number of sales, features shipped, etc).
 
-For full reproducibility, I tried to get my publications list from pubmed or ORCID but ran into problems. The issue with pubmed queries is that my name follows Portuguese naming conventions, and each publishers seems to ignore what I write in the provided forms and just makes up a different version of my name. Not helping matters is that my first and last name are fairly common, so there were a lot of false positives in the pubmed queries. In ORCID some of the variables I needed, namely the publication date, were missing for some papers.   
+For full reproducibility, I tried to get my publications list from pubmed or ORCID but ran into problems. The issue with pubmed queries is that my name follows Portuguese naming conventions, and each publisher seems to ignore what I write in the provided forms and makes up a different version of my name. Not helping matters is that my first and last names are fairly common, so there were a lot of false positives in the pubmed queries. I could retrieve some of the variables I needed from ORCID but publications dates were missing for some paper.   
 
-I do keep all my publications in a `bibtex` file exported from zotero, so that in end was the route I took. The publication data was extracted with the help of `bib2df` to read in the bibtex file, and `rcrossref` to retrieve publications dates which were incomplete or missing in the bibtex file.
+Luckily I keep all my publications in a `bibtex` file exported from zotero and ended up resorting to that. The publication data was extracted with the help of `bib2df` to read in the bibtex file, and `rcrossref` to retrieve publications dates which were incomplete or missing in the bibtex file.
 
 ```{r add-publications}
 # ==========================================================================
@@ -246,12 +247,12 @@ Once that was done, I could proceed to add the publications has milestones in th
 
 Not so fast.
 
-Turns out that when that smooth line was created, a linear model fit on the original time points, I lost the reference points, ratio of data analysis, of the y-axis. So now I also need to estimate the Y positions in this plot.
+Turns out that when that smooth line was created, a linear model fit on the original time points, I lost the reference points, ratio of data analysis, on the y-axis. So now I also need to estimate the Y positions in the plot.
 
 
 ## ggplot hacking
 
-I have done enough custom plots, and spent enough hours googling on how to do it, that I know that `ggplot` objects store a ton of information which can be accessed and modified (at you own risk). So what I did was to extract the `x` and `y` coordinates of the fitted line from the `ggplot` object.
+I have done enough custom plots, and spent enough hours googling how to do it, to know that `ggplot` objects store a ton of information which can be accessed and modified (at your own risk). So what I did was to extract the `x` and `y` coordinates of the fitted line from the `ggplot` object.
 
 This was done in several steps:
 
@@ -280,10 +281,9 @@ smooth_df %>%
   knitr::kable()
 ```
 
-Now I have the timeline coordinates, but these need to be matched with the dates of the publication. The x-axis values (dates) of the fitted plot are intervals which do not match the CV dates. To solve that problem, as nearly any data manipulation problem, `data.table` and rolling joins came to the rescue. The goal was to the closest time point of my CV dates in the fitted plot. 
+Now that I have the coordinates, these need to be matched with the publication dates. However, the x-axis values (dates) of the fitted plot are intervals which do not match the CV dates. To solve that problem, as nearly any data manipulation problem, `data.table` and rolling joins came to the rescue. The goal was to find the closest time point of my CV in the fitted plot. 
 
 ```{r adjust-milestone-dates}
-
 ## find the closest date of publications in the dummy timeline
 pubs_smooth <- smooth_df[pubs, roll = "nearest", on = "Date"] %>%
   .[, new_date := as.IDate(x)] %>%
@@ -302,7 +302,7 @@ pubs_smooth %>%
 
 Some of that information is not necessary but I kept it anyway to show how it looks.
 
-And a similar join was done for some key outreach dates that I also want to highlight in the final plot.
+A similar join was done for some key outreach dates that will also be highlighted in the final plot.
 
 ```{r adjust-outreach-dates}
 ## same for outreach activities
@@ -317,11 +317,11 @@ outreach_smooth <- smooth_df[outreach, roll = "nearest", on = "Date"] %>%
 ```
 
 
-## Annotate with degrees
+## Annotate with academic degrees
 
-I could have used point with different color/shape to highlight my academic degrees, but these belong to different category of events than publications or other more technical milestones / achievements, and it wold add too much information to the lines anyway. As an alternative I decided to use arrows and text to point out when those degrees where obtained. 
+I could have used points (`geom_point`) with different color/shape to highlight my academic degrees, but these belong to a different category of events than publications or other more technical milestones / achievements, and would add too much information to the lines anyway. As an alternative I decided to use arrows and text to indicate when those degrees where obtained. 
 
-Again there is nothing magic or novel about this, in fact I took inspiration from [Cedric Scherer](https://cedricscherer.netlify.app/top/dataviz/), except that need for trial and error to get the positions correct. The positions of the arrows were put on a `tibble` to make it easier to plot later on:
+Again there is nothing magic or novel about this, in fact I took inspiration from [Cedric Scherer](https://cedricscherer.netlify.app/top/dataviz/), except the need for trial and error to get the locations correct. The positions of the arrows were put on a `tibble` to make it easier to plot later on:
 
 ```{r add-highlights}
 #
@@ -336,9 +336,9 @@ arrows <- tibble(
 arrows
 ```
 
-Remember that in the plots show in the X-window, the arrows, text annotations, and icons where not in the correct locations. I kept saving the plots with the final dimensions to gauge that. Saving as pdf gave me the best results vs saving the plots as png. There is a commented out `ggsave` at the end which was used to save the plots with everything in it's right place.
+Remember that in the plots show in the X-window, the arrows, text annotations, and icons where not in the correct locations. I kept saving the plots with the final dimensions to see if everything is in it's right place. Saving as pdf gave me the best results vs saving as png. This is the same reason why I am saving the plots and linking to them in the `Rmd` rather than letting `rmarkdown` do all the work for me.
 
-This is the final output:
+This is the final version:
 
 ```{r final-plot}
 p_complete <- p +
@@ -377,27 +377,27 @@ ggsave("../assets/img/timeline_complete.png", p_save, dpi = 300, width = 10, hei
 ```
 ![timeline complete](../assets/img/timeline_complete.png?w=300)
 
-What is the information depicted:
+What is the information contained in the figure:
 
 - icons depicting a start as a bench scientist and the current status as a data analyst
 - a line showing a smooth upward trajectory towards data science, but
 - data science only took over bench work (red line) at some point after my PhD 
-- milestones (papers) are also depicted as round points, and in keeping with my trajectory there some in which I contributed only lab work, others with data analysis.
+- milestones (papers) are also depicted as round points, and in keeping with my trajectory there some to which I contributed only lab work, others with data analysis (one with both!).
 - the milestones with the diamond shape are to be described in the presentation (blog, R package maintainer). 
 
-I hope you can appreciate that this plot contains a lot of information, but doesn't feel cluttered, that is, a decent amount of blank space. Also, this is not meant to be a self-contained, self-explanatory piece of data visualization - I will be guiding the audience through the pieces of information and revealing them only when needed.
+I hope you can appreciate that this plot contains a lot of information, but doesn't feel cluttered. Also, this is not meant to be a self-contained, self-explanatory piece of data visualization - I will be guiding the audience through the pieces of information and revealing them only when needed.
 
 
 ## Getting there
 
-Well, nearly final. There are still a couple of modifications to be done for the presentation:
+Well, nearly done. There are still a couple of modifications to be done for the presentation:
 
 1. No legend because I wanted to talk about the milestones during the presentation without giving way too early what the points meant;
 2. Indication of the places of work is still missing. 
 
-The latter is crucial to the presentation because I will be following each plot with an highlighted place of work with the my role there and task there. So in effect highlighting the plots in a stepwise manner is critical for having breaks and setting the tone for each part of the presentation.
+The latter is crucial to the presentation because I will be highlighting each place of work, and follow that up with slides describing the my role, tasks, and accomplishments. So in effect highlighting the laces of work in a stepwise manner is critical to create breaks and setting the tone for each part of the presentation.
 
-Removing the legend fairly simple (once you know who to do it and I always google it).
+Removing the legend is fairly simple (once you know who to do it and I always google it).
 
 ```{r no-legend}
 
@@ -440,7 +440,7 @@ ggsave("../assets/img/timeline_no_legend.pt.png", p_save, dpi = 600, width = 10,
 
 ## Final word
 
-And that was it. It me quite some time to get it done, including testing packages, but in the end I was quite happy the result. It was a lot of work, but I wanted to impress and I did.
+And that was it. It took me quite some time to get it done, including testing packages which were not used, but in the end I am quite happy with the result. It was a lot of work, but I wanted to impress and I did.
 
 
 ## Footnotes
