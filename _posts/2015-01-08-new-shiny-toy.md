@@ -25,10 +25,8 @@ My new laptop has arrived, and after testing it for a couple of days, I feel tha
 Those in the Linux world may have heard of it by the code name _sputnik_. Originally this model was developed by Dell, with an eye on developers, and thus it is one of the very few laptops to be offered with Linux Ubuntu pre-installed.  As a bioinformatician, or genomics data analyst as I call myself (not very catchy), working on a *nix machine is a must. Even though I worked in OSX for a while, it never really impressed me, so when deciding on a laptop for my new job, I had three things on my wish-list:
 
 1. Linux compatibility, to run all the tools I need;
-2. 
-light, to carry home and show results to colleagues;
-3. 
-somewhat powerful, to test scripts and be "future-proof";
+2. light, to carry home and show results to colleagues;
+3. somewhat powerful, to test scripts and be "future-proof";
 
 ## Some specs
 
@@ -63,7 +61,7 @@ This is something of a problem with Linux laptops. I have installed laptop-mode-
 The keyboard is responsive, without being too edgy. The mouse pad is rather large, and does not have physically separated buttons, so it I am still adjusting and trying to the right-click. Both feel somewhat roughed, at least in comparison to my Toshiba T230, which is neither a good or bad thing, it just offers more resistance and feedback to the touch. It should be noted that the page-up and -down do not have dedicated buttons, nor does the end/start (so useful to navigate lines of code). However, the use of `fn + arrows` solves the problem.
 
 ###Sound  
-Good enough. This is a laptop, not a sound system. Scracth that, after some more testing, the sound is loud and clear. Very decent (for a laptop of course).
+Good enough. This is a laptop, not a sound system. Scratch that, after some more testing, the sound is loud and clear. Very decent (for a laptop of course).
 
 **battery life**  
 It looks like I can squeeze 5 hours out of it easily, but it is too early to tell.
