@@ -1,1 +1,1 @@
-My personal website /blog of António Miguel de Jesus Domingues. Theme was copied from [Harmony](https://github.com/gayanvirajith/harmony)https://github.com/gayanvirajith/harmony
+Personal website /blog of António Miguel de Jesus Domingues. Theme was copied from [Harmony](https://github.com/gayanvirajith/harmony)https://github.com/gayanvirajith/harmony
