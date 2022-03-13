@@ -1,0 +1,292 @@
+
+```{r }
+library("data.table")
+library("magrittr")
+library("stringr")
+library("dplyr")
+library("purrr")
+# library("here")
+# here::set_here()
+
+# places_1 <- fread("/home/antonio/Documents/projects/german_place_names/data/zuordnung_plz_ort.csv")
+placenames <- fread("https://raw.githubusercontent.com/mdornseif/pyGeoDb/master/data/DE.tab", skip = 1) %>%
+  setnames("#loc_id", "loc_id")
+# fwrite(placenames, "/home/antonio/Documents/projects/german_place_names/data/DE.csv")
+
+placenames_clean <- placenames %>% 
+  .[,clean_name := str_replace(name, ",.*", "")] %>%
+  .[,clean_name := str_replace(clean_name, "\\(.*", "")] %>%
+  .[,clean_name := str_replace(clean_name, " bei \\w+", "")] %>%
+  .[str_detect(clean_name, "[Mm]useum", negate = TRUE)] %>%
+  .[str_detect(clean_name, "U-Boot", negate = TRUE)] %>%
+  .[nchar(name) > 3]
+
+placenames_vec <- placenames_clean %>%
+  .[["clean_name"]] %>%
+  unique()
+
+head(placenames_vec)
+length(placenames_vec)
+```
+
+
+```{r }
+# a <- c('blahABCfoo', 'blahDEFfoo')
+# b <- c('XXABC-123', 'XXDEF-123')
+
+
+# if (!require("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# BiocManager::install("Rlibstree")
+# BiocManager::install("Biostrings")
+
+
+# MIN_SUBSTR_LEN = 4
+# words <- c("amzntoaster","ebaytoaster","amznsink","ebaycup")
+
+# https://stackoverflow.com/a/35561930/2723734
+# allsubstr <- function(x) {
+#   map(MIN_SUBSTR_LEN:nchar(x), ~unique(substring(x, 1:(nchar(x) - .x + 1), .x:nchar(x)))) %>% unlist
+# }
+
+# map(1:length(placenames), ~{
+#   slen <- nchar(placenames[.x])
+#   if(slen < MIN_SUBSTR_LEN) return(character(0))
+#   allsubstr(placenames[.x])
+# }) %>% unlist %>% table %>% sort(decreasing=T) %>% head(5)
+
+set.seed(42)
+words <- sample(placenames_vec, 1000)
+get_endings <- function(words, last_n = 3){
+  words %>%
+    purrr::map(stringi::stri_sub, last_n * -1) %>%
+    unlist() %>%
+    tolower() %>%
+    unique()
+}
+
+
+n_prefixes <- 2:6
+all_prefixes <- n_prefixes %>%
+  map(~ get_endings(words, .x)) %>%
+  purrr::imap(~as.data.frame(.x)) %>%
+  set_names(paste(2:6)) %>%
+  rbindlist(idcol= "id") %>%
+  setnames(c("nmer", "prefix")) %>%
+  .[]
+
+# for (n in 1:(length(n_prefixes)-1)){
+#   # n = 2
+#   short <- all_prefixes[nmer == as.character(n_prefixes[n])] %>%
+#     .[["prefix"]] 
+#   long <- all_prefixes[nmer == as.character(n_prefixes[n+1])] %>%
+#     .[["prefix"]]
+
+#   current <- "ün"
+#   incomplete <- c()
+#   hits <- endsWith(long, current) %>%
+#     sum()
+#   if(hits > 1) {
+#     incomplete <- c(incomplete, current)
+#   } else {
+
+#   }
+# }
+
+library("stringdist")
+test_pref <- all_prefixes[str_detect(all_prefixes$prefix, "tz|da")]
+new_endings <- c()
+short <- c()
+long <- c()
+for (n in 1:(length(n_prefixes)-1)){
+  print(n)
+  if (n == 1){
+    short <- test_pref[nmer == as.character(n_prefixes[n])] %>%
+      .[["prefix"]]
+  } else {
+    short <- new_endings
+  } 
+  long <- test_pref[nmer == as.character(n_prefixes[n+1])] %>%
+    .[["prefix"]]
+  all_words <-c(short, long)
+
+  d <- stringdistmatrix(
+    all_words,
+    # max_dist = 1,
+    method = "osa",
+    useNames = "strings"
+  )
+  hc <- hclust(d)
+
+  plot(hc)
+
+  df2 <- data.frame(
+    word = c(short, long),
+    clust = cutree(hc,
+    h = 1)
+  ) %>%
+    setDT()
+  df2[str_detect(word, "itz")]
+
+  new_endings <- df2 %>%
+  .[, .SD[which.min(nchar(word)) ], by = clust] %>%
+  .[["word"]]
+
+}
+
+store_prefix <- c()
+for (n in 1:(length(n_prefixes)-1)){
+  short <- test_pref[nmer == as.character(n_prefixes[n])] %>%
+      .[["prefix"]]
+  long <- test_pref[nmer == as.character(n_prefixes[n+1])] %>%
+    .[["prefix"]]
+  for (s in short){
+    print(s)
+    s_sub <- str_subset(long, paste0(s, "$"))
+    # print(s_sub)
+      s_del <- str_remove(s_sub, s)
+      if(n_distinct(s_del) == 1){
+        test_pref <- test_pref[str_detect(prefix, s, negate = TRUE)]
+      } else {
+        message("prefix incomplete: ", s)
+      }
+  }
+}
+
+get_str_clusters <- function(s){
+  d <- stringdistmatrix(
+  s,
+  # max_dist = 1,
+  method = "osa",
+  useNames = "strings"
+)
+hc <- hclust(d)
+
+plot(hc)
+
+df2 <- data.frame(
+  word = s,
+  clust = cutree(hc,
+  h = 1)
+) %>%
+  setDT()
+
+# df2 %>%
+#   .[word == "itz"]
+return(df2)
+}
+
+get_str_clusters(all_prefixes[nmer == 6]$prefix)
+
+d <- stringdistmatrix(
+  s,
+  # max_dist = 1,
+  method = "osa",
+  useNames = "strings"
+)
+
+library("PTXQC")
+s_sub <- test_pref %>%
+  .[str_detect(prefix, "tz$")] %>%
+  .[["prefix"]]
+
+tmp <- s_sub
+n_start <- length(tmp)
+n_end <- 0 
+while(n_end != n_start){
+  n_start <- length(tmp)
+  tmp <- get_str_clusters(tmp) %>%
+    .[, .(lcs = LCSn(word)), by = clust] %>%
+    .[["lcs"]] %>%
+    unique()
+  n_end <- length(tmp)
+}
+
+df2 %>%
+  # .[clust == 2] %>%
+  .[, .(lcs = LCSn(word)), by = clust] 
+
+
+
+new_endings <- df2 %>%
+  .[, .SD[which.max(nchar(word)) ], by = clust] %>%
+  .[["word"]]
+
+
+```
+
+```{r test}
+
+all_endings <- list(
+  last_3 = purrr::map(placenames, get_endings, last_n = 3) %>% unlist() %>% unique() %>% gsub("[()]", "", .),
+  last_4 = purrr::map(placenames, get_endings, last_n = 4) %>% unlist() %>% unique() %>% gsub("[()]", "", .),
+  last_5 = purrr::map(placenames, get_endings, last_n = 5) %>% unlist() %>% unique() %>% gsub("[()]", "", .)
+)
+
+str(all_endings)
+all_endings_df <- purrr::imap(all_endings,~as.data.frame(.x))
+
+library("stringdist")
+library("fuzzyjoin")
+
+get_common_str <- function(df1, df2){
+  stringdist_left_join(
+  df1,
+  df2,
+  max_dist = 1,
+  method = "lcs"
+  ) %>%
+  setnames(c("shorter", "longer")) %>%
+  filter(nzchar(shorter) | nzchar(shorter)) %>%
+  mutate(common = ifelse(str_detect(fixed(shorter), fixed(longer)), 
+                            shorter, 
+                            longer)) %>%
+  filter(!is.na(common)) %>%
+  filter(nchar(common) > 3) %>%
+  transmute(.x = common) %>%
+  distinct() %>%
+  setDT()
+}
+
+matches <- get_common_str(
+  all_endings_df[["last_3"]],
+  all_endings_df[["last_4"]]
+  ) %>% 
+  get_common_str(
+  all_endings_df[["last_5"]]
+    )
+  
+matches <- stringdist_left_join(
+  all_endings_df[["last_3"]],
+  all_endings_df[["last_4"]],
+  max_dist = 1,
+  method = "lcs"
+  ) %>%
+  setnames(c("shorter", "longer")) %>%
+  filter(nzchar(shorter) | nzchar(shorter)) %>%
+  mutate(common = ifelse(str_detect(fixed(shorter), fixed(longer)), 
+                            shorter, 
+                            longer)) %>%
+  filter(!is.na(common)) %>%
+  filter(nchar(common) > 3) %>%
+  transmute(.x = common) %>%
+  distinct() %>%
+  setDT() 
+
+
+matches %>%
+  filter(str_detect(.x, "au"))
+```
+
+```{r }
+d <- adist(placenames[1:1000])
+d2 <- d
+d2[d2 > 2] <- NA  #set the limit at distance = 1
+d2
+```
+
+```R
+rownames(d) <- placenames
+hc <- hclust(as.dist(d))
+plot(hc)
+```
