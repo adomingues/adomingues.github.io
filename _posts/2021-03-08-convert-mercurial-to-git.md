@@ -13,7 +13,7 @@ type: post
 published: true
 ---
 
-For historial reasons many of my I have dozens of version-controlled projects using mercurial (hg) hosted on Bitbucket. Since Bitbucket not only discontinued support for mercurial but also decided to [delete those repositories](https://bitbucket.org/blog/sunsetting-mercurial-support-in-bitbucket), I have been planning to convert those to git - it only took me two years. Since I was getting my hands dirty with this, I took the opportunity to convert hg to git and upload to gitlab in one fell swoop. Here is how.  
+For historical reasons many of my I have dozens of version-controlled projects using mercurial (hg) hosted on Bitbucket. Since Bitbucket not only discontinued support for mercurial but also decided to [delete those repositories](https://bitbucket.org/blog/sunsetting-mercurial-support-in-bitbucket), I have been planning to convert those to git - it only took me two years. Since I was getting my hands dirty with this, I took the opportunity to convert hg to git and upload to gitlab in one fell swoop. Here is how.  
 
 Luckily there is an off the shelf tool to help with the process, `fast-export` and a tutorial:
 
@@ -97,7 +97,7 @@ There were few errors along the way, but when I checked it was all very innocuou
 
 **Bonus material**
 
-It happens that some of bitbucket projects were already version-controlled with git, but due to my unhapiness with Bitbuctek's decision, I decided to move them all to gitlab. 
+It happens that some of bitbucket projects were already version-controlled with git, but due to my unhappiness with Bitbucket's decision, I decided to move them all to gitlab. 
 
 ```bash
 all_projs=$(find  ~/Documents/projects -name ".git" -type f -exec bash -c "echo "{}" | sed 's/.git//g'" \;)
