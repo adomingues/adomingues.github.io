@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Help. I am a bioinformatician looking for a job
-date: 2023-02-15 19:23 +0100
+date: 2023-02-17 09:23 +0100
 categories: []
 tags:
 - mentoring
@@ -13,9 +13,9 @@ type: post
 published: true
 ---
 
-Usually a Data Science job, and I am here to help you. In the past year or so I have been doing a lot of mentoring with bioinformaticians / data scientists who are looking to exit the professorship career path. It seems like I have been going a decent job because people keep approaching me for help on a regular basis. So I am making a series of posts with thoughts, notes and I guess advice collected through several mentoring conversations in the hope of reaching and helping a larger audience. 
+Usually a Data Science job, and I am here to help you. In the past year or so I have been doing a lot of mentoring with bioinformaticians / data scientists who are looking to exit the professorship career path. It seems like I have been doing a decent job because people keep approaching me for help on a regular basis. So I am making a series of posts with thoughts, notes, and advice, collected through several mentoring conversations in the hope of reaching and helping a larger audience. 
 
-The target audience are mid-to-late stage PhDs and Postdocs who have no desire of climbing the academic ladder. They will have data science skills of a very wide range. For example, very good knowledge of genomics but basic programming (R / bash), or strong biostatistics and basic knowledge of biology. The exact set of skill is not very important because the advice will be general enough, however I am targeting bioinformaticians because I feel like I am best placed to give advice to people with a similar(-ish) path to my own.  
+The target audience are mid-to-late stage PhDs and Postdocs who have no desire of climbing the academic ladder. They will have data science skills of a very wide range. For example, very good knowledge of genomics but basic programming (R / bash), or strong biostatistics and basic knowledge of biology. The exact set of skills is not very important because the advice will be general, however I am targeting bioinformaticians because I feel like I am best placed to give advice to people with a similar(-ish) path to my own.  
 
 **Note:** I consider bioinformatics broadly as part of what recently became known as Data Science.
 
