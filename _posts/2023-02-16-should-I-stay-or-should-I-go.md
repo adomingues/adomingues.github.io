@@ -117,12 +117,12 @@ And **communication** is a valuable skill to have. Unless you are developer work
 
 ### Drawbacks of the Industry
 
-As mentioned, unlike in academia where generally a person is leading project from conception to publication, this is very different in a company. So different that even seemingly successful projects, say an extremely accurate model to classify tumor samples, gets **shelved for business reasons**. I can be because it's hard to commercialize, or maybe the company changed priorities from Cancer to some other therapeutic area. Regardless, this is the type of decision you will have little agency on.
+As mentioned, unlike in academia where generally a person is leading project from conception to publication, this is very different in a company. So different that even seemingly successful projects, say an extremely accurate model to classify tumor samples, can get **shelved for business reasons**. It can be because it's hard to commercialize, or maybe the company changed priorities from Cancer to some other therapeutic area. Regardless, this is the type of decision you will have little agency on.
 
 All this to say that if you have problems letting go of a project, or prefer to work alone, maybe think twice before going to a company. 
 
 I might have also painted a somewhat rosy picture of the possibilities one has to change role in a company. The path to do it may not be straightforward. The new team or manager needs to accept your application, and that means your old position has to be filled (basically hire someone else). Those need also to align with business goals and strategy. It's a long winded way to saying that it might take time. On the plus side, there are many companies out there so applying to another job is always a possibility.
 
-The team structures are also more fluid than in academia. There you have a PI, and that's it until the end of your project. Sometimes, a PhD will change a supervisor, but this is fairly rare. In a company a change in business goals might mean your team will not exist next month. You are still working for the company though, it just that now you move from doing analysis of genetic screens to a team making making data analysis pipelines under a different Manager.
+The team structures are also more fluid than in academia. There you have a PI, and that's it until the end of your project. Sometimes, a PhD will change a supervisor, but this is fairly rare. In a company a change in business goals might mean your team will not exist next month. You are still working for the company though, it's just that now you move from doing analysis of genetic screens to a team making making data analysis pipelines under a different Manager.
 
 As indicated above, flexibility is key in the industry. Depending on the company and industry the pace can be intense, so ask questions during your job interview to get an idea of what expects you.
