@@ -109,6 +109,12 @@ A **start-up** might even offer more opportunities to wear many different hats b
 
 Being able to work in many different things or wear many hats is definitively a plus for me, but might not be for others. For those a more established company make more sense vs a start-up. I will write a post on the many roles suitable for academics in the industry - coming soon.
 
+### Meetings, nothing more than meetings
+
+This is the big one. Compared to academia, the number of meetings is much higher. If you think about it makes sense though. Working on several projects with many stakeholders (in a team), you will have to communicate with them the progress, get information on where the data is and which data is more suitable, make sure the work is not being duplicated by another team member, etc. In sum, with teamwork comes extra communication.
+
+And **communication** is a valuable skill to have. Unless you are developer working on a single project with very defined tasks, let's say pipeline development, it's very likely you will be interacting with colleagues to discuss your work on a more frequent basis than you used to do in academia.
+
 ### Drawbacks of the Industry
 
 As mentioned, unlike in academia where generally a person is leading project from conception to publication, this is very different in a company. So different that even seemingly successful projects, say an extremely accurate model to classify tumor samples, gets **shelved for business reasons**. I can be because it's hard to commercialize, or maybe the company changed priorities from Cancer to some other therapeutic area. Regardless, this is the type of decision you will have little agency on.
