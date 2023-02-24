@@ -27,8 +27,8 @@ I started as a wet-lab scientist, Biology was my first degree, eventually did a 
 
 Topics covered:
 
-- **Part I.** Should I stay or should I go? Industry is not the only option and staying close to academia is a good option. [link]({% post_url 2023-02-16-should-I-stay-or-should-I-go %})
-- **Part II.** Lost in Translation. Some job description appear to have been written in Klingon! I'll help translate.
+- **Part I.** Should I stay or should I go? Industry is not the only option and staying close to academia is a good option. [link]({% post_url 2023-02-16-should-I-stay-or-should-I-go %}) 
+- **Part II.** Lost in Translation. Some job description appear to have been written in Klingon! I'll help translate. [link]({% post_url 2023-02-21-lost-in-translation %})
 - **Part III.** Is there any job out there!? Many roles exist in the industry that you wouldn't even consider but might be just right for you.
 - **Part IV.** Time. When to start looking for job.
 - **Part V.** What have I done!? A lot, and your CV should reflect that.
