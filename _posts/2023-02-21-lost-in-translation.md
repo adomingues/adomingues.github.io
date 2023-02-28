@@ -14,15 +14,15 @@ type: post
 published: true
 ---
 
-In this section I will try to translate, or at least give enough clues on how to read a job ad from an company. The approach I prefer is to pick one or two real job postings and taken them apart line-by-line (sort of). I will anonymize the jobs posting as much as possible because I want to keep the analysis fairly generalizable. A lot of this post is guesswork because I didn't write any of these nor are these from my employer, so take it all with a pinch of salt.   
+In this section I will try to translate, or at least give enough clues on how to read a job ad from an company. The approach I prefer is to pick one or two real job postings and take them apart line-by-line (sort of). I will anonymize the postings as much as possible because I want to keep the analysis fairly generalizable. A lot of this post is guesswork because I didn't write any of these nor are these from my employer, so take it all with a pinch of salt.   
 
 * TOC
 {:toc}
 
 Before I pick my metaphorical scalpel, let me re-assure of two things when you take a job in the industry:
 
-- You will do what you were already doing in academia, by and large. There will an extra focus on some tasks vs others depending on the role, but your day to day will probably not be vastly different (with some exceptions[^1]).
-- If there is X skill you don't have, don't worry (be happy[^2]), you have the most important one which is the ability to learn and to deal with setbacks. That's what academia trained you for.
+- You will do what you were already doing in academia, by and large. Depending on the role there will be a special focus on some tasks, in detriment of others, but your day to day will probably not be vastly different (with some exceptions[^1]).
+- If there is X skill you don't have to get the job done, don't worry (be happy[^2]). You have the most important skill which is the ability to learn and to deal with setbacks. That's what academia trained you for.
 
 ## Example 1 - You will become a scientist
 
@@ -39,7 +39,7 @@ Titles (and levels) will vary depending on the company but generally it will be 
 
 - Research associate, someone with a BSc/MSc, equivalent to a lab technician[^4]
 - (Senior) Scientist, PhD holder. Experience will dictate whether one be hired at senior level or not. Fresh out of the PhD is likely to be "just" Scientist, but looking in the posting for years of experience will give you a good idea if you are "senior".
-- Group leader / Lead / Principal Scientist. Here it starts to get murkier with titles. But it usually denotes someone very independent, with not just a good technical level but also a good understanding of what needs to be done to advance the business. It is also where generally people start becoming either individual contributors (lead technically) or managers (lead a team).
+- Group leader / Lead / Principal Scientist. Here it starts to get murkier with titles. But it usually denotes someone very independent, with not just a good technical level but also a good understanding of what needs to be done to advance the business. It is also at this level and higher that generally people start becoming either individual contributors (lead technically) or managers (lead a team).
 - Director / VP etc. Usually require years of industry experience, so unlikely you will get one right out of academia after a PhD or a PostDoc(exceptions apply to former group leaders, etc)
 
 I can't talk about all the jobs titles, or how each company deals with levels, but looking at the experience requested gives you a pretty good idea of what level is expected.
@@ -62,7 +62,7 @@ This sentence is not very prominent and yet could tell a lot about the role:
 
 > At our company you will support the Bioinformatics R&D team with the ongoing bioinformatics research.
 
-This means it is likely a support role for the company's programs. You will be very involved in the analysis and in solving biological questions. How deeply depends if this work for a single team or many teams and programs. Somewhere in between an embedded bioinformatician and a core facility member. Regardless, any doubts you might have about the role, the hiring manager will probably explain it in your first interview session. However, and as you will read below, understanding job posting sometimes feels like reading tea leaves, so just go with your gut feeling on whether this something you will want to do or not.
+This tells you that this company has a group doing research and development (R&D) specifically in bioinformatics. This probably means less of a support role, like an internal Core Facility, but rather developing tools / pipelines that solve problems across teams. 
 
 ### 9-to-5
 
@@ -79,9 +79,10 @@ This broadly what you will do on a daily basis. In sum, your job!
 
 As you can see, the tasks seem to revolve write good code (in python), and do a lot of method development in ML/AI. There is also the bit about reading papers which makes it even more like an Postdoc except that it will be in a team and with a clear goal. 
 
-To me it reads like a position where someone will write a lot of code and research new algorithms. What I imagine the day to day to be like is a lot of discussion with the R&D teams about where they are struggling with data analysis and how the company can extract more knowledge of existing data. Or maybe there is a key biological problem that experiments alone won't solve and data science comes to the rescue. After developing a project / strategy the hire will start investigating how to find a solution and putting into practice. There will probably be cycles of research followed by coding, evaluate the results and either develop a tool / pipeline or go back to the beginning. 
+To me it reads like a position where someone will write a lot of code and research new algorithms. What I imagine the day to day to be like is a lot of discussion with many teams to find out where data analysis can be improved, or how the company can extract more knowledge of existing data. Or maybe there is a key biological problem that experiments alone won't solve and data science comes to the rescue. After developing a project / strategy the hire will start investigating how to find a solution and putting into practice. It is also possible that there already a few ongoing / planned internal projects and you will start working on those. There will probably be cycles of research followed by coding, evaluate the results and either develop a tool / pipeline or go back to the beginning. 
 
-But wait. Now it reads more like a research job than a service facility. Yes, I might I have jumped the gun on the previous section. Or it's a bit of both. Ask during the interview.
+In sum, this reads more like a research job than a service facility. Regardless, any doubts you might have about the role, the hiring manager will probably explain it in your first interview session.
+
 
 ### Skills to pay the bills
 
@@ -97,22 +98,22 @@ But wait. Now it reads more like a research job than a service facility. Yes, I 
 
 This section is actually pretty clear (that's not always the case). The list of skills is short and to the point - I've highlighted what I see as the key aspects but even in those there is some leeway (italics).
 
-You probably heard that if you have 50% of the skill requested in a job posting you should apply and I agree. However, there is always one or two that are critical and without it's likely a candidate will have a successful application. In this example one might think python is one of them, but maybe it's the algorithm development and if you show you are really good at that, but you did it in Rust and you experience in python, your application might pass the first hurdle. If you can do it in Rust, you can probably learn python (that me putting myself in the mind of the hiring manager).
+You probably heard that if you have 50% of the skills listed in a job posting you should apply and I agree. However, there is always one or two that are critical and without which it's unlikely that an application will be successful. In this example, one might think python is one of them, but maybe it's the algorithm development and if you show you are really good at that, but you did it in Rust, and you have a dusting of experience in python, your application might pass the first hurdle. If you can do it in Rust, you can probably learn python (that's me putting myself in the mind of the hiring manager).
 
-Which are the key skills is sometimes difficult to judge. What I did here was to have a guess, but it can be completely wrong and it's very unlikely we will ever find out.
+Which are the key skills is sometimes difficult to judge. What I did here was to have a guess, but it can be completely wrong and it's very unlikely we will ever find out. Speaking of which...
 
 **Story time.**
 
-I once applied for a job that was about a 90% match with my skill-set. I had the experience, the proven mindset, knew the biology. I got interviewed, did well, but didn't get an offer. Through a friend that worked in this place, I got to know that the candidate that was hired had less experience than me in most requirements, except in the one technology for which he was an expert and I was a novice. This was the main tech the hiring manager wanted! I never had a chance though reading the job description one would have never guessed.
+I once applied for a job that was about a 90% match with my skill-set. I had the experience, the proven mindset, knew the biology. I got interviewed, did well, but didn't get an offer. Through a friend that worked in this place, I got to know that the candidate that was hired had less experience than me in most requirements, except in the one technology for which he was an expert and I was a novice. This was the main skill the hiring manager wanted! I never had a chance, though reading the job description one would have never guessed.
 
-The conclusion is that you should apply if your experience / skills partially match the requirements, and are able do the job as described. Don't take it personally if you don't get an offer. There many unknowns in hiring. 
+The conclusion is that you should apply if your experience / skills partially match the requirements, and are able do the job as described. Don't take it personally if you don't get an offer. There are many unknowns in hiring. 
 
 
 ## Example 2 - Read all of the papers
 
 (or use a computer to do it for you)
 
-This position is very unusual in my view, but it serves as a good example to show that there is a position that is just *right* for you. Even if your experience is somewhat left field. The right job might not be available now, but it's out there. It also exemplifies one of many roles someone coming from academia can take in the industry, leveraging their skills but not necessarily doing exactly what one does daily in an academic position. It is also a data science position with few of the classical data science skills required.
+This position is very unusual in my view, but it serves as a good example to show that there is a position that is just *right* for you. Even if your experience is somewhat left field. The right job might not be available now, but it's out there. It also exemplifies one of many roles someone coming from academia can take in the industry, leveraging their skills but not necessarily doing exactly what one does daily in an academic position. And it's a data science position with few of the classical data science skills required.
 
 It's a long one so I'll try to break it apart into bite size chunks - large chunks, like a Chunky Ice Cream.
 
@@ -126,18 +127,18 @@ It's a long one so I'll try to break it apart into bite size chunks - large chun
 
 This is a long way of saying they have a product that might be used internally but it's also sold to customers. The product is knowledge extracted from papers.
 
-But isn't that what a scientist does all day, you ask. Yes, but (i) not with code (unless you work on NLP); and (ii) time to go through papers is expensive (at least in the industry). In pharma it is beneficial to get as soon as possible to an hypotheses (target) on how to cure a disease. If someone offers a product that speeds up the process this is valuable.
+But isn't that what a scientist does all day, you ask. Yes, but (i) not with code (unless you work on NLP); and (ii) time to go through papers is expensive (at least in the industry). In pharma it is beneficial to get as soon as possible to an hypotheses (target) on how to cure a disease. If someone offers a product that speeds up the process this is very valuable.
 
 Before we goo deeper in the job description, There are a couple of expressions here which I rarely heard before taking a job in the industry:
 
-- [target evaluation](https://www.sigmaaldrich.com/DE/de/technical-documents/technical-article/research-and-disease-areas/pharmacology-and-drug-discovery-research/target-identification-and-validation-for-early-drug-discovery), a target is a gene / protein which can is candidate to find drugs to cure a disease. Think BRAC for breast cancer or APP for Alzheimer. But just because it's implicated in a disease doesn't mean it's a good target for drug development, or maybe the link to disease is circumstantial. Making sure it is a good target is essential to develop correct assays (and save money). 
+- [target evaluation](https://www.sigmaaldrich.com/DE/de/technical-documents/technical-article/research-and-disease-areas/pharmacology-and-drug-discovery-research/target-identification-and-validation-for-early-drug-discovery), a target is a gene / protein which can is candidate to find drugs to cure a disease. Think BRAC for breast cancer or APP for Alzheimer. But just because it's implicated in a disease doesn't mean it's a good target for drug development, or maybe the link to disease is circumstantial. Making sure it is a good target is essential to develop assays correctly (and save money). 
 - [lead compound](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/lead-compound), this a drug found in a screen that reverts the  disease phenotype in an in vitro assay. It then goes on to be developed further until it becomes an approved treatment (maybe).     
 
 Once you understand the drug discovery process it becomes clear why using computational methods to automatically extract information (and knowledge) from the literature is extremely valuable - and we, bioinformaticians, can contribute a lot to it.
 
 But where do Patents fit in all of this? Well, imagine a company has a great target, or idea for a diagnostic kit, but it has been patented by someone else, or there is an approved drug for another disease that acts on the target. Is it worth it to follow up on that target?
 
-There were business analysis in. Maybe the idea is not exactly the same as the one patented, or it could be modified just enough to avoid infringement. Or maybe it's so great that it's worth buying the patent. Regardless, this knowledge of an existing patent is very important for an informed business decision. 
+This is were business analysis comes in. Maybe the idea is not exactly the same as the one patented, or it could be modified just enough to avoid infringement. Or maybe it's so great that it's worth buying the patent. Regardless, this knowledge of an existing patent is very important for an informed business decision. 
 
 ### The job
 
@@ -147,7 +148,7 @@ There were business analysis in. Maybe the idea is not exactly the same as the o
 > - Support role scientific communities in Knowledge Discovery Projects.
 > - Fill role as supportive business partner for (Immuno-)Oncology teams.
 
-I am guessing that in role someone will be assigned a customer / project and the task is to use their biological knowledge to come up with disease targets or evidence to support those and / or for experimental design. 
+I am guessing that in this role someone will be assigned a customer / project and the task is to use their biological knowledge to come up with disease targets or evidence to support those and / or for experimental design. 
 
 > - Use ontology-based text data mining, scientific data analytics, APIs, and other tools to drive end-user engagement, improved R&D efficiencies, and reveal new discovery opportunities across therapeutic focus areas.
 
@@ -161,7 +162,7 @@ This is where some coding ability and knowledge of biomedical (and patent databa
 
 > - Collaborate with internal data scientists, information scientists and software developers to design and implement tailored solutions to meet well-defined stakeholder requirements with focus on early research.
 
-Teamwork and support. This collaboration with data scientists is also good for someone who isn't very proficient in some aspects of Data Science (yet) but might have the opportunity to learn through this collaboration. 
+Teamwork and support. This collaboration with data scientists is specially good for someone who isn't very proficient in some aspects of Data Science (yet) but might have the opportunity to learn through collaboration. 
 
 > - Monitor continuously newest technology trends relevant for publication analysis and knowledge discovery and establish an external presence through conferences and publications
 
@@ -184,7 +185,7 @@ The top one (python) seems like a fairly hard requirement, though the level of p
 
 > - *Experience with biomedical information resources (e.g. PubMed), literature and/or patent research, information analysis and data normalization is mandatory*, advanced knowledge on patent analysis is a plus. Experience in text mining, natural language processing, semantic enrichment, ontologies, data mining or machine learning/AI is a plus.
 
-Long paragraph but only one key skill! I am not sure if it's a single skill or laundry list of many skills. knowing how to parse Pubmed and basic data analysis? 
+Long paragraph but only one key skill! I am not sure if it's a single skill or laundry list of many skills. knowing how to parse Pubmed and basic data analysis? Just apply if you have one of those.
 
 > - Familiarity with early drug discovery process (target evaluation, pathway analysis or lead compound discovery) or prior experience in pharmaceutical early research is huge plus.
 
@@ -203,7 +204,7 @@ Soft skills. To determine if you have some of these you will have to have a long
 
 ## Final words
 
-As mentioned, some of this is guess work, but I hope I give you enough insights on how to read this job postings. If you have something to add, a correction, or have a sentence from an ad that you would like "translated", feel free to comment below.  
+As mentioned, some of this is guess work, and understanding job posting sometimes feels like reading tea leaves, but I hope I give you enough insights on how to read them. If you have something to add, a correction, or have a sentence from an ad that you would like "translated", feel free to comment below.  
 
 ## Footnotes
 
